@@ -31,4 +31,8 @@ public class LoanApplication {
         return this.applyAmount;
     }
 	
+	public String getStatusCode() {
+	    return this.statusCode;
+	}
+	
 }
