@@ -19,7 +19,11 @@
 * **VCS:** Git, GitHub
 * **API Test:** Postman
 
-## 📝 업데이트 내역 (Update History)
-* **2026-03-07**: 기본 브랜치명 변경 (master -> main) 및 GitHub 연동 완료
-* **2026-03-07**: `LoanReviewService` 대출 심사 비즈니스 로직 뼈대 추가 및 Getter 메서드 적용
-* **2026-03-07**: 프로젝트 초기 세팅, Git 알림 Hook 적용 및 `LoanApplication` 도메인 구현
+### 📅 개발 진행 내역
+* **2026-03-07**: Spring MVC 웹 환경 세팅 완료
+  - Eclipse Maven 프로젝트 구조 정상화 및 `WEB-INF` 실무 표준 폴더 적용
+  - Tomcat 9.0 서버 연동 및 브라우저 연동 테스트 완료
+  - 컨트롤러 `@ResponseBody` 한글 깨짐 문제 해결 (UTF-8 인코딩 적용)
+  - 기본 브랜치명 변경 (master -> main) 및 GitHub 연동 완료
+  - `LoanReviewService` 대출 심사 비즈니스 로직 뼈대 추가 및 Getter 메서드 적용
+  - 프로젝트 초기 세팅, Git 알림 Hook 적용 및 `LoanApplication` 도메인 구현
