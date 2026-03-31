@@ -3,9 +3,12 @@ package com.finance.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.List;
 import com.finance.domain.LoanApplication;
@@ -37,15 +40,20 @@ public class LoanWebController {
     }
 
     @PostMapping("/submit-loan")
-    public String submitLoan(@RequestParam("customerId") String customerId,
-                             @RequestParam("amount") BigDecimal amount,
+    public String submitLoan(@Valid @ModelAttribute LoanApplication app,
+                             BindingResult bindingResult,
                              Model model) {
 
-        LoanApplication app = new LoanApplication("APP-" + System.currentTimeMillis(), customerId, amount);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("errors", bindingResult.getAllErrors());
+            return "apply";
+        }
+
+        app.setApplicationId("APP-" + System.currentTimeMillis());
         String reviewResult = reviewService.reviewLoan(app);
 
-        model.addAttribute("customerId", customerId);
-        model.addAttribute("amount", amount);
+        model.addAttribute("customerId", app.getCustomerId());
+        model.addAttribute("amount", app.getAmount());
         model.addAttribute("statusCode", app.getStatusCode());
         model.addAttribute("reviewMessage", reviewResult);
 

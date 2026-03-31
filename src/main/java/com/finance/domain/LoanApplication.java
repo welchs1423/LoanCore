@@ -1,12 +1,26 @@
 package com.finance.domain;
 
 import java.math.BigDecimal;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class LoanApplication {
+    
     private String applicationId;
+
+    @NotBlank(message = "고객 ID는 필수 입력값입니다.")
     private String customerId;
+
+    @NotNull(message = "신청 금액을 입력해주세요.")
+    @Min(value = 10000, message = "대출 신청 금액은 최소 10,000원 이상이어야 합니다.")
     private BigDecimal amount;
+
     private String statusCode;
+
+    public LoanApplication() {
+        this.statusCode = "PENDING";
+    }
 
     public LoanApplication(String applicationId, String customerId, BigDecimal amount) {
         this.applicationId = applicationId;
