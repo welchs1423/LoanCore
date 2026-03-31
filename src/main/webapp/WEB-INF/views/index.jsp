@@ -9,12 +9,26 @@
 </head>
 <body class="bg-light">
     <div class="container mt-5">
+        <div class="d-flex justify-content-end mb-2">
+            <c:choose>
+                <c:when test="${not empty sessionScope.adminLogined}">
+                    <span class="me-3 align-self-center">관리자님 환영합니다.</span>
+                    <a href="logout" class="btn btn-sm btn-outline-danger">로그아웃</a>
+                </c:when>
+                <c:otherwise>
+                    <a href="login" class="btn btn-sm btn-outline-primary">관리자 로그인</a>
+                </c:otherwise>
+            </c:choose>
+        </div>
+
         <div class="p-5 mb-4 bg-white rounded-3 shadow-sm text-center">
             <h1 class="display-5 fw-bold">LoanCore 여신 심사 시스템</h1>
             <p class="col-md-8 mx-auto fs-4">빠르고 정확한 대출 심사 프로세스</p>
             <div class="d-flex justify-content-center gap-3 mt-4">
                 <a href="apply" class="btn btn-primary btn-lg">대출 신청하기</a>
-                <a href="list" class="btn btn-outline-secondary btn-lg">신청 내역 조회</a>
+                <c:if test="${not empty sessionScope.adminLogined}">
+                    <a href="list" class="btn btn-outline-secondary btn-lg">신청 내역 조회</a>
+                </c:if>
             </div>
         </div>
 
