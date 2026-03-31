@@ -17,6 +17,8 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-01**
+  - `@RestController` 및 Jackson 라이브러리를 활용한 JSON REST API 구축
+  - Fetch API(Ajax)를 이용한 프론트엔드 비동기 데이터 통신 구현 (고객 대출 상태 중복 검사)
   - Spring AOP를 활용한 서비스 계층 자동 로깅(실행 시간 추적) 기능 구현
   - Spring `@Transactional`을 활용한 선언적 트랜잭션 관리 적용
   - Spring 의존성 주입(DI) 적용 및 MyBatis-H2 연동 완료 (메모리 리스트 제거)

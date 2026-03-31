@@ -10,10 +10,16 @@
     <div class="container mt-5">
         <h2 class="mb-4">LoanCore 대출 신청</h2>
         <form action="submit-loan" method="post" class="card p-4 shadow-sm">
+            
             <div class="mb-3">
                 <label class="form-label">고객 ID</label>
-                <input type="text" class="form-control" name="customerId" placeholder="CUST-001" required>
+                <div class="input-group">
+                    <input type="text" class="form-control" name="customerId" id="customerId" placeholder="CUST-001" required>
+                    <button type="button" class="btn btn-outline-info" onclick="checkCustomerStatus()">진행 상태 검사</button>
+                </div>
+                <div id="customerCheckResult" class="form-text mt-2"></div>
             </div>
+            
             <div class="mb-3">
                 <label class="form-label">신청 금액 (원)</label>
                 <input type="number" class="form-control" name="amount" placeholder="50000000" required>
@@ -24,5 +30,27 @@
             <a href="./" class="btn btn-secondary">메인으로 돌아가기</a>
         </div>
     </div>
+
+    <script>
+        function checkCustomerStatus() {
+            const customerId = document.getElementById('customerId').value;
+            if (!customerId) {
+                alert('고객 ID를 먼저 입력해주세요.');
+                return;
+            }
+
+            fetch('api/check-customer?customerId=' + customerId)
+                .then(response => response.json())
+                .then(data => {
+                    const resultDiv = document.getElementById('customerCheckResult');
+                    if (data.exists) {
+                        resultDiv.innerHTML = '<span class="text-danger fw-bold">' + data.message + '</span>';
+                    } else {
+                        resultDiv.innerHTML = '<span class="text-success fw-bold">' + data.message + '</span>';
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
 </body>
 </html>
