@@ -17,6 +17,7 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-01**
+  - Spring AOP를 활용한 서비스 계층 자동 로깅(실행 시간 추적) 기능 구현
   - Spring `@Transactional`을 활용한 선언적 트랜잭션 관리 적용
   - Spring 의존성 주입(DI) 적용 및 MyBatis-H2 연동 완료 (메모리 리스트 제거)
   - 이클립스 XML Language Server 외부 리소스 다운로드 허용 및 Mapper XML 문법 오류 표기 해결
