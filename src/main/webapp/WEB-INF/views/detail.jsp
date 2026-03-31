@@ -48,6 +48,7 @@
         
         <div class="mt-3 d-flex gap-2">
             <a href="list" class="btn btn-primary">목록으로</a>
+            <a href="edit?id=${app.applicationId}" class="btn btn-warning">정보 수정</a>
             <form action="delete" method="post" onsubmit="return confirm('정말 이 신청 건을 취소하시겠습니까?');">
                 <input type="hidden" name="id" value="${app.applicationId}">
                 <button type="submit" class="btn btn-danger">신청 취소</button>

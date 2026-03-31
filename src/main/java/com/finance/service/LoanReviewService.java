@@ -1,6 +1,7 @@
 package com.finance.service;
 
 import com.finance.domain.LoanApplication;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ public class LoanReviewService {
     public String reviewLoan(LoanApplication app) {
         String resultMessage;
         
-        if (app.getAmount().compareTo(new java.math.BigDecimal("100000000")) > 0) {
+        if (app.getAmount().compareTo(new BigDecimal("100000000")) > 0) {
             app.setStatusCode("REJECT");
             resultMessage = "거절: 1억원 초과 대출은 지점 방문이 필요합니다.";
         } else {
@@ -39,5 +40,19 @@ public class LoanReviewService {
 
     public void deleteApplication(String id) {
         repository.removeIf(app -> app.getApplicationId().equals(id));
+    }
+
+    public void updateApplication(String id, String customerId, BigDecimal amount) {
+        LoanApplication app = getApplicationById(id);
+        if (app != null) {
+            app.setCustomerId(customerId);
+            app.setAmount(amount);
+            
+            if (amount.compareTo(new BigDecimal("100000000")) > 0) {
+                app.setStatusCode("REJECT");
+            } else {
+                app.setStatusCode("APPROVE");
+            }
+        }
     }
 }

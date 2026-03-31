@@ -59,4 +59,19 @@ public class LoanWebController {
         reviewService.deleteApplication(id);
         return "redirect:/list";
     }
+
+    @GetMapping("/edit")
+    public String showEditForm(@RequestParam("id") String id, Model model) {
+        LoanApplication app = reviewService.getApplicationById(id);
+        model.addAttribute("app", app);
+        return "edit";
+    }
+
+    @PostMapping("/edit")
+    public String updateApplication(@RequestParam("id") String id,
+                                    @RequestParam("customerId") String customerId,
+                                    @RequestParam("amount") BigDecimal amount) {
+        reviewService.updateApplication(id, customerId, amount);
+        return "redirect:/detail?id=" + id;
+    }
 }
