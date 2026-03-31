@@ -17,6 +17,7 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-01**
+  - 파일 누락/잘림으로 인한 컴파일 에러 복구 및 MyBatis `<where>`, `<if>`를 활용한 다중 조건 동적 쿼리(Dynamic SQL) 검색 필터 구현
   - 대출 신청 내역 목록 페이징(Pagination) 처리 로직 및 UI 구현
   - `@RestController` 및 Jackson 라이브러리를 활용한 JSON REST API 구축
   - Fetch API(Ajax)를 이용한 프론트엔드 비동기 데이터 통신 구현 (고객 대출 상태 중복 검사)

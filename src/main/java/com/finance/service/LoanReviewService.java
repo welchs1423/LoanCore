@@ -58,10 +58,18 @@ public class LoanReviewService {
     }
 
     @Transactional(readOnly = true)
-    public List<LoanApplication> searchApplications(String keyword) {
-        if (keyword == null || keyword.trim().isEmpty()) {
-            return loanMapper.selectAllApplications();
-        }
-        return loanMapper.searchApplicationsByCustomerId(keyword);
+    public List<LoanApplication> searchApplications(String keyword, String status) {
+        return loanMapper.searchApplicationsDynamic(keyword, status);
+    }
+
+    @Transactional(readOnly = true)
+    public List<LoanApplication> getApplicationsWithPaging(int page, int size) {
+        int offset = (page - 1) * size;
+        return loanMapper.selectApplicationsWithPaging(offset, size);
+    }
+
+    @Transactional(readOnly = true)
+    public int getTotalCount() {
+        return loanMapper.countAllApplications();
     }
 }

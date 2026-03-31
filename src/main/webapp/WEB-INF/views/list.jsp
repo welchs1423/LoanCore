@@ -12,6 +12,12 @@
         <h2 class="mb-4">대출 신청 내역 목록</h2>
         
         <form action="list" method="get" class="mb-3 d-flex gap-2">
+            <select name="status" class="form-select w-25">
+                <option value="">전체 상태</option>
+                <option value="APPROVE" ${status == 'APPROVE' ? 'selected' : ''}>승인</option>
+                <option value="REJECT" ${status == 'REJECT' ? 'selected' : ''}>거절</option>
+                <option value="PENDING" ${status == 'PENDING' ? 'selected' : ''}>대기</option>
+            </select>
             <input type="text" name="keyword" class="form-control w-25" placeholder="고객 ID 검색" value="${keyword}">
             <button type="submit" class="btn btn-primary">검색</button>
             <a href="list" class="btn btn-outline-secondary">초기화</a>
@@ -46,6 +52,9 @@
                                     <c:if test="${app.statusCode == 'REJECT'}">
                                         <span class="badge bg-danger">거절</span>
                                     </c:if>
+                                    <c:if test="${app.statusCode == 'PENDING'}">
+                                        <span class="badge bg-warning">대기</span>
+                                    </c:if>
                                 </td>
                             </tr>
                         </c:forEach>
@@ -54,7 +63,21 @@
             </tbody>
         </table>
 
-        <c:if test="${empty keyword and totalPages > 1}">
+        <c:if test="${empty keyword and empty status and totalPages > 1}">
             <nav>
                 <ul class="pagination justify-content-center">
                     <c:forEach begin="1" end="${totalPages}" var="i">
+                        <li class="page-item ${currentPage == i ? 'active' : ''}">
+                            <a class="page-link" href="list?page=${i}">${i}</a>
+                        </li>
+                    </c:forEach>
+                </ul>
+            </nav>
+        </c:if>
+
+        <div class="mt-3">
+            <a href="./" class="btn btn-secondary">메인으로 돌아가기</a>
+        </div>
+    </div>
+</body>
+</html>

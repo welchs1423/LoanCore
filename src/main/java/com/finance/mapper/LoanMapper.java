@@ -10,7 +10,8 @@ public interface LoanMapper {
     
     List<LoanApplication> selectAllApplications();
     LoanApplication selectApplicationById(String id);
-    List<LoanApplication> searchApplicationsByCustomerId(String customerId);
+    
+    List<LoanApplication> searchApplicationsDynamic(@Param("keyword") String keyword, @Param("status") String status);
     
     void updateApplication(LoanApplication app);
     

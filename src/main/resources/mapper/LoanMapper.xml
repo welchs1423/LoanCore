@@ -30,14 +30,21 @@
         WHERE APPLICATION_ID = #{id}
     </select>
 
-    <select id="searchApplicationsByCustomerId" resultType="com.finance.domain.LoanApplication" parameterType="string">
+    <select id="searchApplicationsDynamic" resultType="com.finance.domain.LoanApplication">
         SELECT 
             APPLICATION_ID AS applicationId,
             CUSTOMER_ID AS customerId,
             AMOUNT AS amount,
             STATUS_CODE AS statusCode
         FROM LOAN_APPLICATION
-        WHERE CUSTOMER_ID LIKE CONCAT('%', #{customerId}, '%')
+        <where>
+            <if test="keyword != null and keyword != ''">
+                CUSTOMER_ID LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+            <if test="status != null and status != ''">
+                AND STATUS_CODE = #{status}
+            </if>
+        </where>
         ORDER BY APPLICATION_ID DESC
     </select>
 

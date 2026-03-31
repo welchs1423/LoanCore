@@ -54,14 +54,16 @@ public class LoanWebController {
 
     @GetMapping("/list")
     public String listApplications(@RequestParam(value = "keyword", required = false) String keyword,
+                                   @RequestParam(value = "status", required = false) String status,
                                    @RequestParam(value = "page", defaultValue = "1") int page,
                                    Model model) {
         int pageSize = 5;
         
-        if (keyword != null && !keyword.trim().isEmpty()) {
-            List<LoanApplication> list = reviewService.searchApplications(keyword);
+        if ((keyword != null && !keyword.trim().isEmpty()) || (status != null && !status.trim().isEmpty())) {
+            List<LoanApplication> list = reviewService.searchApplications(keyword, status);
             model.addAttribute("loanList", list);
             model.addAttribute("keyword", keyword);
+            model.addAttribute("status", status);
             return "list";
         }
 
