@@ -17,7 +17,8 @@ public class LoanRestController {
 
     @GetMapping("/api/check-customer")
     public Map<String, Object> checkCustomer(@RequestParam("customerId") String customerId) {
-        List<LoanApplication> existingApps = reviewService.searchApplications(customerId);
+        
+        List<LoanApplication> existingApps = reviewService.searchApplications(customerId, null);
         
         boolean hasPending = false;
         for (LoanApplication app : existingApps) {
