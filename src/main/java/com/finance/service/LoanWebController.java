@@ -15,7 +15,17 @@ public class LoanWebController {
     private LoanReviewService reviewService = new LoanReviewService();
 
     @GetMapping("/")
-    public String index() {
+    public String index(Model model) {
+        List<LoanApplication> list = reviewService.getAllApplications();
+        
+        long totalCount = list.size();
+        long approveCount = list.stream().filter(app -> "APPROVE".equals(app.getStatusCode())).count();
+        long rejectCount = list.stream().filter(app -> "REJECT".equals(app.getStatusCode())).count();
+        
+        model.addAttribute("totalCount", totalCount);
+        model.addAttribute("approveCount", approveCount);
+        model.addAttribute("rejectCount", rejectCount);
+        
         return "index";
     }
 
