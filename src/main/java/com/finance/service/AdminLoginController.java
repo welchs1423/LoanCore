@@ -1,5 +1,6 @@
 package com.finance.service;
 
+import com.finance.config.CryptoUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +10,8 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 public class AdminLoginController {
+
+    private static final String ADMIN_HASH = "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9";
 
     @GetMapping("/login")
     public String showLoginForm() {
@@ -21,7 +24,9 @@ public class AdminLoginController {
                                HttpSession session,
                                Model model) {
         
-        if ("admin".equals(adminId) && "admin123".equals(adminPw)) {
+        String hashedPw = CryptoUtils.encryptSHA256(adminPw);
+        
+        if ("admin".equals(adminId) && ADMIN_HASH.equals(hashedPw)) {
             session.setAttribute("adminLogined", true);
             return "redirect:/list";
         } else {

@@ -17,6 +17,7 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-01**
+  - Java MessageDigest를 활용한 SHA-256 단방향 암호화(해시) 로그인 로직 구현
   - SLF4J 및 Logback 프레임워크 기반 표준 로깅 시스템 구축 (Console & File Appender)
   - Spring HandlerInterceptor를 활용한 관리자 인증(세션 검사) 및 페이지 접근 제어 적용
   - 서버에 업로드된 증빙 서류 파일 다운로드(File Download) 기능 구현 및 MyBatis 쿼리 누락(FILE_NAME) 수정
