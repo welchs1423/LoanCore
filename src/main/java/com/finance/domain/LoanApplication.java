@@ -46,4 +46,8 @@ public class LoanApplication {
     public void setStatusCode(String statusCode) {
         this.statusCode = statusCode;
     }
+
+    public String getApplicationInfo() {
+        return "Application ID: " + applicationId + ", Customer ID: " + customerId + ", Amount: " + amount + ", Status: " + statusCode;
+    }
 }

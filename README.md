@@ -16,9 +16,12 @@
 
 ### 📅 개발 진행 내역
 
-* **2026-04-01**: Controller와 비즈니스 로직(Service) 연동 및 심사 결과 View 반영
-  - UI 개선 (Bootstrap 5 적용하여 대출 신청 및 결과 화면 디자인 업그레이드)
+* **2026-04-01**
+  - 도메인 모델(LoanApplication) `getApplicationInfo()` 복구 및 Maven(pom.xml) JSTL 중복 오류 수정
+  - 도메인 모델(LoanApplication) Getter/Setter 추가 및 Maven(pom.xml) JRE 컴파일러 버전 환경 오류 수정
   - JSTL 연동 및 대출 신청 내역 목록 조회(List) 화면 구현
+  - UI 개선 (Bootstrap 5 적용하여 대출 신청 및 결과 화면 디자인 업그레이드)
+  - Controller와 비즈니스 로직(Service) 연동 및 심사 결과 View 반영
 * 2026-03-18: Spring Model 적용 및 결과 화면(JSP) 분리 구현
 * **2026-03-09**: 대출 신청 프론트엔드 폼 및 데이터 수신 로직 구현
   - `apply.jsp` 대출 신청 폼 화면 생성 및 POST 전송 처리
