@@ -41,9 +41,10 @@ public class LoanWebController {
     }
 
     @GetMapping("/list")
-    public String listApplications(Model model) {
-        List<LoanApplication> list = reviewService.getAllApplications();
+    public String listApplications(@RequestParam(value = "keyword", required = false) String keyword, Model model) {
+        List<LoanApplication> list = reviewService.searchApplications(keyword);
         model.addAttribute("loanList", list);
+        model.addAttribute("keyword", keyword);
         return "list";
     }
 

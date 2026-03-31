@@ -4,6 +4,7 @@ import com.finance.domain.LoanApplication;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class LoanReviewService {
 
@@ -54,5 +55,14 @@ public class LoanReviewService {
                 app.setStatusCode("APPROVE");
             }
         }
+    }
+
+    public List<LoanApplication> searchApplications(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return repository;
+        }
+        return repository.stream()
+                .filter(app -> app.getCustomerId().contains(keyword))
+                .collect(Collectors.toList());
     }
 }

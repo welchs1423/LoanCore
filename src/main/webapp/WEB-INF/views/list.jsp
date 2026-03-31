@@ -10,6 +10,13 @@
 <body>
     <div class="container mt-5">
         <h2 class="mb-4">대출 신청 내역 목록</h2>
+        
+        <form action="list" method="get" class="mb-3 d-flex gap-2">
+            <input type="text" name="keyword" class="form-control w-25" placeholder="고객 ID 검색" value="${keyword}">
+            <button type="submit" class="btn btn-primary">검색</button>
+            <a href="list" class="btn btn-outline-secondary">초기화</a>
+        </form>
+
         <table class="table table-hover table-bordered shadow-sm">
             <thead class="table-light">
                 <tr>
