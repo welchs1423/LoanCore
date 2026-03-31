@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import java.math.BigDecimal;
+import java.util.List;
 import com.finance.domain.LoanApplication;
 
 @Controller
@@ -37,5 +38,12 @@ public class LoanWebController {
         model.addAttribute("reviewMessage", reviewResult);
 
         return "result";
+    }
+
+    @GetMapping("/list")
+    public String listApplications(Model model) {
+        List<LoanApplication> list = reviewService.getAllApplications();
+        model.addAttribute("loanList", list);
+        return "list";
     }
 }

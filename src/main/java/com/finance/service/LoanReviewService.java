@@ -1,18 +1,32 @@
 package com.finance.service;
 
 import com.finance.domain.LoanApplication;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LoanReviewService {
-	
-	public String reviewLoan(LoanApplication application) {
-		java.math.BigDecimal limit = new java.math.BigDecimal("50000000");
-		
-		if (application.getApplyAmount().compareTo(limit) >= 0) {
-			application.changeStatus("REJECT");
-			return "심사 거절: 신청 금액이 한도를 초과했습니다.";
-		} else {
-			application.changeStatus("APPROVE");
-			return "심사 승인: 기표 대기 상태로 변경되었습니다.";
-		}
-	}
+
+    // 임시 메모리 저장소
+    private List<LoanApplication> repository = new ArrayList<>();
+
+    public String reviewLoan(LoanApplication app) {
+        String resultMessage;
+        
+        if (app.getAmount().compareTo(new java.math.BigDecimal("100000000")) > 0) {
+            app.setStatusCode("REJECT");
+            resultMessage = "거절: 1억원 초과 대출은 지점 방문이 필요합니다.";
+        } else {
+            app.setStatusCode("APPROVE");
+            resultMessage = "승인: 기표 대기 상태로 변경되었습니다.";
+        }
+        
+        // 심사 완료 후 리스트에 저장
+        repository.add(app);
+        
+        return resultMessage;
+    }
+
+    public List<LoanApplication> getAllApplications() {
+        return repository;
+    }
 }
