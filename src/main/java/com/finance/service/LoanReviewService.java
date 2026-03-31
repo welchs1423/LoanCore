@@ -4,10 +4,12 @@ import com.finance.domain.LoanApplication;
 import com.finance.mapper.LoanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 
 @Service
+@Transactional
 public class LoanReviewService {
 
     @Autowired
@@ -29,10 +31,12 @@ public class LoanReviewService {
         return resultMessage;
     }
 
+    @Transactional(readOnly = true)
     public List<LoanApplication> getAllApplications() {
         return loanMapper.selectAllApplications();
     }
 
+    @Transactional(readOnly = true)
     public LoanApplication getApplicationById(String id) {
         return loanMapper.selectApplicationById(id);
     }
@@ -53,6 +57,7 @@ public class LoanReviewService {
         loanMapper.updateApplication(app);
     }
 
+    @Transactional(readOnly = true)
     public List<LoanApplication> searchApplications(String keyword) {
         if (keyword == null || keyword.trim().isEmpty()) {
             return loanMapper.selectAllApplications();
