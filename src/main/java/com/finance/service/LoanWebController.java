@@ -46,4 +46,11 @@ public class LoanWebController {
         model.addAttribute("loanList", list);
         return "list";
     }
+
+    @GetMapping("/detail")
+    public String detailApplication(@RequestParam("id") String id, Model model) {
+        LoanApplication app = reviewService.getApplicationById(id);
+        model.addAttribute("app", app);
+        return "detail";
+    }
 }

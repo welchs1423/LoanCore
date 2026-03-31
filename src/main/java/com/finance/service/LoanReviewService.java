@@ -6,7 +6,6 @@ import java.util.List;
 
 public class LoanReviewService {
 
-    // 임시 메모리 저장소
     private List<LoanApplication> repository = new ArrayList<>();
 
     public String reviewLoan(LoanApplication app) {
@@ -20,7 +19,6 @@ public class LoanReviewService {
             resultMessage = "승인: 기표 대기 상태로 변경되었습니다.";
         }
         
-        // 심사 완료 후 리스트에 저장
         repository.add(app);
         
         return resultMessage;
@@ -28,5 +26,14 @@ public class LoanReviewService {
 
     public List<LoanApplication> getAllApplications() {
         return repository;
+    }
+
+    public LoanApplication getApplicationById(String id) {
+        for (LoanApplication app : repository) {
+            if (app.getApplicationId().equals(id)) {
+                return app;
+            }
+        }
+        return null;
     }
 }

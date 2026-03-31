@@ -17,6 +17,7 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-01**
+  - 대출 신청 단건 상세 조회(Detail) 화면 및 Controller/Service 로직 구현
   - 도메인 모델(LoanApplication) `getApplicationInfo()` 복구 및 Maven(pom.xml) JSTL 중복 오류 수정
   - 도메인 모델(LoanApplication) Getter/Setter 추가 및 Maven(pom.xml) JRE 컴파일러 버전 환경 오류 수정
   - JSTL 연동 및 대출 신청 내역 목록 조회(List) 화면 구현

@@ -29,7 +29,7 @@
                     <c:otherwise>
                         <c:forEach var="app" items="${loanList}">
                             <tr>
-                                <td>${app.applicationId}</td>
+                                <td><a href="detail?id=${app.applicationId}">${app.applicationId}</a></td>
                                 <td>${app.customerId}</td>
                                 <td>${app.amount}</td>
                                 <td>
