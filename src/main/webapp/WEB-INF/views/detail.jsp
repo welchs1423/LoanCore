@@ -39,6 +39,23 @@
                                 <c:if test="${app.statusCode == 'REJECT'}">
                                     <span class="badge bg-danger">거절</span>
                                 </c:if>
+                                <c:if test="${app.statusCode == 'PENDING'}">
+                                    <span class="badge bg-warning">대기</span>
+                                </c:if>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>증빙 서류</th>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${not empty app.fileName}">
+                                        <a href="download?fileName=${app.fileName}" class="btn btn-sm btn-outline-primary">파일 다운로드</a>
+                                        <span class="text-muted ms-2">${app.fileName}</span>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <span class="text-muted">첨부파일 없음</span>
+                                    </c:otherwise>
+                                </c:choose>
                             </td>
                         </tr>
                     </table>

@@ -1,5 +1,20 @@
 package com.finance.service;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.math.BigDecimal;
+import java.net.URLEncoder;
+import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,17 +23,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import javax.validation.Valid;
-import javax.servlet.http.HttpServletResponse;
-import java.math.BigDecimal;
-import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
-import java.io.File;
-import java.io.IOException;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import com.finance.domain.LoanApplication;
 
 @Controller
@@ -66,6 +72,30 @@ public class LoanWebController {
         model.addAttribute("reviewMessage", reviewResult);
 
         return "result";
+    }
+    
+    @GetMapping("/download")
+    public void downloadFile(@RequestParam("fileName") String fileName, HttpServletResponse response) throws IOException {
+        String uploadFolder = "C:/upload_test/";
+        File file = new File(uploadFolder + fileName);
+        
+        if (!file.exists()) {
+            return;
+        }
+
+        String encodedFileName = URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20");
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + encodedFileName + "\"");
+
+        try (FileInputStream fis = new FileInputStream(file);
+             OutputStream os = response.getOutputStream()) {
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = fis.read(buffer)) > 0) {
+                os.write(buffer, 0, length);
+            }
+            os.flush();
+        }
     }
 
     @GetMapping("/list")
