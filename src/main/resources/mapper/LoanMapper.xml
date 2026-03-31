@@ -54,4 +54,19 @@
         WHERE APPLICATION_ID = #{id}
     </delete>
 
+    <select id="selectApplicationsWithPaging" resultType="com.finance.domain.LoanApplication">
+        SELECT 
+            APPLICATION_ID AS applicationId,
+            CUSTOMER_ID AS customerId,
+            AMOUNT AS amount,
+            STATUS_CODE AS statusCode
+        FROM LOAN_APPLICATION
+        ORDER BY APPLICATION_ID DESC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <select id="countAllApplications" resultType="int">
+        SELECT COUNT(*) FROM LOAN_APPLICATION
+    </select>
+
 </mapper>

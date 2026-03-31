@@ -1,21 +1,21 @@
 package com.finance.mapper;
 
 import com.finance.domain.LoanApplication;
+import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface LoanMapper {
     
-    // Create
     void insertApplication(LoanApplication app);
     
-    // Read
     List<LoanApplication> selectAllApplications();
     LoanApplication selectApplicationById(String id);
     List<LoanApplication> searchApplicationsByCustomerId(String customerId);
     
-    // Update
     void updateApplication(LoanApplication app);
     
-    // Delete
     void deleteApplication(String id);
+
+    List<LoanApplication> selectApplicationsWithPaging(@Param("offset") int offset, @Param("limit") int limit);
+    int countAllApplications();
 }

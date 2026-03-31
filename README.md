@@ -17,6 +17,7 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-01**
+  - 대출 신청 내역 목록 페이징(Pagination) 처리 로직 및 UI 구현
   - `@RestController` 및 Jackson 라이브러리를 활용한 JSON REST API 구축
   - Fetch API(Ajax)를 이용한 프론트엔드 비동기 데이터 통신 구현 (고객 대출 상태 중복 검사)
   - Spring AOP를 활용한 서비스 계층 자동 로깅(실행 시간 추적) 기능 구현

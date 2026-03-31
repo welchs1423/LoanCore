@@ -13,16 +13,16 @@ import com.finance.domain.LoanApplication;
 @Controller
 public class LoanWebController {
 
-	@Autowired
+    @Autowired
     private LoanReviewService reviewService;
 
     @GetMapping("/")
     public String index(Model model) {
-        List<LoanApplication> list = reviewService.getAllApplications();
+        long totalCount = reviewService.getTotalCount();
+        List<LoanApplication> allList = reviewService.getAllApplications();
         
-        long totalCount = list.size();
-        long approveCount = list.stream().filter(app -> "APPROVE".equals(app.getStatusCode())).count();
-        long rejectCount = list.stream().filter(app -> "REJECT".equals(app.getStatusCode())).count();
+        long approveCount = allList.stream().filter(app -> "APPROVE".equals(app.getStatusCode())).count();
+        long rejectCount = allList.stream().filter(app -> "REJECT".equals(app.getStatusCode())).count();
         
         model.addAttribute("totalCount", totalCount);
         model.addAttribute("approveCount", approveCount);
@@ -53,10 +53,26 @@ public class LoanWebController {
     }
 
     @GetMapping("/list")
-    public String listApplications(@RequestParam(value = "keyword", required = false) String keyword, Model model) {
-        List<LoanApplication> list = reviewService.searchApplications(keyword);
+    public String listApplications(@RequestParam(value = "keyword", required = false) String keyword,
+                                   @RequestParam(value = "page", defaultValue = "1") int page,
+                                   Model model) {
+        int pageSize = 5;
+        
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            List<LoanApplication> list = reviewService.searchApplications(keyword);
+            model.addAttribute("loanList", list);
+            model.addAttribute("keyword", keyword);
+            return "list";
+        }
+
+        List<LoanApplication> list = reviewService.getApplicationsWithPaging(page, pageSize);
+        int totalCount = reviewService.getTotalCount();
+        int totalPages = (int) Math.ceil((double) totalCount / pageSize);
+
         model.addAttribute("loanList", list);
-        model.addAttribute("keyword", keyword);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        
         return "list";
     }
 

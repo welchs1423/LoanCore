@@ -53,9 +53,8 @@
                 </c:choose>
             </tbody>
         </table>
-        <div class="mt-3">
-            <a href="./" class="btn btn-secondary">메인으로 돌아가기</a>
-        </div>
-    </div>
-</body>
-</html>
+
+        <c:if test="${empty keyword and totalPages > 1}">
+            <nav>
+                <ul class="pagination justify-content-center">
+                    <c:forEach begin="1" end="${totalPages}" var="i">
