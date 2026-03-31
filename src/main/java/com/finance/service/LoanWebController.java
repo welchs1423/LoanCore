@@ -9,8 +9,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import javax.validation.Valid;
+import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.util.List;
+import java.io.IOException;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.finance.domain.LoanApplication;
 
 @Controller
@@ -112,5 +118,34 @@ public class LoanWebController {
                                     @RequestParam("amount") BigDecimal amount) {
         reviewService.updateApplication(id, customerId, amount);
         return "redirect:/detail?id=" + id;
+    }
+
+    @GetMapping("/excel")
+    public void downloadExcel(HttpServletResponse response) throws IOException {
+        List<LoanApplication> list = reviewService.getAllApplications();
+
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("대출신청내역");
+        Row headerRow = sheet.createRow(0);
+
+        headerRow.createCell(0).setCellValue("신청 번호");
+        headerRow.createCell(1).setCellValue("고객 ID");
+        headerRow.createCell(2).setCellValue("신청 금액(원)");
+        headerRow.createCell(3).setCellValue("진행 상태");
+
+        int rowNum = 1;
+        for (LoanApplication app : list) {
+            Row row = sheet.createRow(rowNum++);
+            row.createCell(0).setCellValue(app.getApplicationId());
+            row.createCell(1).setCellValue(app.getCustomerId());
+            row.createCell(2).setCellValue(app.getAmount().doubleValue());
+            row.createCell(3).setCellValue(app.getStatusCode());
+        }
+
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-Disposition", "attachment; filename=loan_applications.xlsx");
+
+        workbook.write(response.getOutputStream());
+        workbook.close();
     }
 }

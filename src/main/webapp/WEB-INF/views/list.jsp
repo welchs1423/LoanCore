@@ -11,17 +11,20 @@
     <div class="container mt-5">
         <h2 class="mb-4">대출 신청 내역 목록</h2>
         
-        <form action="list" method="get" class="mb-3 d-flex gap-2">
-            <select name="status" class="form-select w-25">
-                <option value="">전체 상태</option>
-                <option value="APPROVE" ${status == 'APPROVE' ? 'selected' : ''}>승인</option>
-                <option value="REJECT" ${status == 'REJECT' ? 'selected' : ''}>거절</option>
-                <option value="PENDING" ${status == 'PENDING' ? 'selected' : ''}>대기</option>
-            </select>
-            <input type="text" name="keyword" class="form-control w-25" placeholder="고객 ID 검색" value="${keyword}">
-            <button type="submit" class="btn btn-primary">검색</button>
-            <a href="list" class="btn btn-outline-secondary">초기화</a>
-        </form>
+        <div class="d-flex justify-content-between mb-3">
+            <form action="list" method="get" class="d-flex gap-2 w-75">
+                <select name="status" class="form-select w-25">
+                    <option value="">전체 상태</option>
+                    <option value="APPROVE" ${status == 'APPROVE' ? 'selected' : ''}>승인</option>
+                    <option value="REJECT" ${status == 'REJECT' ? 'selected' : ''}>거절</option>
+                    <option value="PENDING" ${status == 'PENDING' ? 'selected' : ''}>대기</option>
+                </select>
+                <input type="text" name="keyword" class="form-control w-25" placeholder="고객 ID 검색" value="${keyword}">
+                <button type="submit" class="btn btn-primary">검색</button>
+                <a href="list" class="btn btn-outline-secondary">초기화</a>
+            </form>
+            <a href="excel" class="btn btn-success">엑셀 다운로드</a>
+        </div>
 
         <table class="table table-hover table-bordered shadow-sm">
             <thead class="table-light">
