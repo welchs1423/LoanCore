@@ -36,4 +36,8 @@ public class LoanReviewService {
         }
         return null;
     }
+
+    public void deleteApplication(String id) {
+        repository.removeIf(app -> app.getApplicationId().equals(id));
+    }
 }

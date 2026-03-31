@@ -53,4 +53,10 @@ public class LoanWebController {
         model.addAttribute("app", app);
         return "detail";
     }
+
+    @PostMapping("/delete")
+    public String deleteApplication(@RequestParam("id") String id) {
+        reviewService.deleteApplication(id);
+        return "redirect:/list";
+    }
 }
