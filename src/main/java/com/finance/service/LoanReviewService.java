@@ -1,14 +1,17 @@
 package com.finance.service;
 
 import com.finance.domain.LoanApplication;
+import com.finance.mapper.LoanMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
+@Service
 public class LoanReviewService {
 
-    private List<LoanApplication> repository = new ArrayList<>();
+    @Autowired
+    private LoanMapper loanMapper;
 
     public String reviewLoan(LoanApplication app) {
         String resultMessage;
@@ -21,48 +24,39 @@ public class LoanReviewService {
             resultMessage = "승인: 기표 대기 상태로 변경되었습니다.";
         }
         
-        repository.add(app);
+        loanMapper.insertApplication(app);
         
         return resultMessage;
     }
 
     public List<LoanApplication> getAllApplications() {
-        return repository;
+        return loanMapper.selectAllApplications();
     }
 
     public LoanApplication getApplicationById(String id) {
-        for (LoanApplication app : repository) {
-            if (app.getApplicationId().equals(id)) {
-                return app;
-            }
-        }
-        return null;
+        return loanMapper.selectApplicationById(id);
     }
 
     public void deleteApplication(String id) {
-        repository.removeIf(app -> app.getApplicationId().equals(id));
+        loanMapper.deleteApplication(id);
     }
 
     public void updateApplication(String id, String customerId, BigDecimal amount) {
-        LoanApplication app = getApplicationById(id);
-        if (app != null) {
-            app.setCustomerId(customerId);
-            app.setAmount(amount);
-            
-            if (amount.compareTo(new BigDecimal("100000000")) > 0) {
-                app.setStatusCode("REJECT");
-            } else {
-                app.setStatusCode("APPROVE");
-            }
+        LoanApplication app = new LoanApplication(id, customerId, amount);
+        
+        if (amount.compareTo(new BigDecimal("100000000")) > 0) {
+            app.setStatusCode("REJECT");
+        } else {
+            app.setStatusCode("APPROVE");
         }
+        
+        loanMapper.updateApplication(app);
     }
 
     public List<LoanApplication> searchApplications(String keyword) {
         if (keyword == null || keyword.trim().isEmpty()) {
-            return repository;
+            return loanMapper.selectAllApplications();
         }
-        return repository.stream()
-                .filter(app -> app.getCustomerId().contains(keyword))
-                .collect(Collectors.toList());
+        return loanMapper.searchApplicationsByCustomerId(keyword);
     }
 }

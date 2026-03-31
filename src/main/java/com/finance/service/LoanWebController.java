@@ -1,5 +1,6 @@
 package com.finance.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +13,8 @@ import com.finance.domain.LoanApplication;
 @Controller
 public class LoanWebController {
 
-    private LoanReviewService reviewService = new LoanReviewService();
+	@Autowired
+    private LoanReviewService reviewService;
 
     @GetMapping("/")
     public String index(Model model) {
