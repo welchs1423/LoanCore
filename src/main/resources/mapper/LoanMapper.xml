@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.finance.mapper.LoanMapper">
+
+    <insert id="insertApplication" parameterType="com.finance.domain.LoanApplication">
+        INSERT INTO LOAN_APPLICATION (APPLICATION_ID, CUSTOMER_ID, AMOUNT, STATUS_CODE)
+        VALUES (#{applicationId}, #{customerId}, #{amount}, #{statusCode})
+    </insert>
+
+    <select id="selectAllApplications" resultType="com.finance.domain.LoanApplication">
+        SELECT 
+            APPLICATION_ID AS applicationId,
+            CUSTOMER_ID AS customerId,
+            AMOUNT AS amount,
+            STATUS_CODE AS statusCode
+        FROM LOAN_APPLICATION
+        ORDER BY APPLICATION_ID DESC
+    </select>
+
+    <select id="selectApplicationById" resultType="com.finance.domain.LoanApplication" parameterType="string">
+        SELECT 
+            APPLICATION_ID AS applicationId,
+            CUSTOMER_ID AS customerId,
+            AMOUNT AS amount,
+            STATUS_CODE AS statusCode
+        FROM LOAN_APPLICATION
+        WHERE APPLICATION_ID = #{id}
+    </select>
+
+    <select id="searchApplicationsByCustomerId" resultType="com.finance.domain.LoanApplication" parameterType="string">
+        SELECT 
+            APPLICATION_ID AS applicationId,
+            CUSTOMER_ID AS customerId,
+            AMOUNT AS amount,
+            STATUS_CODE AS statusCode
+        FROM LOAN_APPLICATION
+        WHERE CUSTOMER_ID LIKE CONCAT('%', #{customerId}, '%')
+        ORDER BY APPLICATION_ID DESC
+    </select>
+
+    <update id="updateApplication" parameterType="com.finance.domain.LoanApplication">
+        UPDATE LOAN_APPLICATION
+        SET CUSTOMER_ID = #{customerId},
+            AMOUNT = #{amount},
+            STATUS_CODE = #{statusCode}
+        WHERE APPLICATION_ID = #{applicationId}
+    </update>
+
+    <delete id="deleteApplication" parameterType="string">
+        DELETE FROM LOAN_APPLICATION
+        WHERE APPLICATION_ID = #{id}
+    </delete>
+
+</mapper>

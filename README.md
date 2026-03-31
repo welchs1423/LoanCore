@@ -17,6 +17,8 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-01**
+  - MyBatis 프레임워크 연동 기초 설정 및 H2 데이터베이스 의존성 추가
+  - 대출 신청 CRUD 처리를 위한 Mapper 인터페이스 및 SQL XML 매퍼 구현
   - 메인 화면 대시보드 통계(총 신청, 승인, 거절 건수) UI/UX 전면 개편
   - `@ControllerAdvice`를 활용한 전역 예외 처리(Global Exception Handling) 적용
   - 대출 신청 내역 고객 ID 검색 기능 구현
