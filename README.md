@@ -1,18 +1,39 @@
 # 🏦 LoanCore - 여신(대출) 시스템 프로젝트
 
-금융권 여신 업무를 모사하여 대출 신청, 심사, 승인 및 기표 과정을 관리하는 웹 애플리케이션 토이 프로젝트입니다.
+금융권의 핵심 업무인 여신(대출) 프로세스를 모사하여 대출 신청부터 심사, 관리자 승인 및 증빙 서류 관리까지 전 과정을 처리하는 **Spring 기반 백엔드 시스템**입니다.
 
 ## 🛠️ Tech Stack
-* **Backend**: Java, Spring MVC, MyBatis
-* **Frontend**: JSP, HTML/CSS, JavaScript (추후 jQuery 적용 예정)
-* **Server**: Apache Tomcat 9.0
-* **Database**: Oracle / PostgreSQL (예정)
-* **Build Tool**: Maven
 
-## 🚀 주요 기능 (구현 예정 포함)
-* **대출 신청**: 고객 정보 및 신청 금액 입력
-* **대출 심사**: 여신 심사 로직을 통한 승인/거절 처리
-* **상태 관리**: 대출 상태(심사 중, 승인, 기표 대기 등) 추적 및 관리
+* **Backend:** Java 11, **Spring MVC 5.x**, **MyBatis 3.5**, **AspectJ (AOP)**
+* **Frontend:** JSP (JSTL), **Bootstrap 5**, JavaScript (**Fetch API / Ajax**)
+* **Database:** **H2 Database (In-Memory)**, Spring JDBC
+* **Security:** **SHA-256 Hash Algorithm**, Session-based Interceptor
+* **Libraries:** **Apache POI (Excel)**, **Apache Commons FileUpload**, **Logback (SLF4J)**, Hibernate Validator
+* **Build Tool:** Maven
+* **Server:** Apache Tomcat 9.0
+
+---
+
+## 🚀 주요 구현 기능
+
+### 1. 대출 프로세스 및 CRUD
+* **대출 신청:** 고객 정보 및 신청 금액 입력 (**Server-side Validation** 적용)
+* **심사 로직:** 금액 기준 자동 승인/거절 처리 및 상태 관리
+* **증빙 서류 관리:** MultipartResolver를 이용한 **파일 업로드 및 다운로드** 기능 구현
+* **목록 조회:** MyBatis를 이용한 **페이징(Pagination)** 및 **동적 쿼리(Dynamic SQL)** 검색 필터
+
+### 2. 관리자 및 보안 (Admin & Security)
+* **관리자 인증:** **Spring Interceptor**를 활용한 비로그인 사용자 접근 제어
+* **비밀번호 보안:** **SHA-256 단방향 암호화** 적용으로 관리자 계정 정보 보호
+* **데이터 추출:** Apache POI를 활용한 전체 신청 내역 **Excel 다운로드** (.xlsx)
+
+### 3. 시스템 운영 및 자동화
+* **자동 로깅:** **Spring AOP**를 활용한 서비스 메서드 실행 시간 추적 및 **Logback** 기록 (Console/File)
+* **배치 처리:** **Spring Task(@Scheduled)**를 이용한 1분 단위 심사 대기 건 자동 모니터링
+* **트랜잭션:** `@Transactional` 적용으로 데이터 무결성 및 ACID 원칙 보장
+* **성능 최적화:** 검색 빈도가 높은 컬럼에 **DB Index** 생성 및 검색 쿼리 최적화
+
+---
 
 ### 📅 개발 진행 내역
 
@@ -60,3 +81,11 @@
   - Maven 프로젝트 생성 (`pom.xml` 구성)
   - `LoanApplication`, `LoanReviewService` 등 핵심 비즈니스 로직 클래스 작성
   - 콘솔 환경에서의 대출 심사 로직 테스트 완료
+  
+---
+
+### 💡 실행 및 확인 방법
+1.  Eclipse/IntelliJ에서 **Maven Project**로 Import
+2.  `pom.xml` 의존성 업데이트 (Maven Update)
+3.  Tomcat 9.0 서버 연동 후 실행
+4.  관리자 계정: `admin` / 비밀번호: `admin123`
