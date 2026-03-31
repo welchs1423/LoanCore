@@ -15,7 +15,7 @@ public class LoanApplication {
     @NotNull(message = "신청 금액을 입력해주세요.")
     @Min(value = 10000, message = "대출 신청 금액은 최소 10,000원 이상이어야 합니다.")
     private BigDecimal amount;
-
+    private String fileName;
     private String statusCode;
 
     public LoanApplication() {
@@ -64,4 +64,7 @@ public class LoanApplication {
     public String getApplicationInfo() {
         return "Application ID: " + applicationId + ", Customer ID: " + customerId + ", Amount: " + amount + ", Status: " + statusCode;
     }
+    
+    public String getFileName() { return fileName; }
+    public void setFileName(String fileName) { this.fileName = fileName; }
 }

@@ -17,6 +17,7 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-01**
+  - Spring MultipartResolver 및 Apache POI를 이용한 증빙 서류 파일 업로드 기능 구현
   - Apache POI 라이브러리를 활용한 대출 신청 내역 엑셀(Excel) 다운로드 기능 구현
   - Spring Task(`@Scheduled`)를 활용한 심사 대기(PENDING) 건 자동 모니터링 배치 스케줄러 구현
   - Spring Validation(`@Valid`)을 활용한 서버 사이드 폼 데이터 유효성 검사 적용

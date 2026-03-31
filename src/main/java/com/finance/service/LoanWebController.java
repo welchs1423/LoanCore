@@ -12,6 +12,8 @@ import javax.validation.Valid;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.File;
 import java.io.IOException;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -118,6 +120,39 @@ public class LoanWebController {
                                     @RequestParam("amount") BigDecimal amount) {
         reviewService.updateApplication(id, customerId, amount);
         return "redirect:/detail?id=" + id;
+    }
+    
+    @PostMapping("/submit-loan")
+    public String submitLoan(@Valid @ModelAttribute LoanApplication app,
+                             BindingResult bindingResult,
+                             @RequestParam("uploadFile") MultipartFile uploadFile,
+                             Model model) throws IOException {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("errors", bindingResult.getAllErrors());
+            return "apply";
+        }
+
+        // 파일 업로드 처리
+        if (!uploadFile.isEmpty()) {
+            String uploadFolder = "C:/upload_test/";
+            File saveDir = new File(uploadFolder);
+            if (!saveDir.exists()) saveDir.mkdirs(); // 폴더가 없으면 생성
+
+            String fileName = System.currentTimeMillis() + "_" + uploadFile.getOriginalFilename();
+            uploadFile.transferTo(new File(uploadFolder + fileName));
+            app.setFileName(fileName); // DB 저장용 파일명 세팅
+        }
+
+        app.setApplicationId("APP-" + System.currentTimeMillis());
+        reviewService.reviewLoan(app);
+
+        model.addAttribute("customerId", app.getCustomerId());
+        model.addAttribute("amount", app.getAmount());
+        model.addAttribute("statusCode", app.getStatusCode());
+        model.addAttribute("fileName", app.getFileName());
+
+        return "result";
     }
 
     @GetMapping("/excel")
