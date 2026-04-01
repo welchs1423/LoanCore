@@ -41,6 +41,7 @@
 
 ### 📅 개발 진행 내역
 * **2026-04-02**
+  - Springfox Swagger 2 연동을 통한 B2B Open API 문서 자동화 및 인터랙티브 테스트 환경(Swagger UI) 구축
   - Spring HandlerInterceptor를 활용한 JWT 기반 B2B 제휴사 전용 Open API(Stateless) 인증 및 인가 라우팅 구현
   - FontAwesome 및 Bootstrap Toast UI 적용, 대시보드 애니메이션 처리를 통한 프론트엔드 UX 고도화
   - jjwt 라이브러리를 활용한 JWT(JSON Web Token) 발급 API 구축 (Stateless 인증 기반 마련)

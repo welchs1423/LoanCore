@@ -72,6 +72,10 @@
     </bean>
 
     <mvc:annotation-driven />
+    
+    <mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/"/>
+    <mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>
+
     <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/list" />
@@ -81,6 +85,7 @@
         </mvc:interceptor>
         <mvc:interceptor>
             <mvc:mapping path="/api/v1/**" />
+            <mvc:exclude-mapping path="/api/v1/api-docs"/>
             <bean class="com.finance.config.JwtAuthInterceptor" />
         </mvc:interceptor>
     </mvc:interceptors>
