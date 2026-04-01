@@ -42,6 +42,8 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-02**
+  - LoanWebController 내 /audit 엔드포인트 추가하여 감사 로그 조회 로직 연결
+  - audit.jsp 신규 생성 및 JSTL을 활용한 시스템 감사 로그(Audit Log) 모니터링 대시보드 UI 연동
   - Fetch API(Ajax)를 활용한 대출 심사 비동기 메모(LoanMemo) 시스템 연동
   - @RestController 역할의 @ResponseBody 메서드를 LoanWebController에 추가하여 RESTful 메모 API(GET/POST) 구현
   - MyBatis @Insert, @Select 어노테이션 기반의 LoanMemoMapper 구축 및 H2 스키마(LOAN_MEMO) 동기화

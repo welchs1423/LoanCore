@@ -67,4 +67,10 @@ public class LoanWebController {
         reviewService.addMemo(memo);
         return "success";
     }
+    
+    @GetMapping("/audit")
+    public String auditLogDashboard(Model model) {
+        model.addAttribute("auditLogs", reviewService.getRecentAuditLogs());
+        return "audit";
+    }
 }
