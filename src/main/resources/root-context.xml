@@ -79,6 +79,10 @@
             <mvc:mapping path="/excel" />
             <bean class="com.finance.config.AdminAuthInterceptor" />
         </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/api/v1/**" />
+            <bean class="com.finance.config.JwtAuthInterceptor" />
+        </mvc:interceptor>
     </mvc:interceptors>
 
 </beans>
