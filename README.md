@@ -41,13 +41,10 @@
 
 ### 📅 개발 진행 내역
 
-* **[2026-04-02] Redis Cache Integration & Port Conflict Resolution**
-  * Local Port 6379 Docker Mapping Configuration
-  * Resolved Port Conflict (Terminated ghost process PID)
-  * RedisConfig Java Configuration (JSON Serialization implemented)
-  * Applied @Cacheable to LoanReviewService
-
 * **2026-04-02**
+  - Spring Cache(@CacheEvict)를 적용하여 대출 신청 및 승인 상태 변경 시 Redis 캐시 즉시 무효화(동기화) 처리
+  - LoanWebController 내 대출 상세 조회(/detail/{id}) 및 관리자 승인(/approve) 엔드포인트 로직 구현
+  - JSP(index, detail) 연동을 통한 대출 상세 뷰 진입 및 관리자 승인 기능 UI 구현
   - [Fix] LoanMapper 내 페이징, 동적 검색, 벌크 업데이트 메서드 구현 완료
   - [Fix] MyBatis @Select <script> 태그를 이용한 복합 쿼리 적용
   - [Clean] 서비스-매퍼 간 파라미터 타입 불일치(Update) 해결
