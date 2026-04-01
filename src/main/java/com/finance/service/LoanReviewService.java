@@ -3,6 +3,7 @@ package com.finance.service;
 import com.finance.annotation.LogExecutionTime;
 import com.finance.domain.LoanApplication;
 import com.finance.mapper.LoanMapper;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -40,7 +41,10 @@ public class LoanReviewService {
         }
         
         loanMapper.insertApplication(app);
-        notificationService.sendStatusChangeNotification(app.getCustomerId(), app.getStatusCode());
+        
+        // MDC에서 traceId를 가져와 전달
+        String traceId = MDC.get("traceId");
+        notificationService.sendStatusChangeNotification(app.getCustomerId(), app.getStatusCode(), traceId);
         
         return resultMessage;
     }
@@ -92,10 +96,12 @@ public class LoanReviewService {
     public void updateStatusBulk(String status, List<String> ids) {
         loanMapper.updateApplicationStatusBulk(status, ids);
         
+        // MDC에서 traceId를 가져와 전달
+        String traceId = MDC.get("traceId");
         for (String id : ids) {
             LoanApplication app = loanMapper.selectApplicationById(id);
             if (app != null) {
-                notificationService.sendStatusChangeNotification(app.getCustomerId(), status);
+                notificationService.sendStatusChangeNotification(app.getCustomerId(), status, traceId);
             }
         }
     }

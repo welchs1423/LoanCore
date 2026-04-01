@@ -3,15 +3,22 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>LoanCore - 페이지를 찾을 수 없습니다</title>
+    <title>페이지를 찾을 수 없습니다 - LoanCore</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background-color: #f8f9fa; }
+        .error-container { text-align: center; margin-top: 100px; }
+        .error-code { font-size: 8rem; font-weight: bold; color: #dc3545; }
+        .error-message { font-size: 1.5rem; color: #6c757d; margin-bottom: 30px; }
+    </style>
 </head>
-<body class="bg-light d-flex align-items-center vh-100">
-    <div class="container text-center">
-        <h1 class="display-1 fw-bold text-secondary">404</h1>
-        <h2 class="mb-4">요청하신 페이지를 찾을 수 없습니다.</h2>
-        <p class="text-muted mb-4">입력하신 주소가 정확한지 다시 한번 확인해 주시기 바랍니다.</p>
-        <a href="${pageContext.request.contextPath}/" class="btn btn-primary">메인으로 돌아가기</a>
+<body>
+    <div class="container error-container">
+        <div class="error-code">404</div>
+        <div class="error-message">요청하신 페이지를 찾을 수 없습니다.</div>
+        <p class="mb-4">입력하신 주소가 정확한지 다시 한번 확인해 주세요.</p>
+        <a href="${pageContext.request.contextPath}/" class="btn btn-primary btn-lg"><i class="fa-solid fa-house"></i> 메인으로 돌아가기</a>
     </div>
 </body>
 </html>

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "B2B 대출 조회 API", description = "제휴사용 대출 정보 조회 서비스")
+@Api(tags = {"B2B 대출 조회 API - 제휴사용 대출 정보 조회 서비스"})
 @RestController
 @RequestMapping("/api/v1")
 public class OpenApiController {

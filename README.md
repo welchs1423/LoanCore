@@ -41,6 +41,8 @@
 
 ### 📅 개발 진행 내역
 * **2026-04-02**
+  - 사용자 친화적인 에러 페이지(404, 500) UI 구현 및 web.xml 연동
+  - Spring Security Crypto를 활용한 BCrypt 암호화 도입 및 세션 보안 정책 강화
   - Slf4j MDC(Mapped Diagnostic Context)를 활용한 요청별 고유 추적 ID(Trace ID) 로깅 시스템 구축
   - 커스텀 어노테이션(@LogExecutionTime) 및 Spring AOP 기반의 서비스 메서드 실행 시간 측정 프로파일러 구축
   - Springfox Swagger 2 연동을 통한 B2B Open API 문서 자동화 및 인터랙티브 테스트 환경(Swagger UI) 구축
