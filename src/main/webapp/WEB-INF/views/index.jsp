@@ -115,12 +115,7 @@
                     plugins: {
                         legend: {
                             position: 'bottom',
-                            labels: {
-                                generateLabels: function(chart) {
-                                    if (total === 0) return [];
-                                    return Chart.defaults.plugins.legend.labels.generateLabels(chart);
-                                }
-                            }
+                            display: total > 0 // 버전 호환성을 위해 심플하게 수정된 부분
                         },
                         tooltip: {
                             callbacks: {
