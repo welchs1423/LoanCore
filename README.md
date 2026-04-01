@@ -41,6 +41,9 @@
 
 ### 📅 개발 진행 내역
 * **2026-04-02**
+  - Hibernate Validator를 활용한 도메인 모델(@Valid, @NotBlank 등) 데이터 유효성 검증 로직 구현
+  - Spring form 태그를 활용한 JSP 입력 폼 에러 메시지 바인딩 및 출력 처리
+  - @ControllerAdvice 내 BindException 처리 핸들러 추가로 데이터 검증 실패 예외 상황 제어
   - 사용자 친화적인 에러 페이지(404, 500) UI 구현 및 web.xml 연동
   - Spring Security Crypto를 활용한 BCrypt 암호화 도입 및 세션 보안 정책 강화
   - Slf4j MDC(Mapped Diagnostic Context)를 활용한 요청별 고유 추적 ID(Trace ID) 로깅 시스템 구축

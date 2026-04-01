@@ -2,20 +2,29 @@ package com.finance.domain;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 public class LoanApplication {
-    private String applicationId;
+	private String applicationId;
+
     @NotBlank(message = "고객 ID는 필수 입력값입니다.")
+    @Size(min = 4, max = 20, message = "고객 ID는 4자 이상 20자 이하로 입력해야 합니다.")
     private String customerId;
+
     @NotNull(message = "신청 금액을 입력해주세요.")
     @Min(value = 10000, message = "대출 신청 금액은 최소 10,000원 이상이어야 합니다.")
     private BigDecimal amount;
+
     private String statusCode;
     private String fileName;
+
+    @NotBlank(message = "주소는 필수 입력값입니다.")
     private String address;
+
     private String delYn;
     private Timestamp appliedAt;
 

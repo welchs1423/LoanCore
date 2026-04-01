@@ -58,9 +58,11 @@ public class LoanWebController {
                              @RequestParam("uploadFile") MultipartFile uploadFile,
                              Model model) throws IOException {
 
+    	// 1. 유효성 검사 실패 시 처리
         if (bindingResult.hasErrors()) {
+            // 에러 메시지를 모델에 담아 다시 입력 폼으로 이동
             model.addAttribute("errors", bindingResult.getAllErrors());
-            return "apply";
+            return "apply"; // apply.jsp로 돌아감
         }
 
         if (!uploadFile.isEmpty()) {
