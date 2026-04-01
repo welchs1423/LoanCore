@@ -3,72 +3,78 @@ package com.finance.service;
 import com.finance.domain.LoanApplication;
 import com.finance.mapper.LoanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.math.BigDecimal;
 import java.util.List;
 
 @Service
-@Transactional
 public class LoanReviewService {
 
     @Autowired
     private LoanMapper loanMapper;
 
+    // 데이터가 추가되므로 기존 캐시 초기화
+    @Transactional
+    @CacheEvict(value = "loanCache", allEntries = true)
     public String reviewLoan(LoanApplication app) {
-        String resultMessage;
-        
-        if (app.getAmount().compareTo(new BigDecimal("100000000")) > 0) {
+        BigDecimal amount = app.getAmount();
+        if (amount.compareTo(new BigDecimal("100000000")) > 0) {
             app.setStatusCode("REJECT");
-            resultMessage = "거절: 1억원 초과 대출은 지점 방문이 필요합니다.";
-        } else {
+            loanMapper.insertApplication(app);
+            return "1억원을 초과하는 대출은 자동 거절됩니다.";
+        } else if (amount.compareTo(new BigDecimal("50000000")) <= 0) {
             app.setStatusCode("APPROVE");
-            resultMessage = "승인: 기표 대기 상태로 변경되었습니다.";
+            loanMapper.insertApplication(app);
+            return "5천만원 이하 대출이 자동 승인되었습니다.";
+        } else {
+            app.setStatusCode("PENDING");
+            loanMapper.insertApplication(app);
+            return "대출 심사가 접수되어 대기 중입니다.";
         }
-        
-        loanMapper.insertApplication(app);
-        
-        return resultMessage;
     }
 
-    @Transactional(readOnly = true)
     public List<LoanApplication> getAllApplications() {
         return loanMapper.selectAllApplications();
     }
 
-    @Transactional(readOnly = true)
     public LoanApplication getApplicationById(String id) {
         return loanMapper.selectApplicationById(id);
     }
 
-    public void deleteApplication(String id) {
-        loanMapper.deleteApplication(id);
-    }
-
-    public void updateApplication(String id, String customerId, BigDecimal amount) {
-        LoanApplication app = new LoanApplication(id, customerId, amount);
-        
-        if (amount.compareTo(new BigDecimal("100000000")) > 0) {
-            app.setStatusCode("REJECT");
-        } else {
-            app.setStatusCode("APPROVE");
-        }
-        
-        loanMapper.updateApplication(app);
-    }
-
-    @Transactional(readOnly = true)
     public List<LoanApplication> searchApplications(String keyword, String status) {
         return loanMapper.searchApplicationsDynamic(keyword, status);
     }
 
-    @Transactional(readOnly = true)
-    public List<LoanApplication> getApplicationsWithPaging(int page, int size) {
-        int offset = (page - 1) * size;
-        return loanMapper.selectApplicationsWithPaging(offset, size);
+    // 데이터가 수정되므로 기존 캐시 초기화
+    @Transactional
+    @CacheEvict(value = "loanCache", allEntries = true)
+    public void updateApplication(String id, String customerId, BigDecimal amount) {
+        LoanApplication app = loanMapper.selectApplicationById(id);
+        if (app != null) {
+            app.setCustomerId(customerId);
+            app.setAmount(amount);
+            loanMapper.updateApplication(app);
+        }
     }
 
-    @Transactional(readOnly = true)
+    // 데이터가 삭제되므로 기존 캐시 초기화
+    @Transactional
+    @CacheEvict(value = "loanCache", allEntries = true)
+    public void deleteApplication(String id) {
+        loanMapper.deleteApplication(id);
+    }
+
+    public List<LoanApplication> getApplicationsWithPaging(int page, int pageSize) {
+        int offset = (page - 1) * pageSize;
+        return loanMapper.selectApplicationsWithPaging(offset, pageSize);
+    }
+
+    // ★ 쿼리 결과를 메모리에 캐싱하여 DB 부하 최소화 ★
+    @Cacheable(value = "loanCache")
     public int getTotalCount() {
         return loanMapper.countAllApplications();
     }
