@@ -2,46 +2,47 @@
 
 금융권의 핵심 업무인 여신(대출) 프로세스를 모사하여 대출 신청부터 심사, 관리자 승인 및 증빙 서류 관리까지 전 과정을 처리하는 **Spring 기반 백엔드 시스템**입니다.
 
-## 🛠️ Tech Stack
+### 🛠️ Tech Stack
+- **Backend:** Java 11, Spring MVC 5.x, MyBatis 3.5, AspectJ (AOP), **Spring Cache (Redis / ConcurrentMapCache)**
+- **Frontend:** JSP (JSTL), Bootstrap 5, JavaScript (Fetch API / Ajax), Chart.js 4.x, html2pdf.js
+- **Database:** H2 Database (In-Memory), Spring JDBC, HikariCP (Connection Pool)
+- **Security:** SHA-256 Hash Algorithm, Session-based Interceptor
+- **Libraries:** Apache POI (Excel), Zxing 3.5 (QR Code), Log4jdbc-log4j2, Logback (SLF4J), Hibernate Validator
+- **External API:** Daum/Kakao Postcode API 연동
+- **Build Tool:** Maven
+- **Server:** Apache Tomcat 9.0
 
-* **Backend:** Java 11, **Spring MVC 5.x**, **MyBatis 3.5**, AspectJ (AOP), **Spring Cache (ConcurrentMapCache)**
-* **Frontend:** JSP (JSTL), **Bootstrap 5**, JavaScript (**Fetch API / Ajax**), **Chart.js 4.x**, **html2pdf.js**
-* **Database:** **H2 Database (In-Memory)**, Spring JDBC, **HikariCP (Connection Pool)**
-* **Security:** **SHA-256 Hash Algorithm**, Session-based Interceptor
-* **Libraries:** **Apache POI (Excel)**, **Zxing 3.5 (QR Code)**, **Log4jdbc-log4j2**, **Logback (SLF4J)**, Hibernate Validator
-* **External API:** **Daum/Kakao Postcode API** 연동
-* **Build Tool:** Maven
-* **Server:** Apache Tomcat 9.0
+### 🚀 주요 구현 기능
 
----
+#### 1. 대출 프로세스 및 CRUD
+- **대출 신청 및 주소 검색:** Daum 우편번호 API를 연동하여 정확한 거주지 정보를 입력받고 데이터 바인딩 처리
+- **심사 로직:** 신청 금액 기준 자동 승인/거절 처리 및 상태 관리
+- **심사 메모 시스템:** Fetch API(Ajax)를 활용하여 상세 페이지 내 비동기식 실시간 메모(댓글) 기능 구현
+- **증빙 서류 관리:** MultipartResolver를 이용한 서류 업로드 및 **FileDownloadController를 통한 다운로드 스트림** 구현
 
-## 🚀 주요 구현 기능
+#### 2. 관리자 및 보안 (Admin & Security)
+- **데이터 통합 관리:** Pagination 및 Dynamic SQL을 활용한 조건별 검색 필터링 목록 조회
+- **상태 일괄 변경:** MyBatis `<foreach>` 태그를 활용한 다중 선택 건의 상태 일괄 업데이트(Bulk Update) 구현
+- **관리자 인증:** **AdminInterceptor를 활용한 세션 기반 접근 제어** 및 CryptoUtil 기반의 **SHA-256 비밀번호 암호화** 로그인
+- **실시간 모니터링:** **@Scheduled 기반의 LoanScheduler**를 통해 심사 대기 건수 주기적 추적 및 로그 기록
 
-### 1. 대출 프로세스 및 CRUD
-* **대출 신청 및 주소 검색:** Daum 우편번호 API를 연동하여 정확한 거주지 정보를 입력받고 데이터 바인딩 처리
-* **심사 로직:** 신청 금액 기준 자동 승인/거절 처리 및 상태 관리
-* **심사 메모 시스템:** Fetch API(Ajax)를 활용하여 상세 페이지 내 비동기식 실시간 메모(댓글) 기능 구현
-* **증빙 서류 관리:** MultipartResolver를 이용한 증빙 서류 파일 업로드 및 서버 측 다운로드 스트림 구현
-
-### 2. 관리자 및 보안 (Admin & Security)
-* **데이터 통합 관리:** **Pagination** 및 **Dynamic SQL**을 활용한 조건별 검색 필터링 목록 조회
-* **상태 일괄 변경:** MyBatis `<foreach>` 태그를 활용한 다중 선택 건의 상태 일괄 업데이트(Bulk Update) 구현
-* **데이터 영속성 보호:** **Soft Delete(논리 삭제)** 아키텍처를 도입하여 `DEL_YN` 상태값 관리를 통한 무결성 보장
-* **관리자 인증:** **Spring Interceptor**를 활용한 비로그인 사용자 접근 제어 및 **SHA-256** 암호화 로그인
-
-### 3. 시스템 운영 및 성능 최적화
-* **통계 시각화 대시보드:** Chart.js를 활용하여 심사 현황을 가시화한 인터랙티브 도넛 차트 대시보드 구현
-* **조회 성능 최적화:** **Spring Cache(@Cacheable)** 적용으로 중복 통계 쿼리의 DB 부하 최소화 및 응답 속도 개선
-* **전자문서 및 QR 발급:** Zxing을 이용한 접수증 **QR 코드 생성** 및 html2pdf 기반의 **승인 확인서 PDF** 발급 기능
-* **데이터 추출 및 입항:** Apache POI를 활용한 대출 신청 내역 **Excel 다운로드** 및 **일괄 업로드(Bulk Insert)**
-* **견고한 예외 처리:** `@ControllerAdvice` 기반의 **Global Exception Handler** 구축으로 시스템 안정성 확보
-* **로깅 및 모니터링:** **Spring AOP** 서비스 추적, **Log4jdbc**를 이용한 SQL 가시화 및 **Logback** 기록 관리
+#### 3. 시스템 운영 및 성능 최적화
+- **통계 시각화 대시보드:** Chart.js를 활용하여 심사 현황을 가시화한 인터랙티브 도넛 차트 대시보드 구현
+- **조회 성능 최적화:** **Spring Cache(@Cacheable) 및 Redis 연동**으로 중복 통계 쿼리의 DB 부하 최소화 및 응답 속도 개선
+- **전자문서 및 QR 발급:** Zxing을 이용한 접수증 **QR 코드 생성** 및 html2pdf 기반의 **승인 확인서 PDF** 발급 기능
+- **데이터 추출:** Apache POI를 활용한 대출 신청 내역 **Excel 다운로드** 기능 구현
+- **견고한 예외 처리:** @ControllerAdvice 기반의 Global Exception Handler 구축으로 시스템 안정성 확보
+- **로깅 및 모니터링:** Spring AOP 서비스 추적, Log4jdbc를 이용한 SQL 가시화 및 Logback 기록 관리
 
 ---
 
 ### 📅 개발 진행 내역
 
 * **2026-04-02**
+  - [Fix] 프로젝트 구조에 맞지 않는 Java Config 제거 및 XML 기반 설정(Interceptor/Task)으로 회귀
+  - [Feat] SHA-256 암호화 유틸(CryptoUtil) 도입 및 세션 기반 관리자 인증 로직 구현
+  - [Feat] Spring Task(<task:annotation-driven>)를 활용한 10초 주기 심사 대기 건 모니터링 배치 구축
+  - [Feat] Zxing 기반 QR 코드 생성 API 및 html2pdf.js 활용 승인 확인서 PDF 다운로드 기능 연동
   - SHA-256 해시 알고리즘(CryptoUtil)을 적용한 관리자 인증 및 암호화 로직 구현
   - Spring HandlerInterceptor(AdminInterceptor)를 활용한 세션 기반 미인증 사용자 대시보드 접근 차단(Routing) 적용
   - WebMvcConfigurer를 통한 전역 인터셉터 패턴 등록 및 로그인 페이지(login.jsp) 컨트롤러 구축
