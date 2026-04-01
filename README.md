@@ -41,6 +41,9 @@
 
 ### 📅 개발 진행 내역
 * **2026-04-02**
+  - [Fix] AuditLog 도메인 필드명 불일치 및 기본 생성자 누락 해결
+  - [Fix] pom.xml 의존성(Jackson, Hibernate Validator) 중복 제거 및 버전 정규화
+  - Lombok 의존성 제거 후 순수 자바 코드로 도메인 모델(Getter/Setter) 재구현
   - [Fix] AuditLogMapper 파라미터 타입 불일치 및 pom.xml 라이브러리 버전 중복 오류 해결
   - AOP 기반 감사 로그(Audit Log) 저장 로직 객체 지향 방식으로 리팩토링
   - [Fix] root-context.xml 내 Redis 포트 번호 파싱 에러(NumberFormatException) 해결
