@@ -30,7 +30,8 @@ public class LoanRestController {
 
     @GetMapping("/check-customer")
     public Map<String, Object> checkCustomer(@RequestParam("customerId") String customerId) {
-        List<LoanApplication> existingApps = reviewService.searchApplications(customerId, null);
+        // 파라미터 4개로 수정 (startDate, endDate에 null 전달)
+        List<LoanApplication> existingApps = reviewService.searchApplications(customerId, null, null, null);
         boolean hasPending = false;
         for (LoanApplication app : existingApps) {
             if ("PENDING".equals(app.getStatusCode()) || "APPROVE".equals(app.getStatusCode())) {
