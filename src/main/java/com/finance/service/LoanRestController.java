@@ -1,5 +1,22 @@
 package com.finance.service;
 
+import java.io.ByteArrayOutputStream;
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.finance.config.JwtProvider;
 import com.finance.domain.LoanApplication;
 import com.finance.domain.LoanMemo;
@@ -8,16 +25,6 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpSession;
-import java.io.ByteArrayOutputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -105,5 +112,21 @@ public class LoanRestController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
+    }
+    
+    @GetMapping("/check-limit")
+    public Map<String, Object> checkLoanLimit(@RequestParam("amount") BigDecimal amount) {
+        Map<String, Object> response = new HashMap<>();
+        // 예시: 최대 대출 한도를 1억 원으로 설정
+        BigDecimal maxLimit = new BigDecimal("100000000");
+
+        if (amount.compareTo(maxLimit) > 0) {
+            response.put("isAvailable", false);
+            response.put("message", "최대 대출 한도(1억 원)를 초과했습니다.");
+        } else {
+            response.put("isAvailable", true);
+            response.put("message", "대출 신청 가능한 금액입니다.");
+        }
+        return response;
     }
 }

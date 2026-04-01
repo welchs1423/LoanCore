@@ -41,6 +41,8 @@
 
 ### 📅 개발 진행 내역
 * **2026-04-02**
+  - Fetch API(Ajax)를 활용한 실시간 대출 한도 조회 기능 구현
+  - 한도 초과 시 신청 버튼 비활성화 등 동적 UI 제어 적용
   - Hibernate Validator를 활용한 도메인 모델(@Valid, @NotBlank 등) 데이터 유효성 검증 로직 구현
   - Spring form 태그를 활용한 JSP 입력 폼 에러 메시지 바인딩 및 출력 처리
   - @ControllerAdvice 내 BindException 처리 핸들러 추가로 데이터 검증 실패 예외 상황 제어
