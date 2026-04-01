@@ -1,19 +1,14 @@
 package com.finance.mapper;
 
+import com.finance.domain.AuditLog;
+import org.apache.ibatis.annotations.*;
 import java.util.List;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
-import org.springframework.stereotype.Repository;
-
-import com.finance.domain.AuditLog;
-
-@Repository
+@Mapper
 public interface AuditLogMapper {
-    // 필드명을 actionName, targetId, actionDetail로 변경하여 매핑
-    @Insert("INSERT INTO audit_logs (action, target, actor) VALUES (#{actionName}, #{targetId}, #{actionDetail})")
+    @Insert("INSERT INTO audit_logs (action_name, target_id, action_detail) VALUES (#{actionName}, #{targetId}, #{actionDetail})")
     void insertLog(AuditLog log);
-    
-    @Select("SELECT actionName, targetId, actionDetail FROM audit_logs ORDER BY id DESC LIMIT 50")
+
+    @Select("SELECT action_name as actionName, target_id as targetId, action_detail as actionDetail FROM audit_logs ORDER BY id DESC LIMIT 50")
     List<AuditLog> getRecentLogs();
 }

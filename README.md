@@ -42,6 +42,9 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-02**
+  - [Sync] 누락된 도메인 모델 및 매퍼(AuditLog, LoanMemo, LoanMapper) 원격 저장소 동기화
+  - [Sync] DB 스키마(schema.sql), 로깅(logback.xml), 웹 설정(web.xml) 등 환경 설정 파일 최신화 적용
+  - [Sync] 대출 신청 화면(apply.jsp) UI 개선 사항 반영
   - [Fix] 서비스 계층(LoanReviewService) 매퍼 메서드명 불일치 컴파일 에러 복구
   - [Clean] RedisConfig 내 JedisConnectionFactory Deprecated 경고 해결 및 최신 설정(RedisStandaloneConfiguration) 적용
   - LoanWebController 내 /audit 엔드포인트 추가하여 감사 로그 조회 로직 연결
