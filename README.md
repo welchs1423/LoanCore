@@ -38,6 +38,7 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-01**
+  - web.xml 설정을 통한 HTTP 상태 코드(404, 500) 사용자 정의 에러 페이지(Custom Error Page) 구현
   - JUnit 5 및 Spring TestContext Framework를 활용한 서비스 계층(Service Layer) 단위 테스트(Unit Test) 환경 구축
   - DB 인덱싱(IDX_LOAN_CUSTOMER_ID) 적용 및 검색 쿼리 성능 최적화
   - Java MessageDigest를 활용한 SHA-256 단방향 암호화(해시) 로그인 로직 구현
