@@ -41,6 +41,11 @@
 
 ### 📅 개발 진행 내역
 * **2026-04-02**
+  - Spring Legacy 환경에 맞춘 Redis 기반 글로벌 캐싱 시스템 도입 (Spring Data Redis, Jedis 연동)
+  - RedisCacheManager 설정 및 GenericJackson2JsonRedisSerializer를 활용한 객체 직렬화 적용
+  - FileSystemResource를 활용한 증빙 서류 다운로드 컨트롤러(FileDownloadController) 추가
+  - C:/upload 경로 기반의 파일 업로드/다운로드 프로세스 동기화 및 유효성 검사 강화
+  - 파일 작업 시 MDC Trace ID 로깅 연동을 통한 추적성 확보
   - Logback RollingFileAppender를 적용하여 일자별 로그 파일 자동 생성 및 보관(30일) 정책 설정
   - Log4jdbc 불필요한 로그(audit, resultset) OFF 처리 및 쿼리 로깅 가독성 개선
   - Fetch API(Ajax)를 활용한 실시간 대출 한도 조회 기능 구현

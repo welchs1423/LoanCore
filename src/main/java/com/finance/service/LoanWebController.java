@@ -1,5 +1,25 @@
 package com.finance.service;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.math.BigDecimal;
+import java.net.URLEncoder;
+import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,21 +29,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import javax.validation.Valid;
-import javax.servlet.http.HttpServletResponse;
-import java.math.BigDecimal;
-import java.util.List;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.URLEncoder;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import com.finance.domain.LoanApplication;
 
 @Controller
@@ -31,6 +37,8 @@ public class LoanWebController {
 
     @Autowired
     private LoanReviewService reviewService;
+    
+    private static final Logger logger = LoggerFactory.getLogger(LoanWebController.class);
 
     @GetMapping("/")
     public String index(Model model) {
@@ -53,36 +61,33 @@ public class LoanWebController {
     }
 
     @PostMapping("/submit-loan")
-    public String submitLoan(@Valid @ModelAttribute LoanApplication app,
+    public String submitLoan(@Valid @ModelAttribute("app") LoanApplication app,
                              BindingResult bindingResult,
                              @RequestParam("uploadFile") MultipartFile uploadFile,
                              Model model) throws IOException {
 
-    	// 1. 유효성 검사 실패 시 처리
         if (bindingResult.hasErrors()) {
-            // 에러 메시지를 모델에 담아 다시 입력 폼으로 이동
             model.addAttribute("errors", bindingResult.getAllErrors());
-            return "apply"; // apply.jsp로 돌아감
+            return "apply";
         }
 
         if (!uploadFile.isEmpty()) {
-            String uploadFolder = "C:/upload_test/";
-            File saveDir = new File(uploadFolder);
-            if (!saveDir.exists()) saveDir.mkdirs();
-
-            String fileName = System.currentTimeMillis() + "_" + uploadFile.getOriginalFilename();
-            uploadFile.transferTo(new File(uploadFolder + fileName));
+            String fileName = uploadFile.getOriginalFilename();
+            File saveFile = new File("C:/upload", fileName);
+            
+            // 디렉토리가 없으면 생성
+            if (!saveFile.getParentFile().exists()) {
+                saveFile.getParentFile().mkdirs();
+            }
+            
+            uploadFile.transferTo(saveFile);
             app.setFileName(fileName);
+            logger.info("[{}] 파일 업로드 완료: {}", MDC.get("traceId"), fileName);
         }
 
-        app.setApplicationId("APP-" + System.currentTimeMillis());
-        String reviewResult = reviewService.reviewLoan(app);
-
-        model.addAttribute("customerId", app.getCustomerId());
-        model.addAttribute("amount", app.getAmount());
-        model.addAttribute("statusCode", app.getStatusCode());
-        model.addAttribute("reviewMessage", reviewResult);
-        model.addAttribute("fileName", app.getFileName());
+        String message = reviewService.reviewLoan(app);
+        model.addAttribute("message", message);
+        model.addAttribute("app", app);
 
         return "result";
     }
