@@ -6,8 +6,8 @@
 <mapper namespace="com.finance.mapper.LoanMapper">
 
     <insert id="insertApplication" parameterType="com.finance.domain.LoanApplication">
-        INSERT INTO LOAN_APPLICATION (APPLICATION_ID, CUSTOMER_ID, AMOUNT, STATUS_CODE, FILE_NAME)
-        VALUES (#{applicationId}, #{customerId}, #{amount}, #{statusCode}, #{fileName})
+        INSERT INTO LOAN_APPLICATION (APPLICATION_ID, CUSTOMER_ID, AMOUNT, STATUS_CODE, FILE_NAME, ADDRESS)
+        VALUES (#{applicationId}, #{customerId}, #{amount}, #{statusCode}, #{fileName}, #{address})
     </insert>
 
     <select id="selectAllApplications" resultType="com.finance.domain.LoanApplication">
@@ -16,7 +16,8 @@
             CUSTOMER_ID AS customerId,
             AMOUNT AS amount,
             STATUS_CODE AS statusCode,
-            FILE_NAME AS fileName
+            FILE_NAME AS fileName,
+            ADDRESS AS address
         FROM LOAN_APPLICATION
         ORDER BY APPLICATION_ID DESC
     </select>
@@ -27,7 +28,8 @@
             CUSTOMER_ID AS customerId,
             AMOUNT AS amount,
             STATUS_CODE AS statusCode,
-            FILE_NAME AS fileName
+            FILE_NAME AS fileName,
+            ADDRESS AS address
         FROM LOAN_APPLICATION
         WHERE APPLICATION_ID = #{id}
     </select>
@@ -38,11 +40,12 @@
             CUSTOMER_ID AS customerId,
             AMOUNT AS amount,
             STATUS_CODE AS statusCode,
-            FILE_NAME AS fileName
+            FILE_NAME AS fileName,
+            ADDRESS AS address
         FROM LOAN_APPLICATION
         <where>
             <if test="keyword != null and keyword != ''">
-                CUSTOMER_ID LIKE CONCAT('%', #{keyword}, '%')
+                CUSTOMER_ID LIKE CONCAT(#{keyword}, '%')
             </if>
             <if test="status != null and status != ''">
                 AND STATUS_CODE = #{status}
@@ -70,7 +73,8 @@
             CUSTOMER_ID AS customerId,
             AMOUNT AS amount,
             STATUS_CODE AS statusCode,
-            FILE_NAME AS fileName
+            FILE_NAME AS fileName,
+            ADDRESS AS address
         FROM LOAN_APPLICATION
         ORDER BY APPLICATION_ID DESC
         LIMIT #{limit} OFFSET #{offset}

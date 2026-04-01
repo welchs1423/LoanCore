@@ -15,8 +15,10 @@ public class LoanApplication {
     @NotNull(message = "신청 금액을 입력해주세요.")
     @Min(value = 10000, message = "대출 신청 금액은 최소 10,000원 이상이어야 합니다.")
     private BigDecimal amount;
-    private String fileName;
+
     private String statusCode;
+    private String fileName;
+    private String address; // 주소 필드 추가
 
     public LoanApplication() {
         this.statusCode = "PENDING";
@@ -29,42 +31,25 @@ public class LoanApplication {
         this.statusCode = "PENDING";
     }
 
-    public String getApplicationId() {
-        return applicationId;
-    }
+    public String getApplicationId() { return applicationId; }
+    public void setApplicationId(String applicationId) { this.applicationId = applicationId; }
 
-    public void setApplicationId(String applicationId) {
-        this.applicationId = applicationId;
-    }
+    public String getCustomerId() { return customerId; }
+    public void setCustomerId(String customerId) { this.customerId = customerId; }
 
-    public String getCustomerId() {
-        return customerId;
-    }
+    public BigDecimal getAmount() { return amount; }
+    public void setAmount(BigDecimal amount) { this.amount = amount; }
 
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
-    }
+    public String getStatusCode() { return statusCode; }
+    public void setStatusCode(String statusCode) { this.statusCode = statusCode; }
 
-    public BigDecimal getAmount() {
-        return amount;
-    }
+    public String getFileName() { return fileName; }
+    public void setFileName(String fileName) { this.fileName = fileName; }
 
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
-
-    public String getStatusCode() {
-        return statusCode;
-    }
-
-    public void setStatusCode(String statusCode) {
-        this.statusCode = statusCode;
-    }
+    public String getAddress() { return address; }
+    public void setAddress(String address) { this.address = address; }
 
     public String getApplicationInfo() {
         return "Application ID: " + applicationId + ", Customer ID: " + customerId + ", Amount: " + amount + ", Status: " + statusCode;
     }
-    
-    public String getFileName() { return fileName; }
-    public void setFileName(String fileName) { this.fileName = fileName; }
 }

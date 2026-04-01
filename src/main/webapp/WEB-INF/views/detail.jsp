@@ -27,6 +27,19 @@
                             <td>${app.customerId}</td>
                         </tr>
                         <tr>
+                            <th>거주지 주소</th>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${not empty app.address}">
+                                        ${app.address}
+                                    </c:when>
+                                    <c:otherwise>
+                                        <span class="text-muted">입력된 주소 없음</span>
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
+                        </tr>
+                        <tr>
                             <th>신청 금액</th>
                             <td>${app.amount} 원</td>
                         </tr>
