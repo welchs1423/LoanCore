@@ -43,7 +43,8 @@
 * **2026-04-02**
   - MyBatis 동적 쿼리를 활용한 대출 신청 내역 기간별 동적 검색(Date Range Search) 기능 추가
   - Spring AOP(@AfterReturning)를 활용한 관리자 활동 감사 로그(Audit Log) 자동 기록 아키텍처 구현
-
+  - Spring @Async 및 ThreadPoolTaskExecutor를 활용한 외부 알림 발송 비동기 이벤트 처리 로직 구축
+   
 * **2026-04-01**
   - MyBatis <foreach> 동적 쿼리를 활용한 대출 신청 내역 다중 선택 및 상태 일괄 변경(Bulk Update) 기능 구현
   - @ControllerAdvice를 활용한 Global Exception Handler(전역 예외 처리) 구축 및 로깅 강화

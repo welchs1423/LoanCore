@@ -50,7 +50,6 @@
     </bean>
     <tx:annotation-driven transaction-manager="transactionManager" />
     <aop:aspectj-autoproxy />
-    <task:annotation-driven />
 
     <cache:annotation-driven />
     <bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
@@ -62,6 +61,10 @@
             </set>
         </property>
     </bean>
+
+    <task:annotation-driven executor="asyncExecutor" scheduler="taskScheduler" />
+    <task:executor id="asyncExecutor" pool-size="10-50" queue-capacity="1000" keep-alive="120" />
+    <task:scheduler id="taskScheduler" pool-size="5" />
 
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <property name="maxUploadSize" value="10485760" />

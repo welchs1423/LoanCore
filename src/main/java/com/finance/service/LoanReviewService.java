@@ -17,23 +17,31 @@ public class LoanReviewService {
     @Autowired
     private LoanMapper loanMapper;
 
+    @Autowired
+    private NotificationService notificationService;
+
     @Transactional
     @CacheEvict(value = "loanCache", allEntries = true)
     public String reviewLoan(LoanApplication app) {
         BigDecimal amount = app.getAmount();
+        String resultMessage;
+
         if (amount.compareTo(new BigDecimal("100000000")) > 0) {
             app.setStatusCode("REJECT");
-            loanMapper.insertApplication(app);
-            return "1억원을 초과하는 대출은 자동 거절됩니다.";
+            resultMessage = "1억원을 초과하는 대출은 자동 거절됩니다.";
         } else if (amount.compareTo(new BigDecimal("50000000")) <= 0) {
             app.setStatusCode("APPROVE");
-            loanMapper.insertApplication(app);
-            return "5천만원 이하 대출이 자동 승인되었습니다.";
+            resultMessage = "5천만원 이하 대출이 자동 승인되었습니다.";
         } else {
             app.setStatusCode("PENDING");
-            loanMapper.insertApplication(app);
-            return "대출 심사가 접수되어 대기 중입니다.";
+            resultMessage = "대출 심사가 접수되어 대기 중입니다.";
         }
+        
+        loanMapper.insertApplication(app);
+        
+        notificationService.sendStatusChangeNotification(app.getCustomerId(), app.getStatusCode());
+        
+        return resultMessage;
     }
 
     public List<LoanApplication> getAllApplications() {
@@ -79,5 +87,12 @@ public class LoanReviewService {
     @CacheEvict(value = "loanCache", allEntries = true)
     public void updateStatusBulk(String status, List<String> ids) {
         loanMapper.updateApplicationStatusBulk(status, ids);
+        
+        for (String id : ids) {
+            LoanApplication app = loanMapper.selectApplicationById(id);
+            if (app != null) {
+                notificationService.sendStatusChangeNotification(app.getCustomerId(), status);
+            }
+        }
     }
 }
