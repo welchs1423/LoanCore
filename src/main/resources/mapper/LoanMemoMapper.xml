@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.finance.mapper.LoanMemoMapper">
+
+    <insert id="insertMemo" parameterType="com.finance.domain.LoanMemo">
+        INSERT INTO LOAN_MEMO (APPLICATION_ID, WRITER, CONTENT)
+        VALUES (#{applicationId}, #{writer}, #{content})
+    </insert>
+
+    <select id="selectMemos" resultType="com.finance.domain.LoanMemo">
+        SELECT 
+            MEMO_ID AS memoId,
+            APPLICATION_ID AS applicationId,
+            WRITER AS writer,
+            CONTENT AS content,
+            CREATED_AT AS createdAt
+        FROM LOAN_MEMO
+        WHERE APPLICATION_ID = #{applicationId}
+        ORDER BY MEMO_ID DESC
+    </select>
+
+    <delete id="deleteMemo">
+        DELETE FROM LOAN_MEMO
+        WHERE MEMO_ID = #{memoId}
+    </delete>
+
+</mapper>
