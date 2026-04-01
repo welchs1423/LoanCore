@@ -42,6 +42,9 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-02**
+  - Fetch API(Ajax)를 활용한 대출 심사 비동기 메모(LoanMemo) 시스템 연동
+  - @RestController 역할의 @ResponseBody 메서드를 LoanWebController에 추가하여 RESTful 메모 API(GET/POST) 구현
+  - MyBatis @Insert, @Select 어노테이션 기반의 LoanMemoMapper 구축 및 H2 스키마(LOAN_MEMO) 동기화
   - Spring Cache(@CacheEvict)를 적용하여 대출 신청 및 승인 상태 변경 시 Redis 캐시 즉시 무효화(동기화) 처리
   - LoanWebController 내 대출 상세 조회(/detail/{id}) 및 관리자 승인(/approve) 엔드포인트 로직 구현
   - JSP(index, detail) 연동을 통한 대출 상세 뷰 진입 및 관리자 승인 기능 UI 구현

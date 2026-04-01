@@ -34,3 +34,29 @@ CREATE TABLE IF NOT EXISTS audit_logs (
     actor VARCHAR(100),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS loan_applications (
+    application_id VARCHAR(50) PRIMARY KEY,
+    customer_id VARCHAR(50) NOT NULL,
+    amount DECIMAL(18, 2) NOT NULL,
+    status_code VARCHAR(20) DEFAULT 'PENDING',
+    file_name VARCHAR(255),
+    address VARCHAR(500),
+    del_yn CHAR(1) DEFAULT 'N',
+    applied_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS audit_logs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    action_name VARCHAR(100),
+    target_id VARCHAR(100),
+    action_detail VARCHAR(1000),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS LOAN_MEMO (
+    memo_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    application_id VARCHAR(50) NOT NULL,
+    memo_text VARCHAR(1000) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

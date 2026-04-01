@@ -1,26 +1,22 @@
 package com.finance.domain;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 public class LoanMemo {
-    private int memoId;
+    private Long memoId;
     private String applicationId;
-    private String writer;
-    private String content;
-    private Timestamp createdAt;
+    private String memoText;
+    private Date createdAt;
 
-    public int getMemoId() { return memoId; }
-    public void setMemoId(int memoId) { this.memoId = memoId; }
-
+    public Long getMemoId() { return memoId; }
+    public void setMemoId(Long memoId) { this.memoId = memoId; }
+    
     public String getApplicationId() { return applicationId; }
     public void setApplicationId(String applicationId) { this.applicationId = applicationId; }
-
-    public String getWriter() { return writer; }
-    public void setWriter(String writer) { this.writer = writer; }
-
-    public String getContent() { return content; }
-    public void setContent(String content) { this.content = content; }
-
-    public Timestamp getCreatedAt() { return createdAt; }
-    public void setCreatedAt(Timestamp createdAt) { this.createdAt = createdAt; }
+    
+    public String getMemoText() { return memoText; }
+    public void setMemoText(String memoText) { this.memoText = memoText; }
+    
+    public Date getCreatedAt() { return createdAt; }
+    public void setCreatedAt(Date createdAt) { this.createdAt = createdAt; }
 }

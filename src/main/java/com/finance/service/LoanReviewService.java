@@ -2,9 +2,12 @@ package com.finance.service;
 
 import com.finance.domain.AuditLog;
 import com.finance.domain.LoanApplication;
+import com.finance.domain.LoanMemo;
 import com.finance.mapper.AuditLogMapper;
 import com.finance.mapper.LoanMapper;
+import com.finance.mapper.LoanMemoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -18,6 +21,9 @@ public class LoanReviewService {
     @Autowired
     private AuditLogMapper auditLogMapper;
 
+    @Autowired
+    private LoanMemoMapper memoMapper;
+
     @Cacheable(value = "loanCache", key = "'totalCount'")
     public int getTotalCount() {
         return loanMapper.countAllApplications();
@@ -27,6 +33,7 @@ public class LoanReviewService {
         return loanMapper.selectAllApplications();
     }
 
+    @CacheEvict(value = "loanCache", allEntries = true)
     public void applyLoan(LoanApplication app) {
         if (app.getApplicationId() == null || app.getApplicationId().isEmpty()) {
             app.setApplicationId("L" + System.currentTimeMillis());
@@ -38,6 +45,7 @@ public class LoanReviewService {
         return loanMapper.selectApplicationById(id);
     }
 
+    @CacheEvict(value = "loanCache", allEntries = true)
     public String reviewLoan(LoanApplication app) {
         app.setStatusCode("APPROVED");
         loanMapper.updateApplication(app);
@@ -55,5 +63,13 @@ public class LoanReviewService {
 
     public List<AuditLog> getRecentAuditLogs() {
         return auditLogMapper.getRecentLogs();
+    }
+
+    public void addMemo(LoanMemo memo) {
+        memoMapper.insertMemo(memo);
+    }
+
+    public List<LoanMemo> getMemosByAppId(String applicationId) {
+        return memoMapper.selectMemosByAppId(applicationId);
     }
 }
