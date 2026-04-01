@@ -42,6 +42,9 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-02**
+  - @EnableScheduling 적용 및 LoanScheduler 신규 생성을 통한 PENDING 상태 건 모니터링 배치 잡(Batch Job) 구현
+  - Google Zxing 라이브러리를 활용한 대출 접수증 QR 코드 렌더링 API(/api/qr/{id}) 신규 구현
+  - html2pdf.js를 연동하여 대출 상세 정보 및 QR 코드를 포함한 승인 확인서 PDF 전자문서 다운로드 기능 구축
   - [Sync] 누락된 도메인 모델 및 매퍼(AuditLog, LoanMemo, LoanMapper) 원격 저장소 동기화
   - [Sync] DB 스키마(schema.sql), 로깅(logback.xml), 웹 설정(web.xml) 등 환경 설정 파일 최신화 적용
   - [Sync] 대출 신청 화면(apply.jsp) UI 개선 사항 반영
