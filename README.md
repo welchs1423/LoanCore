@@ -41,6 +41,8 @@
 
 ### 📅 개발 진행 내역
 * **2026-04-02**
+  - [Fix] root-context.xml 내 Redis 포트 번호 파싱 에러(NumberFormatException) 해결
+  - Redis Connection Factory 설정 최적화 및 로컬 도커 환경 동기화 완료
   - Spring Legacy 환경에 맞춘 Redis 기반 글로벌 캐싱 시스템 도입 (Spring Data Redis, Jedis 연동)
   - RedisCacheManager 설정 및 GenericJackson2JsonRedisSerializer를 활용한 객체 직렬화 적용
   - FileSystemResource를 활용한 증빙 서류 다운로드 컨트롤러(FileDownloadController) 추가
