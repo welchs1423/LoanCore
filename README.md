@@ -38,6 +38,7 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-01**
+  - Google Zxing 라이브러리를 활용한 대출 접수증 QR 코드 서버사이드 동적 생성(Image Rendering) 기능 구현
   - Fetch API(Ajax)를 활용한 관리자 대출 심사 비동기 메모(댓글) 기능 구현 (1:N 테이블 매핑)
   - Daum 우편번호 API 연동 및 클라이언트 측 폼 데이터 가공, DB 스키마(ADDRESS) 확장
   - MyBatis Mapper 인터페이스 컴파일 에러 복구 및 의존성 주입(DI) 실패 오류 해결

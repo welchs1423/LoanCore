@@ -18,8 +18,11 @@
             <c:otherwise>
                 <div class="row">
                     <div class="col-md-7">
-                        <div class="card p-4 shadow-sm mb-4">
-                            <h5 class="border-bottom pb-2 mb-3">신청 내역</h5>
+                        <div class="card p-4 shadow-sm mb-4 position-relative">
+                            <div class="position-absolute top-0 end-0 p-3">
+                                <img src="api/qr?appId=${app.applicationId}" alt="QR Code" class="img-thumbnail" style="width: 90px; height: 90px;" title="모바일에서 확인하세요">
+                            </div>
+                            <h5 class="border-bottom pb-2 mb-3 w-75">신청 내역</h5>
                             <table class="table table-borderless">
                                 <tr><th style="width: 150px;">신청 번호</th><td id="appId">${app.applicationId}</td></tr>
                                 <tr><th>고객 ID</th><td>${app.customerId}</td></tr>
@@ -64,7 +67,7 @@
                             <div class="card-header bg-light fw-bold">📝 관리자 심사 메모</div>
                             <div class="card-body d-flex flex-column">
                                 <div id="memoList" class="flex-grow-1 overflow-auto mb-3" style="max-height: 400px;">
-                                    </div>
+                                </div>
                                 <div class="input-group mt-auto">
                                     <input type="text" id="memoInput" class="form-control" placeholder="메모를 입력하세요..." onkeypress="if(event.keyCode==13) addMemo();">
                                     <button class="btn btn-dark" type="button" onclick="addMemo()">등록</button>
@@ -84,7 +87,6 @@
             if(appId) loadMemos();
         });
 
-        // 메모 불러오기
         function loadMemos() {
             fetch('api/memos?applicationId=' + appId)
                 .then(response => response.json())
@@ -112,7 +114,6 @@
                 });
         }
 
-        // 메모 추가
         function addMemo() {
             const content = document.getElementById('memoInput').value;
             if(!content.trim()) return alert("내용을 입력하세요.");
@@ -130,12 +131,11 @@
             .then(data => {
                 if(data.success) {
                     document.getElementById('memoInput').value = '';
-                    loadMemos(); // 새로고침 없이 리스트만 재로드
+                    loadMemos();
                 }
             });
         }
 
-        // 메모 삭제
         function deleteMemo(memoId) {
             if(!confirm("이 메모를 삭제하시겠습니까?")) return;
 

@@ -3,12 +3,20 @@ package com.finance.service;
 import com.finance.domain.LoanApplication;
 import com.finance.domain.LoanMemo;
 import com.finance.mapper.LoanMemoMapper;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
+import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/api")
@@ -46,7 +54,7 @@ public class LoanRestController {
                                        @RequestParam("content") String content,
                                        HttpSession session) {
         String writer = session.getAttribute("adminLogined") != null ? "관리자" : "시스템";
-        
+
         LoanMemo memo = new LoanMemo();
         memo.setApplicationId(applicationId);
         memo.setWriter(writer);
@@ -64,5 +72,26 @@ public class LoanRestController {
         Map<String, Object> response = new HashMap<>();
         response.put("success", true);
         return response;
+    }
+
+    @GetMapping("/qr")
+    public ResponseEntity<byte[]> generateQRCode(@RequestParam("appId") String appId) {
+        try {
+            String url = "http://localhost:8080/LoanCore/detail?id=" + appId;
+            int width = 150;
+            int height = 150;
+
+            QRCodeWriter qrCodeWriter = new QRCodeWriter();
+            BitMatrix bitMatrix = qrCodeWriter.encode(url, BarcodeFormat.QR_CODE, width, height);
+
+            ByteArrayOutputStream pngOutputStream = new ByteArrayOutputStream();
+            MatrixToImageWriter.writeToStream(bitMatrix, "PNG", pngOutputStream);
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_PNG)
+                    .body(pngOutputStream.toByteArray());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }
