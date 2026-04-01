@@ -1,20 +1,5 @@
 package com.finance.service;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.math.BigDecimal;
-import java.net.URLEncoder;
-import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +9,19 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-
+import javax.validation.Valid;
+import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
+import java.util.List;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URLEncoder;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.finance.domain.LoanApplication;
 
 @Controller
@@ -53,14 +50,26 @@ public class LoanWebController {
         return "apply";
     }
 
+    // 중복 제거된 유일한 submitLoan 메서드
     @PostMapping("/submit-loan")
     public String submitLoan(@Valid @ModelAttribute LoanApplication app,
                              BindingResult bindingResult,
-                             Model model) {
+                             @RequestParam("uploadFile") MultipartFile uploadFile,
+                             Model model) throws IOException {
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("errors", bindingResult.getAllErrors());
             return "apply";
+        }
+
+        if (!uploadFile.isEmpty()) {
+            String uploadFolder = "C:/upload_test/";
+            File saveDir = new File(uploadFolder);
+            if (!saveDir.exists()) saveDir.mkdirs();
+
+            String fileName = System.currentTimeMillis() + "_" + uploadFile.getOriginalFilename();
+            uploadFile.transferTo(new File(uploadFolder + fileName));
+            app.setFileName(fileName);
         }
 
         app.setApplicationId("APP-" + System.currentTimeMillis());
@@ -70,32 +79,9 @@ public class LoanWebController {
         model.addAttribute("amount", app.getAmount());
         model.addAttribute("statusCode", app.getStatusCode());
         model.addAttribute("reviewMessage", reviewResult);
+        model.addAttribute("fileName", app.getFileName());
 
         return "result";
-    }
-    
-    @GetMapping("/download")
-    public void downloadFile(@RequestParam("fileName") String fileName, HttpServletResponse response) throws IOException {
-        String uploadFolder = "C:/upload_test/";
-        File file = new File(uploadFolder + fileName);
-        
-        if (!file.exists()) {
-            return;
-        }
-
-        String encodedFileName = URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20");
-        response.setContentType("application/octet-stream");
-        response.setHeader("Content-Disposition", "attachment; filename=\"" + encodedFileName + "\"");
-
-        try (FileInputStream fis = new FileInputStream(file);
-             OutputStream os = response.getOutputStream()) {
-            byte[] buffer = new byte[1024];
-            int length;
-            while ((length = fis.read(buffer)) > 0) {
-                os.write(buffer, 0, length);
-            }
-            os.flush();
-        }
     }
 
     @GetMapping("/list")
@@ -151,39 +137,6 @@ public class LoanWebController {
         reviewService.updateApplication(id, customerId, amount);
         return "redirect:/detail?id=" + id;
     }
-    
-    @PostMapping("/submit-loan")
-    public String submitLoan(@Valid @ModelAttribute LoanApplication app,
-                             BindingResult bindingResult,
-                             @RequestParam("uploadFile") MultipartFile uploadFile,
-                             Model model) throws IOException {
-
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("errors", bindingResult.getAllErrors());
-            return "apply";
-        }
-
-        // 파일 업로드 처리
-        if (!uploadFile.isEmpty()) {
-            String uploadFolder = "C:/upload_test/";
-            File saveDir = new File(uploadFolder);
-            if (!saveDir.exists()) saveDir.mkdirs(); // 폴더가 없으면 생성
-
-            String fileName = System.currentTimeMillis() + "_" + uploadFile.getOriginalFilename();
-            uploadFile.transferTo(new File(uploadFolder + fileName));
-            app.setFileName(fileName); // DB 저장용 파일명 세팅
-        }
-
-        app.setApplicationId("APP-" + System.currentTimeMillis());
-        reviewService.reviewLoan(app);
-
-        model.addAttribute("customerId", app.getCustomerId());
-        model.addAttribute("amount", app.getAmount());
-        model.addAttribute("statusCode", app.getStatusCode());
-        model.addAttribute("fileName", app.getFileName());
-
-        return "result";
-    }
 
     @GetMapping("/excel")
     public void downloadExcel(HttpServletResponse response) throws IOException {
@@ -212,5 +165,29 @@ public class LoanWebController {
 
         workbook.write(response.getOutputStream());
         workbook.close();
+    }
+
+    @GetMapping("/download")
+    public void downloadFile(@RequestParam("fileName") String fileName, HttpServletResponse response) throws IOException {
+        String uploadFolder = "C:/upload_test/";
+        File file = new File(uploadFolder + fileName);
+        
+        if (!file.exists()) {
+            return;
+        }
+
+        String encodedFileName = URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20");
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + encodedFileName + "\"");
+
+        try (FileInputStream fis = new FileInputStream(file);
+             OutputStream os = response.getOutputStream()) {
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = fis.read(buffer)) > 0) {
+                os.write(buffer, 0, length);
+            }
+            os.flush();
+        }
     }
 }
