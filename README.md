@@ -40,7 +40,24 @@
 ---
 
 ### 📅 개발 진행 내역
+
+* **[2026-04-02] Redis Cache Integration & Port Conflict Resolution**
+  * Local Port 6379 Docker Mapping Configuration
+  * Resolved Port Conflict (Terminated ghost process PID)
+  * RedisConfig Java Configuration (JSON Serialization implemented)
+  * Applied @Cacheable to LoanReviewService
+
 * **2026-04-02**
+  - [Fix] LoanMapper 내 페이징, 동적 검색, 벌크 업데이트 메서드 구현 완료
+  - [Fix] MyBatis @Select <script> 태그를 이용한 복합 쿼리 적용
+  - [Clean] 서비스-매퍼 간 파라미터 타입 불일치(Update) 해결
+  - [Fix] MyBatis Mapper 메서드(selectAllApplications 등) 어노테이션 누락 수정
+  - [Success] H2 DB - MyBatis - Redis Cache 전체 파이프라인 정상 작동 확인
+  - [Fix] root-context.xml 내 jdbc 네임스페이스 바인딩 오류 해결
+  - [Clean] LoanWebController 내 미사용 import 제거 및 코드 최적화
+  - [Test] Redis 캐시 키 생성 여부 최종 확인 및 H2 DB 스키마 자동 초기화 검증
+  - [Fix] H2 인메모리 DB 테이블 미생성으로 인한 500 에러 해결 (schema.sql 자동 실행 설정)
+  - [Fix] MyBatis Table Not Found 예외 처리 및 스키마 구조 동기화
   - [Fix] LoanReviewService 내 AuditLog 조회 메서드 누락분 구현
   - [Test] Docker 기반 Redis 서버와 Spring Cache(RedisCacheManager) 연동 확인 완료
   - [Fix] Java Config(RedisConfig) 도입을 통한 Redis 연동 및 XML 설정 충돌 해결
@@ -139,6 +156,14 @@
   - Maven 프로젝트 생성 (`pom.xml` 구성)
   - `LoanApplication`, `LoanReviewService` 등 핵심 비즈니스 로직 클래스 작성
   - 콘솔 환경에서의 대출 심사 로직 테스트 완료
+  
+---
+## 🛠️ Development Log: Redis Cache Integration
+* **도커(Docker) Redis 환경 세팅 완료**
+  * Local 포트 `6379`를 도커 컨테이너와 매핑하여 Spring Data Redis 연동.
+* **Troubleshooting: Port Conflict & Serialization**
+  * 윈도우 로컬의 유령 Redis 프로세스와 도커 컨테이너 간의 포트(6379) 충돌 문제 해결. (`netstat -ano` 및 `taskkill` 활용)
+  * `EOFException` 및 역직렬화 에러 방지를 위해 `RedisConfig`를 Java 설정으로 통일하고, `GenericJackson2JsonRedisSerializer`를 적용하여 캐시 데이터를 JSON 형식으로 안전하게 관리.
   
 ---
 

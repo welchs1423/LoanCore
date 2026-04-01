@@ -1,236 +1,39 @@
 package com.finance.service;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.math.BigDecimal;
-import java.net.URLEncoder;
-import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
+import com.finance.domain.LoanApplication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
-
-import com.finance.domain.LoanApplication;
+import org.springframework.web.bind.annotation.*;
+import java.math.BigDecimal;
 
 @Controller
 public class LoanWebController {
 
-	@Autowired
-	private LoanReviewService reviewService;
+    @Autowired
+    private LoanReviewService reviewService;
 
-	private static final Logger logger = LoggerFactory.getLogger(LoanWebController.class);
+    @GetMapping("/")
+    public String index(Model model) {
+        model.addAttribute("totalCount", reviewService.getTotalCount());
+        model.addAttribute("applications", reviewService.getAllApplications());
+        return "index";
+    }
 
-	@GetMapping("/")
-	public String index(Model model) {
-		long totalCount = reviewService.getTotalCount();
-		List<LoanApplication> allList = reviewService.getAllApplications();
+    @GetMapping("/apply")
+    public String applyForm() {
+        return "apply";
+    }
 
-		long approveCount = allList.stream().filter(app -> "APPROVE".equals(app.getStatusCode())).count();
-		long rejectCount = allList.stream().filter(app -> "REJECT".equals(app.getStatusCode())).count();
-
-		model.addAttribute("totalCount", totalCount);
-		model.addAttribute("approveCount", approveCount);
-		model.addAttribute("rejectCount", rejectCount);
-
-		return "index";
-	}
-
-	@GetMapping("/apply")
-	public String showApplyForm() {
-		return "apply";
-	}
-
-	@PostMapping("/submit-loan")
-	public String submitLoan(@Valid @ModelAttribute("app") LoanApplication app, BindingResult bindingResult,
-			@RequestParam("uploadFile") MultipartFile uploadFile, Model model) throws IOException {
-
-		if (bindingResult.hasErrors()) {
-			model.addAttribute("errors", bindingResult.getAllErrors());
-			return "apply";
-		}
-
-		if (!uploadFile.isEmpty()) {
-			String fileName = uploadFile.getOriginalFilename();
-			File saveFile = new File("C:/upload", fileName);
-
-			// 디렉토리가 없으면 생성
-			if (!saveFile.getParentFile().exists()) {
-				saveFile.getParentFile().mkdirs();
-			}
-
-			uploadFile.transferTo(saveFile);
-			app.setFileName(fileName);
-			logger.info("[{}] 파일 업로드 완료: {}", MDC.get("traceId"), fileName);
-		}
-
-		String message = reviewService.reviewLoan(app);
-		model.addAttribute("message", message);
-		model.addAttribute("app", app);
-
-		return "result";
-	}
-
-	@GetMapping("/list")
-	public String listApplications(@RequestParam(value = "keyword", required = false) String keyword,
-			@RequestParam(value = "status", required = false) String status,
-			@RequestParam(value = "startDate", required = false) String startDate,
-			@RequestParam(value = "endDate", required = false) String endDate,
-			@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
-		int pageSize = 10;
-
-		boolean isSearch = (keyword != null && !keyword.trim().isEmpty())
-				|| (status != null && !status.trim().isEmpty()) || (startDate != null && !startDate.trim().isEmpty())
-				|| (endDate != null && !endDate.trim().isEmpty());
-
-		if (isSearch) {
-			List<LoanApplication> list = reviewService.searchApplications(keyword, status, startDate, endDate);
-			model.addAttribute("loanList", list);
-			model.addAttribute("keyword", keyword);
-			model.addAttribute("status", status);
-			model.addAttribute("startDate", startDate);
-			model.addAttribute("endDate", endDate);
-			model.addAttribute("currentPage", 1);
-			model.addAttribute("totalPages", 1);
-			return "list";
-		}
-
-		List<LoanApplication> list = reviewService.getApplicationsWithPaging(page, pageSize);
-		int totalCount = reviewService.getTotalCount();
-		int totalPages = (int) Math.ceil((double) totalCount / pageSize);
-
-		model.addAttribute("loanList", list);
-		model.addAttribute("currentPage", page);
-		model.addAttribute("totalPages", totalPages > 0 ? totalPages : 1);
-
-		return "list";
-	}
-
-	@GetMapping("/detail")
-	public String detailApplication(@RequestParam("id") String id, Model model) {
-		LoanApplication app = reviewService.getApplicationById(id);
-		model.addAttribute("app", app);
-		return "detail";
-	}
-
-	@PostMapping("/delete")
-	public String deleteApplication(@RequestParam("id") String id) {
-		reviewService.deleteApplication(id);
-		return "redirect:/list";
-	}
-
-	@GetMapping("/edit")
-	public String showEditForm(@RequestParam("id") String id, Model model) {
-		LoanApplication app = reviewService.getApplicationById(id);
-		model.addAttribute("app", app);
-		return "edit";
-	}
-
-	@PostMapping("/edit")
-	public String updateApplication(@RequestParam("id") String id, @RequestParam("customerId") String customerId,
-			@RequestParam("amount") BigDecimal amount) {
-		reviewService.updateApplication(id, customerId, amount);
-		return "redirect:/detail?id=" + id;
-	}
-
-	@GetMapping("/excel")
-	public void downloadExcel(HttpServletResponse response) throws IOException {
-		List<LoanApplication> list = reviewService.getAllApplications();
-
-		Workbook workbook = new XSSFWorkbook();
-		Sheet sheet = workbook.createSheet("대출신청내역");
-		Row headerRow = sheet.createRow(0);
-
-		headerRow.createCell(0).setCellValue("신청 번호");
-		headerRow.createCell(1).setCellValue("고객 ID");
-		headerRow.createCell(2).setCellValue("신청 금액(원)");
-		headerRow.createCell(3).setCellValue("진행 상태");
-		headerRow.createCell(4).setCellValue("주소");
-
-		int rowNum = 1;
-		for (LoanApplication app : list) {
-			Row row = sheet.createRow(rowNum++);
-			row.createCell(0).setCellValue(app.getApplicationId());
-			row.createCell(1).setCellValue(app.getCustomerId());
-			row.createCell(2).setCellValue(app.getAmount().doubleValue());
-			row.createCell(3).setCellValue(app.getStatusCode());
-			row.createCell(4).setCellValue(app.getAddress() != null ? app.getAddress() : "");
-		}
-
-		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-		response.setHeader("Content-Disposition", "attachment; filename=loan_applications.xlsx");
-
-		workbook.write(response.getOutputStream());
-		workbook.close();
-	}
-
-	@PostMapping("/excel/upload")
-	public String uploadExcel(@RequestParam("excelFile") MultipartFile file) {
-		if (file.isEmpty()) {
-			return "redirect:/list";
-		}
-		try (InputStream is = file.getInputStream()) {
-			Workbook workbook = WorkbookFactory.create(is);
-			Sheet sheet = workbook.getSheetAt(0);
-
-			for (int i = 1; i <= sheet.getLastRowNum(); i++) {
-				Row row = sheet.getRow(i);
-				if (row == null)
-					continue;
-
-				LoanApplication app = new LoanApplication();
-				app.setApplicationId("APP-EXCEL-" + System.currentTimeMillis() + "-" + i);
-
-				if (row.getCell(0) != null)
-					app.setCustomerId(row.getCell(0).getStringCellValue());
-				if (row.getCell(1) != null)
-					app.setAmount(BigDecimal.valueOf(row.getCell(1).getNumericCellValue()));
-				if (row.getCell(2) != null)
-					app.setAddress(row.getCell(2).getStringCellValue());
-
-				if (app.getCustomerId() != null && app.getAmount() != null) {
-					reviewService.reviewLoan(app);
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return "redirect:/list";
-	}
-
-	@PostMapping("/bulk-update")
-	public String bulkUpdateStatus(@RequestParam("bulkStatus") String status,
-			@RequestParam(value = "appIds", required = false) List<String> appIds) {
-		if (appIds != null && !appIds.isEmpty()) {
-			reviewService.updateStatusBulk(status, appIds);
-		}
-		return "redirect:/list";
-	}
-	
-	@GetMapping("/admin/audit")
-	public String showAuditLogs(Model model) {
-	    // AuditLogMapper를 통해 최근 로그 50개를 가져와서 모델에 담습니다.
-	    // (서비스 계층을 거치는 것이 좋으나 우선 확인을 위해 직접 호출 가능)
-	    model.addAttribute("auditLogs", reviewService.getRecentAuditLogs()); 
-	    return "audit-list";
-	}
+    @PostMapping("/submit-loan")
+    public String submitLoan(@RequestParam("customerId") String customerId,
+                             @RequestParam("amount") BigDecimal amount,
+                             @RequestParam("address") String address) {
+        LoanApplication app = new LoanApplication();
+        app.setCustomerId(customerId);
+        app.setAmount(amount);
+        app.setAddress(address);
+        reviewService.applyLoan(app);
+        return "redirect:/";
+    }
 }
