@@ -17,7 +17,6 @@ public class LoanReviewService {
     @Autowired
     private LoanMapper loanMapper;
 
-    // 데이터가 추가되므로 기존 캐시 초기화
     @Transactional
     @CacheEvict(value = "loanCache", allEntries = true)
     public String reviewLoan(LoanApplication app) {
@@ -49,7 +48,6 @@ public class LoanReviewService {
         return loanMapper.searchApplicationsDynamic(keyword, status);
     }
 
-    // 데이터가 수정되므로 기존 캐시 초기화
     @Transactional
     @CacheEvict(value = "loanCache", allEntries = true)
     public void updateApplication(String id, String customerId, BigDecimal amount) {
@@ -61,7 +59,6 @@ public class LoanReviewService {
         }
     }
 
-    // 데이터가 삭제되므로 기존 캐시 초기화
     @Transactional
     @CacheEvict(value = "loanCache", allEntries = true)
     public void deleteApplication(String id) {
@@ -73,9 +70,14 @@ public class LoanReviewService {
         return loanMapper.selectApplicationsWithPaging(offset, pageSize);
     }
 
-    // ★ 쿼리 결과를 메모리에 캐싱하여 DB 부하 최소화 ★
     @Cacheable(value = "loanCache")
     public int getTotalCount() {
         return loanMapper.countAllApplications();
+    }
+
+    @Transactional
+    @CacheEvict(value = "loanCache", allEntries = true)
+    public void updateStatusBulk(String status, List<String> ids) {
+        loanMapper.updateApplicationStatusBulk(status, ids);
     }
 }

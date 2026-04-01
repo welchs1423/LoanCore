@@ -21,4 +21,6 @@ public interface LoanMapper {
     List<LoanApplication> selectApplicationsWithPaging(@Param("offset") int offset, @Param("limit") int limit);
     
     int countAllApplications();
+
+    void updateApplicationStatusBulk(@Param("status") String status, @Param("ids") List<String> ids);
 }

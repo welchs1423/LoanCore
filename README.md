@@ -38,6 +38,7 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-01**
+  - MyBatis <foreach> 동적 쿼리를 활용한 대출 신청 내역 다중 선택 및 상태 일괄 변경(Bulk Update) 기능 구현
   - @ControllerAdvice를 활용한 Global Exception Handler(전역 예외 처리) 구축 및 로깅 강화
   - 테스트 코드 호환성 유지를 위한 도메인 모델 생성자 복구 및 버그 픽스
   - Soft Delete(논리 삭제) 아키텍처 도입: 실제 데이터 삭제 대신 DEL_YN 상태값 관리를 통한 데이터 무결성 보장 

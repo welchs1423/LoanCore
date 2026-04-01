@@ -223,4 +223,13 @@ public class LoanWebController {
             os.flush();
         }
     }
+
+    @PostMapping("/bulk-update")
+    public String bulkUpdateStatus(@RequestParam("bulkStatus") String status, 
+                                   @RequestParam(value = "appIds", required = false) List<String> appIds) {
+        if (appIds != null && !appIds.isEmpty()) {
+            reviewService.updateStatusBulk(status, appIds);
+        }
+        return "redirect:/list";
+    }
 }

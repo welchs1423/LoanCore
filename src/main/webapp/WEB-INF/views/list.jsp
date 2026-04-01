@@ -39,43 +39,63 @@
             </div>
         </div>
 
-        <div class="card shadow-sm bg-white">
-            <table class="table table-hover mb-0 text-center align-middle">
-                <thead class="table-light">
-                    <tr>
-                        <th>신청 번호</th>
-                        <th>고객 ID</th>
-                        <th>신청 금액</th>
-                        <th>상태</th>
-                        <th>상세</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:choose>
-                        <c:when test="${empty loanList}">
-                            <tr><td colspan="5" class="py-4 text-muted">등록된 대출 신청 내역이 없습니다.</td></tr>
-                        </c:when>
-                        <c:otherwise>
-                            <c:forEach var="app" items="${loanList}">
-                                <tr>
-                                    <td>${app.applicationId}</td>
-                                    <td class="fw-bold">${app.customerId}</td>
-                                    <td><fmt:formatNumber value="${app.amount}" pattern="#,###"/> 원</td>
-                                    <td>
-                                        <c:if test="${app.statusCode == 'APPROVE'}"><span class="badge bg-success">승인</span></c:if>
-                                        <c:if test="${app.statusCode == 'REJECT'}"><span class="badge bg-danger">거절</span></c:if>
-                                        <c:if test="${app.statusCode == 'PENDING'}"><span class="badge bg-warning">대기</span></c:if>
-                                    </td>
-                                    <td>
-                                        <a href="detail?id=${app.applicationId}" class="btn btn-sm btn-outline-primary">조회</a>
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                        </c:otherwise>
-                    </c:choose>
-                </tbody>
-            </table>
-        </div>
+        <form action="bulk-update" method="post" id="bulkForm">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <div class="d-flex gap-2">
+                    <select name="bulkStatus" class="form-select form-select-sm" style="width: 130px;" required>
+                        <option value="">상태 일괄 변경</option>
+                        <option value="APPROVE">승인으로 변경</option>
+                        <option value="REJECT">거절로 변경</option>
+                        <option value="PENDING">대기로 변경</option>
+                    </select>
+                    <button type="submit" class="btn btn-sm btn-primary" onclick="return confirmBulkUpdate()">적용</button>
+                </div>
+            </div>
+
+            <div class="card shadow-sm bg-white">
+                <table class="table table-hover mb-0 text-center align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width: 50px;">
+                                <input class="form-check-input" type="checkbox" id="selectAll" onclick="toggleAll(this)">
+                            </th>
+                            <th>신청 번호</th>
+                            <th>고객 ID</th>
+                            <th>신청 금액</th>
+                            <th>상태</th>
+                            <th>상세</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:choose>
+                            <c:when test="${empty loanList}">
+                                <tr><td colspan="6" class="py-4 text-muted">등록된 대출 신청 내역이 없습니다.</td></tr>
+                            </c:when>
+                            <c:otherwise>
+                                <c:forEach var="app" items="${loanList}">
+                                    <tr>
+                                        <td>
+                                            <input class="form-check-input row-checkbox" type="checkbox" name="appIds" value="${app.applicationId}">
+                                        </td>
+                                        <td>${app.applicationId}</td>
+                                        <td class="fw-bold">${app.customerId}</td>
+                                        <td><fmt:formatNumber value="${app.amount}" pattern="#,###"/> 원</td>
+                                        <td>
+                                            <c:if test="${app.statusCode == 'APPROVE'}"><span class="badge bg-success">승인</span></c:if>
+                                            <c:if test="${app.statusCode == 'REJECT'}"><span class="badge bg-danger">거절</span></c:if>
+                                            <c:if test="${app.statusCode == 'PENDING'}"><span class="badge bg-warning">대기</span></c:if>
+                                        </td>
+                                        <td>
+                                            <a href="detail?id=${app.applicationId}" class="btn btn-sm btn-outline-primary">조회</a>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </c:otherwise>
+                        </c:choose>
+                    </tbody>
+                </table>
+            </div>
+        </form>
 
         <nav class="mt-4">
             <ul class="pagination justify-content-center">
@@ -87,5 +107,27 @@
             </ul>
         </nav>
     </div>
+
+    <script>
+        function toggleAll(source) {
+            const checkboxes = document.querySelectorAll('.row-checkbox');
+            checkboxes.forEach(checkbox => checkbox.checked = source.checked);
+        }
+
+        function confirmBulkUpdate() {
+            const checkedCount = document.querySelectorAll('.row-checkbox:checked').length;
+            const statusSelect = document.querySelector('select[name="bulkStatus"]').value;
+            
+            if (statusSelect === "") {
+                alert("변경할 상태를 선택해주세요.");
+                return false;
+            }
+            if (checkedCount === 0) {
+                alert("처리할 항목을 하나 이상 선택해주세요.");
+                return false;
+            }
+            return confirm(checkedCount + "건의 대출 상태를 일괄 변경하시겠습니까?");
+        }
+    </script>
 </body>
 </html>

@@ -54,4 +54,14 @@
     <select id="countAllApplications" resultType="int">
         SELECT COUNT(*) FROM LOAN_APPLICATION WHERE DEL_YN = 'N'
     </select>
+
+    <update id="updateApplicationStatusBulk">
+        UPDATE LOAN_APPLICATION
+        SET STATUS_CODE = #{status}
+        WHERE APPLICATION_ID IN
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
 </mapper>
