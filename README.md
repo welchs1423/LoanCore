@@ -42,6 +42,9 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-02**
+  - SHA-256 해시 알고리즘(CryptoUtil)을 적용한 관리자 인증 및 암호화 로직 구현
+  - Spring HandlerInterceptor(AdminInterceptor)를 활용한 세션 기반 미인증 사용자 대시보드 접근 차단(Routing) 적용
+  - WebMvcConfigurer를 통한 전역 인터셉터 패턴 등록 및 로그인 페이지(login.jsp) 컨트롤러 구축
   - @EnableScheduling 적용 및 LoanScheduler 신규 생성을 통한 PENDING 상태 건 모니터링 배치 잡(Batch Job) 구현
   - Google Zxing 라이브러리를 활용한 대출 접수증 QR 코드 렌더링 API(/api/qr/{id}) 신규 구현
   - html2pdf.js를 연동하여 대출 상세 정보 및 QR 코드를 포함한 승인 확인서 PDF 전자문서 다운로드 기능 구축
