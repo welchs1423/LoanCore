@@ -76,7 +76,12 @@
     <mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/"/>
     <mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>
 
-    <mvc:interceptors>
+<mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**" />
+            <bean class="com.finance.config.LogInterceptor" />
+        </mvc:interceptor>
+        
         <mvc:interceptor>
             <mvc:mapping path="/list" />
             <mvc:mapping path="/detail" />

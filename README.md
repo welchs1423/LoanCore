@@ -41,6 +41,7 @@
 
 ### 📅 개발 진행 내역
 * **2026-04-02**
+  - Slf4j MDC(Mapped Diagnostic Context)를 활용한 요청별 고유 추적 ID(Trace ID) 로깅 시스템 구축
   - 커스텀 어노테이션(@LogExecutionTime) 및 Spring AOP 기반의 서비스 메서드 실행 시간 측정 프로파일러 구축
   - Springfox Swagger 2 연동을 통한 B2B Open API 문서 자동화 및 인터랙티브 테스트 환경(Swagger UI) 구축
   - Spring HandlerInterceptor를 활용한 JWT 기반 B2B 제휴사 전용 Open API(Stateless) 인증 및 인가 라우팅 구현

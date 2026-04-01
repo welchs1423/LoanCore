@@ -2,6 +2,7 @@ package com.finance.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -11,14 +12,18 @@ public class NotificationService {
     private static final Logger logger = LoggerFactory.getLogger(NotificationService.class);
 
     @Async("asyncExecutor")
-    public void sendStatusChangeNotification(String customerId, String status) {
+    public void sendStatusChangeNotification(String customerId, String status, String traceId) {
+        // 부모 스레드의 traceId를 자식 스레드 MDC에 설정
+        if (traceId != null) MDC.put("traceId", traceId);
+        
         try {
-            logger.info("[비동기 작업 시작] 외부 API 통신: 대상 {}, 상태 {}", customerId, status);
+            logger.info("[비동기 알림] 전송 시작 - 대상: {}, 상태: {}", customerId, status);
             Thread.sleep(3000); 
-            logger.info("[비동기 작업 완료] 알림 전송 성공: 대상 {}", customerId);
+            logger.info("[비동기 알림] 전송 완료");
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            logger.error("알림 발송 작업 중단", e);
+        } finally {
+            MDC.clear();
         }
     }
 }
