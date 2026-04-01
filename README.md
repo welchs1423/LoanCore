@@ -38,6 +38,7 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-01**
+  - Soft Delete(논리 삭제) 아키텍처 도입: 실제 데이터 삭제 대신 DEL_YN 상태값 관리를 통한 데이터 무결성 보장 
   - Spring Cache(@Cacheable, @CacheEvict)를 활용한 대시보드 통계 조회 쿼리 로컬 캐싱 및 DB 부하 최적화
   - Apache POI를 활용한 대출 신청 데이터 엑셀 파일(Excel) 일괄 업로드(Bulk Insert) API 구현
   - html2pdf.js를 활용한 대출 승인 확인서 전자문서(PDF) 자동 렌더링 및 다운로드 구현
