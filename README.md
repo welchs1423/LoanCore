@@ -41,7 +41,8 @@
 
 ### 📅 개발 진행 내역
 * **2026-04-02**
-    - Spring AOP(@AfterReturning)를 활용한 관리자 활동 감사 로그(Audit Log) 자동 기록 아키텍처 구현
+  - MyBatis 동적 쿼리를 활용한 대출 신청 내역 기간별 동적 검색(Date Range Search) 기능 추가
+  - Spring AOP(@AfterReturning)를 활용한 관리자 활동 감사 로그(Audit Log) 자동 기록 아키텍처 구현
 
 * **2026-04-01**
   - MyBatis <foreach> 동적 쿼리를 활용한 대출 신청 내역 다중 선택 및 상태 일괄 변경(Bulk Update) 기능 구현

@@ -44,8 +44,8 @@ public class LoanReviewService {
         return loanMapper.selectApplicationById(id);
     }
 
-    public List<LoanApplication> searchApplications(String keyword, String status) {
-        return loanMapper.searchApplicationsDynamic(keyword, status);
+    public List<LoanApplication> searchApplications(String keyword, String status, String startDate, String endDate) {
+        return loanMapper.searchApplicationsDynamic(keyword, status, startDate, endDate);
     }
 
     @Transactional

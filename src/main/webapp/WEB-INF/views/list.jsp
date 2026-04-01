@@ -16,26 +16,35 @@
         </div>
 
         <div class="card p-4 shadow-sm mb-4">
-            <div class="row align-items-end">
-                <div class="col-md-6">
-                    <form action="list" method="get" class="d-flex gap-2">
-                        <input type="text" name="keyword" class="form-control" placeholder="고객 ID 검색" value="${keyword}">
-                        <select name="status" class="form-select" style="width: 150px;">
+            <form action="list" method="get">
+                <div class="row g-2 mb-3">
+                    <div class="col-md-3">
+                        <input type="date" name="startDate" class="form-control" value="${startDate}">
+                    </div>
+                    <div class="col-md-1 text-center align-self-center">~</div>
+                    <div class="col-md-3">
+                        <input type="date" name="endDate" class="form-control" value="${endDate}">
+                    </div>
+                    <div class="col-md-2">
+                        <select name="status" class="form-select">
                             <option value="">전체 상태</option>
                             <option value="APPROVE" ${status == 'APPROVE' ? 'selected' : ''}>승인</option>
                             <option value="REJECT" ${status == 'REJECT' ? 'selected' : ''}>거절</option>
                             <option value="PENDING" ${status == 'PENDING' ? 'selected' : ''}>대기</option>
                         </select>
+                    </div>
+                    <div class="col-md-3 d-flex gap-2">
+                        <input type="text" name="keyword" class="form-control" placeholder="고객 ID 검색" value="${keyword}">
                         <button type="submit" class="btn btn-dark">검색</button>
-                    </form>
+                    </div>
                 </div>
-                <div class="col-md-6 d-flex justify-content-end gap-2 mt-3 mt-md-0">
-                    <form action="excel/upload" method="post" enctype="multipart/form-data" class="d-flex gap-2">
-                        <input type="file" name="excelFile" class="form-control form-control-sm" accept=".xlsx, .xls" required>
-                        <button type="submit" class="btn btn-sm btn-success text-nowrap">엑셀 업로드</button>
-                    </form>
-                    <a href="excel" class="btn btn-sm btn-outline-success text-nowrap">엑셀 다운로드</a>
-                </div>
+            </form>
+            <div class="d-flex justify-content-end gap-2 border-top pt-3">
+                <form action="excel/upload" method="post" enctype="multipart/form-data" class="d-flex gap-2">
+                    <input type="file" name="excelFile" class="form-control form-control-sm" accept=".xlsx, .xls" required>
+                    <button type="submit" class="btn btn-sm btn-success text-nowrap">엑셀 업로드</button>
+                </form>
+                <a href="excel" class="btn btn-sm btn-outline-success text-nowrap">엑셀 다운로드</a>
             </div>
         </div>
 
@@ -60,6 +69,7 @@
                                 <input class="form-check-input" type="checkbox" id="selectAll" onclick="toggleAll(this)">
                             </th>
                             <th>신청 번호</th>
+                            <th>신청 일자</th>
                             <th>고객 ID</th>
                             <th>신청 금액</th>
                             <th>상태</th>
@@ -69,7 +79,7 @@
                     <tbody>
                         <c:choose>
                             <c:when test="${empty loanList}">
-                                <tr><td colspan="6" class="py-4 text-muted">등록된 대출 신청 내역이 없습니다.</td></tr>
+                                <tr><td colspan="7" class="py-4 text-muted">등록된 대출 신청 내역이 없습니다.</td></tr>
                             </c:when>
                             <c:otherwise>
                                 <c:forEach var="app" items="${loanList}">
@@ -78,6 +88,7 @@
                                             <input class="form-check-input row-checkbox" type="checkbox" name="appIds" value="${app.applicationId}">
                                         </td>
                                         <td>${app.applicationId}</td>
+                                        <td><fmt:formatDate value="${app.appliedAt}" pattern="yyyy-MM-dd"/></td>
                                         <td class="fw-bold">${app.customerId}</td>
                                         <td><fmt:formatNumber value="${app.amount}" pattern="#,###"/> 원</td>
                                         <td>
@@ -101,7 +112,7 @@
             <ul class="pagination justify-content-center">
                 <c:forEach begin="1" end="${totalPages}" var="i">
                     <li class="page-item ${i == currentPage ? 'active' : ''}">
-                        <a class="page-link" href="list?page=${i}&keyword=${keyword}&status=${status}">${i}</a>
+                        <a class="page-link" href="list?page=${i}&keyword=${keyword}&status=${status}&startDate=${startDate}&endDate=${endDate}">${i}</a>
                     </li>
                 </c:forEach>
             </ul>

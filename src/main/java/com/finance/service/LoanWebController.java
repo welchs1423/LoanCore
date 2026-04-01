@@ -88,15 +88,24 @@ public class LoanWebController {
     @GetMapping("/list")
     public String listApplications(@RequestParam(value = "keyword", required = false) String keyword,
                                    @RequestParam(value = "status", required = false) String status,
+                                   @RequestParam(value = "startDate", required = false) String startDate,
+                                   @RequestParam(value = "endDate", required = false) String endDate,
                                    @RequestParam(value = "page", defaultValue = "1") int page,
                                    Model model) {
         int pageSize = 10; 
         
-        if ((keyword != null && !keyword.trim().isEmpty()) || (status != null && !status.trim().isEmpty())) {
-            List<LoanApplication> list = reviewService.searchApplications(keyword, status);
+        boolean isSearch = (keyword != null && !keyword.trim().isEmpty()) || 
+                           (status != null && !status.trim().isEmpty()) ||
+                           (startDate != null && !startDate.trim().isEmpty()) ||
+                           (endDate != null && !endDate.trim().isEmpty());
+
+        if (isSearch) {
+            List<LoanApplication> list = reviewService.searchApplications(keyword, status, startDate, endDate);
             model.addAttribute("loanList", list);
             model.addAttribute("keyword", keyword);
             model.addAttribute("status", status);
+            model.addAttribute("startDate", startDate);
+            model.addAttribute("endDate", endDate);
             model.addAttribute("currentPage", 1);
             model.addAttribute("totalPages", 1);
             return "list";

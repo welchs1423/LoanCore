@@ -12,7 +12,12 @@ public interface LoanMapper {
     
     LoanApplication selectApplicationById(String id);
     
-    List<LoanApplication> searchApplicationsDynamic(@Param("keyword") String keyword, @Param("status") String status);
+    List<LoanApplication> searchApplicationsDynamic(
+        @Param("keyword") String keyword, 
+        @Param("status") String status,
+        @Param("startDate") String startDate,
+        @Param("endDate") String endDate
+    );
     
     void updateApplication(LoanApplication app);
     

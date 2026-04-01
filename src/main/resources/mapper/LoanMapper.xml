@@ -8,25 +8,27 @@
     </insert>
 
     <select id="selectAllApplications" resultType="com.finance.domain.LoanApplication">
-        SELECT APPLICATION_ID, CUSTOMER_ID, AMOUNT, STATUS_CODE, FILE_NAME, ADDRESS, DEL_YN
+        SELECT APPLICATION_ID, CUSTOMER_ID, AMOUNT, STATUS_CODE, FILE_NAME, ADDRESS, DEL_YN, APPLIED_AT
         FROM LOAN_APPLICATION
         WHERE DEL_YN = 'N'
         ORDER BY APPLICATION_ID DESC
     </select>
 
     <select id="selectApplicationById" resultType="com.finance.domain.LoanApplication">
-        SELECT APPLICATION_ID, CUSTOMER_ID, AMOUNT, STATUS_CODE, FILE_NAME, ADDRESS, DEL_YN
+        SELECT APPLICATION_ID, CUSTOMER_ID, AMOUNT, STATUS_CODE, FILE_NAME, ADDRESS, DEL_YN, APPLIED_AT
         FROM LOAN_APPLICATION
         WHERE APPLICATION_ID = #{id} AND DEL_YN = 'N'
     </select>
 
     <select id="searchApplicationsDynamic" resultType="com.finance.domain.LoanApplication">
-        SELECT APPLICATION_ID, CUSTOMER_ID, AMOUNT, STATUS_CODE, FILE_NAME, ADDRESS, DEL_YN
+        SELECT APPLICATION_ID, CUSTOMER_ID, AMOUNT, STATUS_CODE, FILE_NAME, ADDRESS, DEL_YN, APPLIED_AT
         FROM LOAN_APPLICATION
         <where>
             DEL_YN = 'N'
             <if test="keyword != null and keyword != ''">AND CUSTOMER_ID LIKE CONCAT(#{keyword}, '%')</if>
             <if test="status != null and status != ''">AND STATUS_CODE = #{status}</if>
+            <if test="startDate != null and startDate != ''">AND APPLIED_AT &gt;= CONCAT(#{startDate}, ' 00:00:00')</if>
+            <if test="endDate != null and endDate != ''">AND APPLIED_AT &lt;= CONCAT(#{endDate}, ' 23:59:59')</if>
         </where>
         ORDER BY APPLICATION_ID DESC
     </select>
@@ -44,7 +46,7 @@
     </update>
 
     <select id="selectApplicationsWithPaging" resultType="com.finance.domain.LoanApplication">
-        SELECT APPLICATION_ID, CUSTOMER_ID, AMOUNT, STATUS_CODE, FILE_NAME, ADDRESS, DEL_YN
+        SELECT APPLICATION_ID, CUSTOMER_ID, AMOUNT, STATUS_CODE, FILE_NAME, ADDRESS, DEL_YN, APPLIED_AT
         FROM LOAN_APPLICATION
         WHERE DEL_YN = 'N'
         ORDER BY APPLICATION_ID DESC

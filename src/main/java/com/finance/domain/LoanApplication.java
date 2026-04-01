@@ -1,6 +1,7 @@
 package com.finance.domain;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -16,6 +17,7 @@ public class LoanApplication {
     private String fileName;
     private String address;
     private String delYn;
+    private Timestamp appliedAt;
 
     public LoanApplication() {
         this.statusCode = "PENDING";
@@ -44,6 +46,8 @@ public class LoanApplication {
     public void setAddress(String address) { this.address = address; }
     public String getDelYn() { return delYn; }
     public void setDelYn(String delYn) { this.delYn = delYn; }
+    public Timestamp getAppliedAt() { return appliedAt; }
+    public void setAppliedAt(Timestamp appliedAt) { this.appliedAt = appliedAt; }
 
     public String getApplicationInfo() {
         return "Application ID: " + applicationId + ", Customer ID: " + customerId + ", Amount: " + amount + ", Status: " + statusCode;
