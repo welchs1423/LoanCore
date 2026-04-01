@@ -41,6 +41,8 @@
 
 ### 📅 개발 진행 내역
 * **2026-04-02**
+  - Logback RollingFileAppender를 적용하여 일자별 로그 파일 자동 생성 및 보관(30일) 정책 설정
+  - Log4jdbc 불필요한 로그(audit, resultset) OFF 처리 및 쿼리 로깅 가독성 개선
   - Fetch API(Ajax)를 활용한 실시간 대출 한도 조회 기능 구현
   - 한도 초과 시 신청 버튼 비활성화 등 동적 UI 제어 적용
   - Hibernate Validator를 활용한 도메인 모델(@Valid, @NotBlank 등) 데이터 유효성 검증 로직 구현
