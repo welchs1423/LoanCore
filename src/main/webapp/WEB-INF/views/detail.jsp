@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <title>LoanCore - 대출 상세 정보</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
     <div class="container mt-5">
@@ -18,9 +19,9 @@
             <c:otherwise>
                 <div class="row">
                     <div class="col-md-7">
-                        <div class="card p-4 shadow-sm mb-4 position-relative">
+                        <div id="pdfArea" class="card p-4 shadow-sm mb-4 position-relative bg-white">
                             <div class="position-absolute top-0 end-0 p-3">
-                                <img src="api/qr?appId=${app.applicationId}" alt="QR Code" class="img-thumbnail" style="width: 90px; height: 90px;" title="모바일에서 확인하세요">
+                                <img src="api/qr?appId=${app.applicationId}" alt="QR Code" class="img-thumbnail" style="width: 90px; height: 90px;">
                             </div>
                             <h5 class="border-bottom pb-2 mb-3 w-75">신청 내역</h5>
                             <table class="table table-borderless">
@@ -36,7 +37,7 @@
                                         <c:if test="${app.statusCode == 'PENDING'}"><span class="badge bg-warning">대기</span></c:if>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr data-html2canvas-ignore="true">
                                     <th>증빙 서류</th>
                                     <td>
                                         <c:choose>
@@ -51,19 +52,22 @@
                             </table>
                         </div>
                         
-                        <div class="d-flex gap-2">
+                        <div class="d-flex gap-2 flex-wrap mb-4">
                             <a href="list" class="btn btn-primary">목록으로</a>
                             <a href="edit?id=${app.applicationId}" class="btn btn-warning">정보 수정</a>
                             <form action="delete" method="post" onsubmit="return confirm('정말 이 신청 건을 취소하시겠습니까?');">
                                 <input type="hidden" name="id" value="${app.applicationId}">
                                 <button type="submit" class="btn btn-danger">신청 취소</button>
                             </form>
+                            <c:if test="${app.statusCode == 'APPROVE'}">
+                                <button type="button" class="btn btn-success" onclick="exportPDF()">📄 승인 확인서 PDF 발급</button>
+                            </c:if>
                             <a href="./" class="btn btn-secondary">메인으로 돌아가기</a>
                         </div>
                     </div>
 
                     <div class="col-md-5">
-                        <div class="card shadow-sm h-100">
+                        <div class="card shadow-sm h-100 mb-4">
                             <div class="card-header bg-light fw-bold">📝 관리자 심사 메모</div>
                             <div class="card-body d-flex flex-column">
                                 <div id="memoList" class="flex-grow-1 overflow-auto mb-3" style="max-height: 400px;">
@@ -150,6 +154,27 @@
             .then(response => response.json())
             .then(data => {
                 if(data.success) loadMemos();
+            });
+        }
+
+        function exportPDF() {
+            const element = document.getElementById('pdfArea');
+            
+            const title = document.createElement('h2');
+            title.innerHTML = '대출 승인 확인서';
+            title.className = 'text-center mb-4 fw-bold';
+            element.insertBefore(title, element.firstChild);
+
+            const opt = {
+                margin:       0.5,
+                filename:     '대출승인확인서_' + appId + '.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true },
+                jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save().then(() => {
+                element.removeChild(title);
             });
         }
     </script>
