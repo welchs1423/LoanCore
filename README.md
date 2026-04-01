@@ -4,11 +4,12 @@
 
 ## 🛠️ Tech Stack
 
-* **Backend:** Java 11, **Spring MVC 5.x**, **MyBatis 3.5**, **AspectJ (AOP)**
-* **Frontend:** JSP (JSTL), **Bootstrap 5**, JavaScript (**Fetch API / Ajax**)
-* **Database:** **H2 Database (In-Memory)**, Spring JDBC
+* **Backend:** Java 11, **Spring MVC 5.x**, **MyBatis 3.5**, AspectJ (AOP), **Spring Cache (ConcurrentMapCache)**
+* **Frontend:** JSP (JSTL), **Bootstrap 5**, JavaScript (**Fetch API / Ajax**), **Chart.js 4.x**, **html2pdf.js**
+* **Database:** **H2 Database (In-Memory)**, Spring JDBC, **HikariCP (Connection Pool)**
 * **Security:** **SHA-256 Hash Algorithm**, Session-based Interceptor
-* **Libraries:** **Apache POI (Excel)**, **Apache Commons FileUpload**, **Logback (SLF4J)**, Hibernate Validator
+* **Libraries:** **Apache POI (Excel)**, **Zxing 3.5 (QR Code)**, **Log4jdbc-log4j2**, **Logback (SLF4J)**, Hibernate Validator
+* **External API:** **Daum/Kakao Postcode API** 연동
 * **Build Tool:** Maven
 * **Server:** Apache Tomcat 9.0
 
@@ -17,21 +18,24 @@
 ## 🚀 주요 구현 기능
 
 ### 1. 대출 프로세스 및 CRUD
-* **대출 신청:** 고객 정보 및 신청 금액 입력 (**Server-side Validation** 적용)
-* **심사 로직:** 금액 기준 자동 승인/거절 처리 및 상태 관리
-* **증빙 서류 관리:** MultipartResolver를 이용한 **파일 업로드 및 다운로드** 기능 구현
-* **목록 조회:** MyBatis를 이용한 **페이징(Pagination)** 및 **동적 쿼리(Dynamic SQL)** 검색 필터
+* **대출 신청 및 주소 검색:** Daum 우편번호 API를 연동하여 정확한 거주지 정보를 입력받고 데이터 바인딩 처리
+* **심사 로직:** 신청 금액 기준 자동 승인/거절 처리 및 상태 관리
+* **심사 메모 시스템:** Fetch API(Ajax)를 활용하여 상세 페이지 내 비동기식 실시간 메모(댓글) 기능 구현
+* **증빙 서류 관리:** MultipartResolver를 이용한 증빙 서류 파일 업로드 및 서버 측 다운로드 스트림 구현
 
 ### 2. 관리자 및 보안 (Admin & Security)
-* **관리자 인증:** **Spring Interceptor**를 활용한 비로그인 사용자 접근 제어
-* **비밀번호 보안:** **SHA-256 단방향 암호화** 적용으로 관리자 계정 정보 보호
-* **데이터 추출:** Apache POI를 활용한 전체 신청 내역 **Excel 다운로드** (.xlsx)
+* **데이터 통합 관리:** **Pagination** 및 **Dynamic SQL**을 활용한 조건별 검색 필터링 목록 조회
+* **상태 일괄 변경:** MyBatis `<foreach>` 태그를 활용한 다중 선택 건의 상태 일괄 업데이트(Bulk Update) 구현
+* **데이터 영속성 보호:** **Soft Delete(논리 삭제)** 아키텍처를 도입하여 `DEL_YN` 상태값 관리를 통한 무결성 보장
+* **관리자 인증:** **Spring Interceptor**를 활용한 비로그인 사용자 접근 제어 및 **SHA-256** 암호화 로그인
 
-### 3. 시스템 운영 및 자동화
-* **자동 로깅:** **Spring AOP**를 활용한 서비스 메서드 실행 시간 추적 및 **Logback** 기록 (Console/File)
-* **배치 처리:** **Spring Task(@Scheduled)**를 이용한 1분 단위 심사 대기 건 자동 모니터링
-* **트랜잭션:** `@Transactional` 적용으로 데이터 무결성 및 ACID 원칙 보장
-* **성능 최적화:** 검색 빈도가 높은 컬럼에 **DB Index** 생성 및 검색 쿼리 최적화
+### 3. 시스템 운영 및 성능 최적화
+* **통계 시각화 대시보드:** Chart.js를 활용하여 심사 현황을 가시화한 인터랙티브 도넛 차트 대시보드 구현
+* **조회 성능 최적화:** **Spring Cache(@Cacheable)** 적용으로 중복 통계 쿼리의 DB 부하 최소화 및 응답 속도 개선
+* **전자문서 및 QR 발급:** Zxing을 이용한 접수증 **QR 코드 생성** 및 html2pdf 기반의 **승인 확인서 PDF** 발급 기능
+* **데이터 추출 및 입항:** Apache POI를 활용한 대출 신청 내역 **Excel 다운로드** 및 **일괄 업로드(Bulk Insert)**
+* **견고한 예외 처리:** `@ControllerAdvice` 기반의 **Global Exception Handler** 구축으로 시스템 안정성 확보
+* **로깅 및 모니터링:** **Spring AOP** 서비스 추적, **Log4jdbc**를 이용한 SQL 가시화 및 **Logback** 기록 관리
 
 ---
 
