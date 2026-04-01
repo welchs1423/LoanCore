@@ -41,6 +41,8 @@
 
 ### 📅 개발 진행 내역
 * **2026-04-02**
+  - [Fix] AuditLogMapper 파라미터 타입 불일치 및 pom.xml 라이브러리 버전 중복 오류 해결
+  - AOP 기반 감사 로그(Audit Log) 저장 로직 객체 지향 방식으로 리팩토링
   - [Fix] root-context.xml 내 Redis 포트 번호 파싱 에러(NumberFormatException) 해결
   - Redis Connection Factory 설정 최적화 및 로컬 도커 환경 동기화 완료
   - Spring Legacy 환경에 맞춘 Redis 기반 글로벌 캐싱 시스템 도입 (Spring Data Redis, Jedis 연동)
