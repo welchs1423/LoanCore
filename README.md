@@ -38,6 +38,8 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-01**
+  - @ControllerAdvice를 활용한 Global Exception Handler(전역 예외 처리) 구축 및 로깅 강화
+  - 테스트 코드 호환성 유지를 위한 도메인 모델 생성자 복구 및 버그 픽스
   - Soft Delete(논리 삭제) 아키텍처 도입: 실제 데이터 삭제 대신 DEL_YN 상태값 관리를 통한 데이터 무결성 보장 
   - Spring Cache(@Cacheable, @CacheEvict)를 활용한 대시보드 통계 조회 쿼리 로컬 캐싱 및 DB 부하 최적화
   - Apache POI를 활용한 대출 신청 데이터 엑셀 파일(Excel) 일괄 업로드(Bulk Insert) API 구현

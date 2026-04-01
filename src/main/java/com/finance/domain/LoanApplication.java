@@ -15,14 +15,21 @@ public class LoanApplication {
     private String statusCode;
     private String fileName;
     private String address;
-    private String delYn; // 삭제 여부 필드 추가
+    private String delYn;
 
     public LoanApplication() {
         this.statusCode = "PENDING";
         this.delYn = "N";
     }
 
-    // Getter, Setter
+    public LoanApplication(String applicationId, String customerId, BigDecimal amount) {
+        this.applicationId = applicationId;
+        this.customerId = customerId;
+        this.amount = amount;
+        this.statusCode = "PENDING";
+        this.delYn = "N";
+    }
+
     public String getApplicationId() { return applicationId; }
     public void setApplicationId(String applicationId) { this.applicationId = applicationId; }
     public String getCustomerId() { return customerId; }
@@ -37,4 +44,8 @@ public class LoanApplication {
     public void setAddress(String address) { this.address = address; }
     public String getDelYn() { return delYn; }
     public void setDelYn(String delYn) { this.delYn = delYn; }
+
+    public String getApplicationInfo() {
+        return "Application ID: " + applicationId + ", Customer ID: " + customerId + ", Amount: " + amount + ", Status: " + statusCode;
+    }
 }
