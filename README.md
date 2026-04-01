@@ -41,6 +41,8 @@
 
 ### 📅 개발 진행 내역
 * **2026-04-02**
+  - [Fix] LoanReviewService 내 AuditLog 조회 메서드 누락분 구현
+  - [Test] Docker 기반 Redis 서버와 Spring Cache(RedisCacheManager) 연동 확인 완료
   - [Fix] Java Config(RedisConfig) 도입을 통한 Redis 연동 및 XML 설정 충돌 해결
   - [Fix] AuditLog 도메인 모델 리팩토링 및 MyBatis 매퍼 파라미터 불일치 수정
   - [Feat] Chart.js를 활용한 메인 대시보드 대출 현황 시각화 구현

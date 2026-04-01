@@ -1,8 +1,8 @@
 package com.finance.service;
 
-import com.finance.annotation.LogExecutionTime;
-import com.finance.domain.LoanApplication;
-import com.finance.mapper.LoanMapper;
+import java.math.BigDecimal;
+import java.util.List;
+
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -10,8 +10,11 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.util.List;
+import com.finance.annotation.LogExecutionTime;
+import com.finance.domain.AuditLog;
+import com.finance.domain.LoanApplication;
+import com.finance.mapper.AuditLogMapper;
+import com.finance.mapper.LoanMapper;
 
 @Service
 public class LoanReviewService {
@@ -104,5 +107,12 @@ public class LoanReviewService {
                 notificationService.sendStatusChangeNotification(app.getCustomerId(), status, traceId);
             }
         }
+    }
+    
+    @Autowired
+    private AuditLogMapper auditLogMapper;
+
+    public List<AuditLog> getRecentAuditLogs() {
+        return auditLogMapper.getRecentLogs();
     }
 }
