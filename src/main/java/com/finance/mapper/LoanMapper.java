@@ -9,6 +9,7 @@ public interface LoanMapper {
     void insertApplication(LoanApplication app);
     
     List<LoanApplication> selectAllApplications();
+    
     LoanApplication selectApplicationById(String id);
     
     List<LoanApplication> searchApplicationsDynamic(@Param("keyword") String keyword, @Param("status") String status);
@@ -16,7 +17,8 @@ public interface LoanMapper {
     void updateApplication(LoanApplication app);
     
     void deleteApplication(String id);
-
+    
     List<LoanApplication> selectApplicationsWithPaging(@Param("offset") int offset, @Param("limit") int limit);
+    
     int countAllApplications();
 }
