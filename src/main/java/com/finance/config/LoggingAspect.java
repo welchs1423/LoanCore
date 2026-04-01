@@ -11,20 +11,20 @@ import org.springframework.stereotype.Component;
 @Component
 public class LoggingAspect {
 
-    private static final Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
+	private static final Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
 
-    @Around("execution(* com.finance.service.LoanReviewService.*(..))")
-    public Object logServiceExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
-        long startTime = System.currentTimeMillis();
-        
-        Object result = joinPoint.proceed();
-        
-        long endTime = System.currentTimeMillis();
-        long executionTime = endTime - startTime;
-        
-        String methodName = joinPoint.getSignature().getName();
-        logger.info("Method: {} | Execution Time: {}ms", methodName, executionTime);
-        
-        return result;
-    }
+	@Around("execution(* com.finance.service.LoanReviewService.*(..))")
+	public Object logServiceExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
+		long startTime = System.currentTimeMillis();
+
+		Object result = joinPoint.proceed();
+
+		long endTime = System.currentTimeMillis();
+		long executionTime = endTime - startTime;
+
+		String methodName = joinPoint.getSignature().getName();
+		logger.info("Method: {} | Execution Time: {}ms", methodName, executionTime);
+
+		return result;
+	}
 }
