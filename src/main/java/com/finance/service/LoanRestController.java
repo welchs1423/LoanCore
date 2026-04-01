@@ -1,5 +1,6 @@
 package com.finance.service;
 
+import com.finance.config.JwtProvider;
 import com.finance.domain.LoanApplication;
 import com.finance.domain.LoanMemo;
 import com.finance.mapper.LoanMemoMapper;
@@ -28,9 +29,19 @@ public class LoanRestController {
     @Autowired
     private LoanMemoMapper memoMapper;
 
+    @Autowired
+    private JwtProvider jwtProvider;
+
+    @PostMapping("/auth/token")
+    public Map<String, Object> generateToken(@RequestParam("adminId") String adminId) {
+        String token = jwtProvider.createToken(adminId);
+        Map<String, Object> response = new HashMap<>();
+        response.put("token", token);
+        return response;
+    }
+
     @GetMapping("/check-customer")
     public Map<String, Object> checkCustomer(@RequestParam("customerId") String customerId) {
-        // 파라미터 4개로 수정 (startDate, endDate에 null 전달)
         List<LoanApplication> existingApps = reviewService.searchApplications(customerId, null, null, null);
         boolean hasPending = false;
         for (LoanApplication app : existingApps) {

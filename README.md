@@ -41,6 +41,8 @@
 
 ### 📅 개발 진행 내역
 * **2026-04-02**
+  - FontAwesome 및 Bootstrap Toast UI 적용, 대시보드 애니메이션 처리를 통한 프론트엔드 UX 고도화
+  - jjwt 라이브러리를 활용한 JWT(JSON Web Token) 발급 API 구축 (Stateless 인증 기반 마련)
   - MyBatis 동적 쿼리를 활용한 대출 신청 내역 기간별 동적 검색(Date Range Search) 기능 추가
   - Spring AOP(@AfterReturning)를 활용한 관리자 활동 감사 로그(Audit Log) 자동 기록 아키텍처 구현
   - Spring @Async 및 ThreadPoolTaskExecutor를 활용한 외부 알림 발송 비동기 이벤트 처리 로직 구축
