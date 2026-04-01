@@ -41,6 +41,10 @@
 
 ### 📅 개발 진행 내역
 * **2026-04-02**
+  - [Fix] Java Config(RedisConfig) 도입을 통한 Redis 연동 및 XML 설정 충돌 해결
+  - [Fix] AuditLog 도메인 모델 리팩토링 및 MyBatis 매퍼 파라미터 불일치 수정
+  - [Feat] Chart.js를 활용한 메인 대시보드 대출 현황 시각화 구현
+  - [Feat] 시스템 감사 로그(Audit Log) 추적 및 관리자 조회 기능 추가
   - [Fix] AuditLog 도메인 필드명 불일치 및 기본 생성자 누락 해결
   - [Fix] pom.xml 의존성(Jackson, Hibernate Validator) 중복 제거 및 버전 정규화
   - Lombok 의존성 제거 후 순수 자바 코드로 도메인 모델(Getter/Setter) 재구현
