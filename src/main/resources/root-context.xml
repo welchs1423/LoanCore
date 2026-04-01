@@ -27,12 +27,14 @@
 
     <context:component-scan base-package="com.finance" />
 
+    <context:property-placeholder location="classpath:database.properties" />
+
     <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
-        <property name="driverClassName" value="org.h2.Driver" />
-        <property name="jdbcUrl" value="jdbc:h2:mem:loandb;DB_CLOSE_DELAY=-1" />
-        <property name="username" value="sa" />
-        <property name="password" value="" />
-        <property name="maximumPoolSize" value="10" />
+        <property name="driverClassName" value="${db.driver}" />
+        <property name="jdbcUrl" value="${db.url}" />
+        <property name="username" value="${db.username}" />
+        <property name="password" value="${db.password}" />
+        <property name="maximumPoolSize" value="${hikari.maxPoolSize}" />
     </bean>
 
     <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">

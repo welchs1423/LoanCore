@@ -38,6 +38,7 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-01**
+  - 보안 및 유지보수성 향상을 위한 환경 설정 외부 분리(Property Placeholder) 적용
   - HikariCP를 활용한 데이터베이스 커넥션 풀(Connection Pool) 환경 구축 및 성능 최적화
   - web.xml 설정을 통한 HTTP 상태 코드(404, 500) 사용자 정의 에러 페이지(Custom Error Page) 구현
   - JUnit 5 및 Spring TestContext Framework를 활용한 서비스 계층(Service Layer) 단위 테스트(Unit Test) 환경 구축
