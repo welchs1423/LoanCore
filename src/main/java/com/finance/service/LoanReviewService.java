@@ -1,5 +1,6 @@
 package com.finance.service;
 
+import com.finance.annotation.LogExecutionTime;
 import com.finance.domain.LoanApplication;
 import com.finance.mapper.LoanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ public class LoanReviewService {
     @Autowired
     private NotificationService notificationService;
 
+    @LogExecutionTime
     @Transactional
     @CacheEvict(value = "loanCache", allEntries = true)
     public String reviewLoan(LoanApplication app) {
@@ -38,7 +40,6 @@ public class LoanReviewService {
         }
         
         loanMapper.insertApplication(app);
-        
         notificationService.sendStatusChangeNotification(app.getCustomerId(), app.getStatusCode());
         
         return resultMessage;
@@ -52,6 +53,7 @@ public class LoanReviewService {
         return loanMapper.selectApplicationById(id);
     }
 
+    @LogExecutionTime
     public List<LoanApplication> searchApplications(String keyword, String status, String startDate, String endDate) {
         return loanMapper.searchApplicationsDynamic(keyword, status, startDate, endDate);
     }
@@ -73,6 +75,7 @@ public class LoanReviewService {
         loanMapper.deleteApplication(id);
     }
 
+    @LogExecutionTime
     public List<LoanApplication> getApplicationsWithPaging(int page, int pageSize) {
         int offset = (page - 1) * pageSize;
         return loanMapper.selectApplicationsWithPaging(offset, pageSize);
@@ -83,6 +86,7 @@ public class LoanReviewService {
         return loanMapper.countAllApplications();
     }
 
+    @LogExecutionTime
     @Transactional
     @CacheEvict(value = "loanCache", allEntries = true)
     public void updateStatusBulk(String status, List<String> ids) {
