@@ -15,12 +15,14 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.finance.domain.LoanApplication;
 
@@ -50,7 +52,6 @@ public class LoanWebController {
         return "apply";
     }
 
-    // 중복 제거된 유일한 submitLoan 메서드
     @PostMapping("/submit-loan")
     public String submitLoan(@Valid @ModelAttribute LoanApplication app,
                              BindingResult bindingResult,
@@ -89,13 +90,15 @@ public class LoanWebController {
                                    @RequestParam(value = "status", required = false) String status,
                                    @RequestParam(value = "page", defaultValue = "1") int page,
                                    Model model) {
-        int pageSize = 5;
+        int pageSize = 10; 
         
         if ((keyword != null && !keyword.trim().isEmpty()) || (status != null && !status.trim().isEmpty())) {
             List<LoanApplication> list = reviewService.searchApplications(keyword, status);
             model.addAttribute("loanList", list);
             model.addAttribute("keyword", keyword);
             model.addAttribute("status", status);
+            model.addAttribute("currentPage", 1);
+            model.addAttribute("totalPages", 1);
             return "list";
         }
 
@@ -105,7 +108,7 @@ public class LoanWebController {
 
         model.addAttribute("loanList", list);
         model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("totalPages", totalPages > 0 ? totalPages : 1);
         
         return "list";
     }
@@ -150,6 +153,7 @@ public class LoanWebController {
         headerRow.createCell(1).setCellValue("고객 ID");
         headerRow.createCell(2).setCellValue("신청 금액(원)");
         headerRow.createCell(3).setCellValue("진행 상태");
+        headerRow.createCell(4).setCellValue("주소");
 
         int rowNum = 1;
         for (LoanApplication app : list) {
@@ -158,6 +162,7 @@ public class LoanWebController {
             row.createCell(1).setCellValue(app.getCustomerId());
             row.createCell(2).setCellValue(app.getAmount().doubleValue());
             row.createCell(3).setCellValue(app.getStatusCode());
+            row.createCell(4).setCellValue(app.getAddress() != null ? app.getAddress() : "");
         }
 
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
@@ -167,14 +172,42 @@ public class LoanWebController {
         workbook.close();
     }
 
+    @PostMapping("/excel/upload")
+    public String uploadExcel(@RequestParam("excelFile") MultipartFile file) {
+        if (file.isEmpty()) {
+            return "redirect:/list";
+        }
+        try (InputStream is = file.getInputStream()) {
+            Workbook workbook = WorkbookFactory.create(is);
+            Sheet sheet = workbook.getSheetAt(0);
+            
+            for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+                Row row = sheet.getRow(i);
+                if (row == null) continue;
+
+                LoanApplication app = new LoanApplication();
+                app.setApplicationId("APP-EXCEL-" + System.currentTimeMillis() + "-" + i);
+                
+                if (row.getCell(0) != null) app.setCustomerId(row.getCell(0).getStringCellValue());
+                if (row.getCell(1) != null) app.setAmount(BigDecimal.valueOf(row.getCell(1).getNumericCellValue()));
+                if (row.getCell(2) != null) app.setAddress(row.getCell(2).getStringCellValue());
+                
+                if (app.getCustomerId() != null && app.getAmount() != null) {
+                    reviewService.reviewLoan(app);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "redirect:/list";
+    }
+
     @GetMapping("/download")
     public void downloadFile(@RequestParam("fileName") String fileName, HttpServletResponse response) throws IOException {
         String uploadFolder = "C:/upload_test/";
         File file = new File(uploadFolder + fileName);
         
-        if (!file.exists()) {
-            return;
-        }
+        if (!file.exists()) return;
 
         String encodedFileName = URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20");
         response.setContentType("application/octet-stream");
