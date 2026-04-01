@@ -17,13 +17,15 @@ import java.time.Duration;
 @EnableCaching
 public class RedisConfig {
 
-    @Bean
+	@Bean
     public RedisConnectionFactory redisConnectionFactory() {
-        JedisConnectionFactory factory = new JedisConnectionFactory();
-        factory.setHostName("localhost");
-        factory.setPort(6379);
-        factory.setUsePool(true);
-        return factory;
+        org.springframework.data.redis.connection.RedisStandaloneConfiguration redisConfig = 
+            new org.springframework.data.redis.connection.RedisStandaloneConfiguration("localhost", 6379);
+        
+        org.springframework.data.redis.connection.jedis.JedisClientConfiguration clientConfig = 
+            org.springframework.data.redis.connection.jedis.JedisClientConfiguration.builder().usePooling().build();
+            
+        return new JedisConnectionFactory(redisConfig, clientConfig);
     }
 
     @Bean

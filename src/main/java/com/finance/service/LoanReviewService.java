@@ -70,6 +70,6 @@ public class LoanReviewService {
     }
 
     public List<LoanMemo> getMemosByAppId(String applicationId) {
-        return memoMapper.selectMemosByAppId(applicationId);
+        return memoMapper.selectMemos(applicationId);
     }
 }
