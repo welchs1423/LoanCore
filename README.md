@@ -38,8 +38,17 @@
 
 ### 📅 개발 진행 내역
 
+* **2026-04-03**
+  - [Feat] @ControllerAdvice를 활용한 GlobalExceptionHandler 구축 및 커스텀 에러 화면(error.jsp) 연동
+  - [Feat] Apache POI XSSFWorkbook을 이용한 관리자 대출 심사 내역 Excel(.xlsx) 추출 API 구현
+  - [Feat] Spring i18n(SessionLocaleResolver, LocaleChangeInterceptor)을 활용한 심사 메모 시스템 다국어(한국어/영어) 처리 적용
+  - [Refactor] Log4jdbc-log4j2 및 Logback 연동을 통한 파라미터 바인딩 SQL 쿼리 로깅 시각화 적용
+  - [Refactor] properties 기반의 메시지 소스 분리로 JSP 하드코딩 제거 및 유지보수성 향상
+  - [Feat] Spring i18n(SessionLocaleResolver, LocaleChangeInterceptor)을 활용한 심사 메모 시스템 다국어(한국어/영어) 처리 적용
+  - [Refactor] properties 기반의 메시지 소스 분리로 JSP 하드코딩 제거 및 유지보수성 향상
+
 * **2026-04-02**
-  - CommonsMultipartResolver를 활용한 업로드 파일 용량 제한(10MB) 설정
+  - CommonsMultipartResolver를 활용한 업로드 파일 용량 제한(10MB) 설정r
   - 파일 저장 물리 경로(upload.properties) 외부 프로퍼티화 및 @Value 어노테이션 연동
   - [Fix] 프로젝트 구조에 맞지 않는 Java Config 제거 및 XML 기반 설정(Interceptor/Task)으로 회귀
   - [Feat] SHA-256 암호화 유틸(CryptoUtil) 도입 및 세션 기반 관리자 인증 로직 구현
