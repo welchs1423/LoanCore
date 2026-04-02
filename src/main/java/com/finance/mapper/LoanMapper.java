@@ -1,8 +1,15 @@
 package com.finance.mapper;
 
-import com.finance.domain.LoanApplication;
-import org.apache.ibatis.annotations.*;
 import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
+
+import com.finance.domain.LoanApplication;
 
 @Mapper
 public interface LoanMapper {
@@ -32,4 +39,6 @@ public interface LoanMapper {
 
     @Update("<script>UPDATE loan_applications SET status_code = #{status} WHERE application_id IN <foreach item='id' collection='appIds' open='(' separator=',' close=')'>#{id}</foreach></script>")
     void updateApplicationStatusBulk(@Param("status") String status, @Param("appIds") List<String> appIds);
+    
+    List<Map<String, Object>> selectAllLoans();
 }
