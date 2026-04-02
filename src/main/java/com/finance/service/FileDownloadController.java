@@ -1,8 +1,13 @@
 package com.finance.service;
 
+import java.io.File;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -13,17 +18,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.io.File;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-
 @Controller
 public class FileDownloadController {
+	
+	@Value("${upload.basePath}")
+    private String uploadPath;
 
     private static final Logger logger = LoggerFactory.getLogger(FileDownloadController.class);
-    
-    // 기존 LoanWebController에서 사용하던 경로와 동일하게 설정
-    private final String uploadPath = "C:/upload";
 
     @GetMapping("/download")
     public ResponseEntity<Resource> downloadFile(@RequestParam("fileName") String fileName) {

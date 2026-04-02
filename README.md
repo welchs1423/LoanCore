@@ -39,6 +39,8 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-02**
+  - CommonsMultipartResolver를 활용한 업로드 파일 용량 제한(10MB) 설정
+  - 파일 저장 물리 경로(upload.properties) 외부 프로퍼티화 및 @Value 어노테이션 연동
   - [Fix] 프로젝트 구조에 맞지 않는 Java Config 제거 및 XML 기반 설정(Interceptor/Task)으로 회귀
   - [Feat] SHA-256 암호화 유틸(CryptoUtil) 도입 및 세션 기반 관리자 인증 로직 구현
   - [Feat] Spring Task(<task:annotation-driven>)를 활용한 10초 주기 심사 대기 건 모니터링 배치 구축
