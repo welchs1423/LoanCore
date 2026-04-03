@@ -39,6 +39,11 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-04**
+  - [Feat] VirtualAccountService 구현으로 상환용 고객 고유 가상계좌 발급 및 매핑 로직 추가
+  - [Feat] RehabilitationService 연동을 통한 개인회생/파산(BANKRUPT) 접수 및 이자 정지 처리
+  - [Feat] CollectionActivityService를 활용한 연체 채권 추심 활동(전화, 방문 등) 이력 DB 누적 기능 구축
+  - [DB] 가상계좌(VIRTUAL_ACCOUNT) 및 추심 이력(COLLECTION_ACTIVITY) 테이블 스키마 DDL 추가
+  - [Test] 가상계좌 발급, 파산 접수, 추심 로깅 단위 테스트 케이스 추가
   - [Feat] AuditService 구현으로 주요 여신 원장 데이터 변경 이력 추적(Audit Trail) 시스템 구축
   - [Security] MfaService 추가를 통한 TOTP 기반 2차 인증 체계 모의 로직 적용
   - [Util] PrivacyMaskingUtils 구축으로 주민번호 및 연락처 개인정보 비식별화 처리 로직 구현
