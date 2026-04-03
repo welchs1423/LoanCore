@@ -1,3 +1,4 @@
+// 기존 com.finance.service.ExcelController.java 확인
 package com.finance.service;
 
 import com.finance.mapper.LoanMapper;
@@ -8,7 +9,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-
 import javax.servlet.http.HttpServletResponse;
 import java.net.URLEncoder;
 import java.util.List;
@@ -31,7 +31,7 @@ public class ExcelController {
         headerRow.createCell(2).setCellValue("신청금액");
         headerRow.createCell(3).setCellValue("상태");
 
-        // LoanMapper에 전체 목록을 Map으로 가져오는 selectAllLoans 메서드가 있다고 가정
+        // LoanMapper의 전체 목록을 Map으로 가져오는 selectAllLoans 메서드 호출
         List<Map<String, Object>> loanList = loanMapper.selectAllLoans();
         
         int rowNum = 1;
