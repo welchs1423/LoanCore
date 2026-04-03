@@ -39,6 +39,11 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-04**
+  - [Feat] OcrService를 통한 신분증 이미지 텍스트 추출 및 진위확인 모의 로직 적용
+  - [Feat] ElectronicSignatureService 구축으로 약정서 전자서명 SHA-256 해시값 생성 및 보관 구현
+  - [Feat] RefinancingService를 활용한 타행 대환대출 원장 이관 로직 구현
+  - [Feat] EarlyWarningScheduler 연동을 통한 고객 신용등급 급락 조기 경보(EWS) 시스템 스케줄링 구축
+  - [Test] OCR 텍스트 추출, 전자서명 생성, 대환대출, 조기경보 스케줄러 단위 테스트 케이스 추가
   - [Feat] RolloverService 구현을 통한 대출 만기 연장 심사 및 상태 갱신 로직 적용
   - [Feat] JdbcTemplate 기반 CollateralService 담보물 정보 DB 매핑 로직 추가
   - [Feat] RestTemplate을 활용한 ExternalCreditApiClient 외부 신용평가망 비동기 HTTP 통신 모듈 구축
