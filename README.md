@@ -39,6 +39,11 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-04**
+  - [Feat] DefaultPredictionService 구현으로 신용도 및 연체 기반 부도 확률(PD) 모의 산출 엔진 구축
+  - [Feat] NotificationQueueService 도입을 통한 알림 발송 비동기 처리를 위한 큐잉(Queueing) 로직 적용
+  - [Feat] DataRetentionBatchService 구축으로 개인정보 보호법 준수를 위한 만료 데이터 파기 배치 연동
+  - [Feat] HealthCheckController 구현으로 서비스 가용성 및 인프라 상태 모니터링 엔드포인트 추가
+  - [Test] 부도 확률 계산, 알림 큐 처리 로직 JUnit 단위 테스트 케이스 작성
   - [Feat] AutoDebitBatchService 구축을 통한 정기 결제일 CMS 자동이체 출금 청구 배치 스케줄러 연동
   - [Security] PasswordSecurityService를 활용한 단방향 해시 암호화 및 5회 실패 시 계정 잠금 처리
   - [Security] RateLimiterService 도입으로 외부 API 트래픽 과부하 방지용 호출량 제한 로직 추가
