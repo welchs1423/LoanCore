@@ -39,6 +39,11 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-04**
+  - [Feat] RateReductionService 구현으로 신용점수 개선 시 금리인하요구권 심사 및 승인 로직 적용
+  - [Feat] EarlyRepaymentService를 활용한 대출 잔여 일수 비례 중도상환수수료(페널티) 산출 기능 구축
+  - [Feat] CertificateService 도입으로 금융기관 제출용 대출잔액증명서 고유 발급번호 생성 처리
+  - [Feat] OverpaymentBatchService 스케줄러를 통한 완제 고객의 과오납금(미환급금) 자동 스캔 로직 추가
+  - [Test] 금리인하 심사, 중도상환수수료 산출, 증명서 발급, 과오납 스캔 단위 테스트 케이스 작성
   - [Feat] LoanLiquidationService 구현으로 대출금 전액 상환 시 완제 처리 및 고유 UUID 생성 로직 적용
   - [Feat] TaxDataService 구축을 통한 연간 이자 상환 총액 집계 및 증빙 데이터 추출 기능 추가
   - [Feat] FdsPatternService 도입으로 이상 IP 및 이상 상환 시도 패턴 매칭 FDS 로직 구현

@@ -7,14 +7,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class EarlyRepaymentService {
 
-    public BigDecimal calculateEarlyRepaymentFee(BigDecimal remainingPrincipal, int remainingDays, int totalLoanDays) {
+    public BigDecimal calculateFee(BigDecimal repaymentAmount, int remainingDays, int totalLoanDays) {
+        BigDecimal feeRate = new BigDecimal("0.015");
+        
         if (remainingDays <= 0 || totalLoanDays <= 0) {
             return BigDecimal.ZERO;
         }
-        
-        BigDecimal feeRate = new BigDecimal("0.015");
-        BigDecimal daysRatio = BigDecimal.valueOf((double) remainingDays / totalLoanDays);
-        
-        return remainingPrincipal.multiply(feeRate).multiply(daysRatio).setScale(0, RoundingMode.HALF_UP);
+
+        BigDecimal daysRatio = new BigDecimal(remainingDays).divide(new BigDecimal(totalLoanDays), 4, RoundingMode.HALF_UP);
+        return repaymentAmount.multiply(feeRate).multiply(daysRatio).setScale(0, RoundingMode.DOWN);
     }
 }
