@@ -39,6 +39,11 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-04**
+  - [Feat] LoanLiquidationService 구현으로 대출금 전액 상환 시 완제 처리 및 고유 UUID 생성 로직 적용
+  - [Feat] TaxDataService 구축을 통한 연간 이자 상환 총액 집계 및 증빙 데이터 추출 기능 추가
+  - [Feat] FdsPatternService 도입으로 이상 IP 및 이상 상환 시도 패턴 매칭 FDS 로직 구현
+  - [Config] I18nConfig 설정을 통한 시스템 전역 다국어 지원(Internationalization) 기초 환경 구축
+  - [Test] 여신 완제 처리, 연말정산 집계, FDS 패턴 탐지 로직 JUnit 단위 테스트 케이스 작성
   - [Feat] DefaultPredictionService 구현으로 신용도 및 연체 기반 부도 확률(PD) 모의 산출 엔진 구축
   - [Feat] NotificationQueueService 도입을 통한 알림 발송 비동기 처리를 위한 큐잉(Queueing) 로직 적용
   - [Feat] DataRetentionBatchService 구축으로 개인정보 보호법 준수를 위한 만료 데이터 파기 배치 연동
