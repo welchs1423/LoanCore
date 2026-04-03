@@ -39,6 +39,11 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-04**
+  - [Feat] InterestRateService 구현을 통한 신용점수 구간별 변동 금리 및 максимально도 동적 산출 로직 적용
+  - [Feat] PreInquiryService 구축으로 대출 가조회(Soft Inquiry) 실행 이력 DB 적재 처리
+  - [Feat] EarlyRepaymentService를 활용한 조기 상환 수수료 일수 비례 계산식 구현
+  - [Feat] QnAService 연동을 통한 고객 문의 게시판 및 관리자 답변 처리 프로세스 구현
+  - [Test] 신용평가 기반 금리 산출, 가조회, 중도상환, QnA 로직 단위 테스트 케이스 추가
   - [Feat] JSTL 및 Bootstrap을 활용한 고객용 마이페이지(mypage.jsp, login.jsp) UI 구현
   - [Feat] CustomerAuthController 및 CustomerAuthInterceptor를 통한 고객 세션 인증 라우팅 구축
   - [Feat] PenaltyScheduler를 통한 연체 건(OVERDUE) 대상 일일 가산 이자(Penalty) 부과 배치 스케줄러 구현
