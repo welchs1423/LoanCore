@@ -39,6 +39,7 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-03**
+  - [Fix] Spring Data Redis의 RedisCacheManager 생성자 버전 충돌 오류 및 팩토리 메서드 방식 전환으로 해결
   - [Feat] Spring Data Redis 연동 및 @Cacheable을 활용한 대출 목록 조회 캐싱 적용
   - [Feat] Spring Task(@Scheduled)를 활용한 대기 상태 대출건 자정 만료 처리 자동화 스케줄러 구현
   - [Feat] Springfox Swagger2 연동 및 WebMvcConfigurer 기반 API 명세서 자동화 UI 구축

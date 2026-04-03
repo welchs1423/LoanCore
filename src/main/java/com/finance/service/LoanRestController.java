@@ -65,7 +65,7 @@ public class LoanRestController {
 
     @GetMapping("/memos")
     public List<LoanMemo> getMemos(@RequestParam("applicationId") String applicationId) {
-        return memoMapper.selectMemos(applicationId);
+        return memoMapper.selectMemosByApplicationId(applicationId);
     }
 
     @PostMapping("/memos")
