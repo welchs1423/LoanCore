@@ -39,6 +39,10 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-04**
+  - [Feat] PaymentService 구현을 통한 대출금 수납 잔액 차감 및 연체(OVERDUE) 상태 일괄 전환 처리
+  - [Feat] AccountVerificationService 구현으로 1원 송금 방식 본인 계좌 난수 인증 로직 구축
+  - [Feat] ConsentService를 활용한 신용정보 조회 약관 동의 이력(IP, Timestamp) DB 적재 로직 구현
+  - [Feat] CustomerWebController 구축 및 고객 전용 B2C 마이페이지(대출 현황 및 상환 스케줄 조회) 라우팅
   - [Feat] 신용평가, 상환 스케줄, 이메일 통보 서비스를 대출 심사 핵심 프로세스(LoanReviewService)에 통합 연결
   - [Feat] 신용평가 모의 연동 API (CreditEvaluationService) 구현
   - [Feat] 원리금균등상환 방식 대출 상환 스케줄링 계산 로직 (RepaymentService) 구현
