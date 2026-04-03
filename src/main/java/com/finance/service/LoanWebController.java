@@ -61,12 +61,12 @@ public class LoanWebController {
         return reviewService.getMemosByAppId(appId);
     }
 
-    @PostMapping("/api/memos")
-    @ResponseBody
-    public String addMemo(@RequestBody LoanMemo memo) {
-        reviewService.addMemo(memo);
-        return "success";
-    }
+	/*
+	 * @PostMapping("/api/memos")
+	 * 
+	 * @ResponseBody public String addMemo(@RequestBody LoanMemo memo) {
+	 * reviewService.addMemo(memo); return "success"; }
+	 */
     
     @GetMapping("/audit")
     public String auditLogDashboard(Model model) {

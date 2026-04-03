@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="com.finance.mapper.AuditLogMapper">
-    <insert id="insertLog" parameterType="com.finance.domain.AuditLog">
-        INSERT INTO AUDIT_LOG (ACTION_NAME, TARGET_ID, ACTION_DETAIL)
+    <insert id="insertAuditLog" parameterType="map">
+        INSERT INTO audit_logs (action_name, target_id, action_detail)
         VALUES (#{actionName}, #{targetId}, #{actionDetail})
     </insert>
 </mapper>

@@ -1,30 +1,21 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.finance.mapper.LoanMemoMapper">
 
+    <select id="selectMemosByApplicationId" resultType="com.finance.domain.LoanMemo">
+        SELECT memo_id as memoId, application_id as applicationId, writer, content, created_at as createdAt
+        FROM LOAN_MEMO
+        WHERE application_id = #{applicationId}
+        ORDER BY created_at DESC
+    </select>
+
     <insert id="insertMemo" parameterType="com.finance.domain.LoanMemo">
-        INSERT INTO LOAN_MEMO (APPLICATION_ID, WRITER, CONTENT)
+        INSERT INTO LOAN_MEMO (application_id, writer, content)
         VALUES (#{applicationId}, #{writer}, #{content})
     </insert>
 
-    <select id="selectMemos" resultType="com.finance.domain.LoanMemo">
-        SELECT 
-            MEMO_ID AS memoId,
-            APPLICATION_ID AS applicationId,
-            WRITER AS writer,
-            CONTENT AS content,
-            CREATED_AT AS createdAt
-        FROM LOAN_MEMO
-        WHERE APPLICATION_ID = #{applicationId}
-        ORDER BY MEMO_ID DESC
-    </select>
-
     <delete id="deleteMemo">
-        DELETE FROM LOAN_MEMO
-        WHERE MEMO_ID = #{memoId}
+        DELETE FROM LOAN_MEMO WHERE memo_id = #{memoId}
     </delete>
 
 </mapper>

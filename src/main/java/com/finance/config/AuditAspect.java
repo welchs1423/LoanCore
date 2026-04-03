@@ -1,13 +1,17 @@
 package com.finance.config;
 
-import com.finance.domain.AuditLog;
-import com.finance.mapper.AuditLogMapper;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import java.util.List;
+
+import com.finance.domain.AuditLog;
+import com.finance.mapper.AuditLogMapper;
 
 @Aspect
 @Component
@@ -39,5 +43,20 @@ public class AuditAspect {
         log.setTargetId("MULTIPLE");
         log.setActionDetail("Status updated to " + status + " for " + ids.size() + " items");
         auditLogMapper.insertLog(log);
+    }
+    
+ // LoanMapper의 insertApplication(대출신청)이 성공적으로 끝날 때마다 아래 로직이 자동 실행됨
+    @AfterReturning("execution(* com.finance.mapper.LoanMapper.insertApplication(..))")
+    public void logAfterApply(JoinPoint joinPoint) {
+        try {
+            Map<String, Object> log = new HashMap<>();
+            log.put("actionName", "대출 신청 접수");
+            log.put("targetId", "SYSTEM");
+            log.put("actionDetail", "신규 대출 신청이 성공적으로 접수되었습니다.");
+            
+            auditLogMapper.insertAuditLog(log);
+        } catch (Exception e) {
+            System.err.println("감사 로그 저장 실패: " + e.getMessage());
+        }
     }
 }

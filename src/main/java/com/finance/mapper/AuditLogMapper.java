@@ -11,4 +11,6 @@ public interface AuditLogMapper {
 
     @Select("SELECT action_name as actionName, target_id as targetId, action_detail as actionDetail FROM audit_logs ORDER BY id DESC LIMIT 50")
     List<AuditLog> getRecentLogs();
+    
+    void insertAuditLog(java.util.Map<String, Object> param);
 }

@@ -39,6 +39,8 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-03**
+  - [Feat] Spring AOP(@Aspect, @AfterReturning)를 활용한 대출 신청 자동 감사 로그(Audit Log) 적재 기능 구현
+  - [Fix] Mapper XML과 인터페이스 간 쿼리 중복 등록 충돌(IllegalArgumentException) 및 JSTL EL 변수 매핑 오류 해결
   - [Feat] @ControllerAdvice를 활용한 GlobalExceptionHandler 구축 및 커스텀 에러 화면(error.jsp) 연동
   - [Feat] Apache POI XSSFWorkbook을 이용한 관리자 대출 심사 내역 Excel(.xlsx) 추출 API 구현
   - [Feat] Spring i18n(SessionLocaleResolver, LocaleChangeInterceptor)을 활용한 심사 메모 시스템 다국어(한국어/영어) 처리 적용
