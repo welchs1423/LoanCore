@@ -1,44 +1,59 @@
-# 🏦 LoanCore - 여신(대출) 시스템 프로젝트
+# 🏦 LoanCore: 엔터프라이즈 여신(대출) 관리 시스템
 
-금융권의 핵심 업무인 여신(대출) 프로세스를 모사하여 대출 신청부터 심사, 관리자 승인 및 증빙 서류 관리까지 전 과정을 처리하는 **Spring 기반 백엔드 시스템**입니다.
+금융권의 핵심 업무인 여신 프로세스를 모사하여, 신청부터 심사, 실행(송금), 사후 관리 및 리스크 탐지까지 전 과정을 처리하는 **Spring 기반 백엔드 시스템**입니다.
 
-### 🛠️ Tech Stack
-- **Backend:** Java 11, Spring MVC 5.x, MyBatis 3.5, AspectJ (AOP), **Spring Cache (Redis / ConcurrentMapCache)**
-- **Frontend:** JSP (JSTL), Bootstrap 5, JavaScript (Fetch API / Ajax), Chart.js 4.x, html2pdf.js
-- **Database:** H2 Database (In-Memory), Spring JDBC, HikariCP (Connection Pool)
-- **Security:** SHA-256 Hash Algorithm, Session-based Interceptor
-- **Libraries:** Apache POI (Excel), Zxing 3.5 (QR Code), Log4jdbc-log4j2, Logback (SLF4J), Hibernate Validator
-- **External API:** Daum/Kakao Postcode API 연동
-- **Build Tool:** Maven
-- **Server:** Apache Tomcat 9.0
+---
 
-### 🚀 주요 구현 기능
+## 🛠️ Tech Stack
 
-#### 1. 대출 프로세스 및 CRUD
-- **대출 신청 및 주소 검색:** Daum 우편번호 API를 연동하여 정확한 거주지 정보를 입력받고 데이터 바인딩 처리
-- **심사 로직:** 신청 금액 기준 자동 승인/거절 처리 및 상태 관리
-- **심사 메모 시스템:** Fetch API(Ajax)를 활용하여 상세 페이지 내 비동기식 실시간 메모(댓글) 기능 구현
-- **증빙 서류 관리:** MultipartResolver를 이용한 서류 업로드 및 **FileDownloadController를 통한 다운로드 스트림** 구현
+* **Backend:** Java 11, Spring MVC 5.x, MyBatis 3.5, AspectJ (AOP), Spring Cache
+* **Infrastructure:** **Redis (Distributed Lock & Cache)**, Docker Compose, JMeter (Performance Test)
+* **Frontend:** JSP (JSTL), Bootstrap 5, JavaScript (Fetch API), Chart.js 4.x
+* **Database:** H2 Database, Spring JDBC, HikariCP
+* **Security:** **BCrypt & SHA-256**, Session Interceptor, **RBAC (Role-Based Access Control)**, **IP Whitelisting**
+* **Libraries:** Apache POI, Zxing 3.5, **JavaMailSender**, Hibernate Validator, Log4jdbc
 
-#### 2. 관리자 및 보안 (Admin & Security)
-- **데이터 통합 관리:** Pagination 및 Dynamic SQL을 활용한 조건별 검색 필터링 목록 조회
-- **상태 일괄 변경:** MyBatis `<foreach>` 태그를 활용한 다중 선택 건의 상태 일괄 업데이트(Bulk Update) 구현
-- **관리자 인증:** **AdminInterceptor를 활용한 세션 기반 접근 제어** 및 CryptoUtil 기반의 **SHA-256 비밀번호 암호화** 로그인
-- **실시간 모니터링:** **@Scheduled 기반의 LoanScheduler**를 통해 심사 대기 건수 주기적 추적 및 로그 기록
+---
 
-#### 3. 시스템 운영 및 성능 최적화
-- **통계 시각화 대시보드:** Chart.js를 활용하여 심사 현황을 가시화한 인터랙티브 도넛 차트 대시보드 구현
-- **조회 성능 최적화:** **Spring Cache(@Cacheable) 및 Redis 연동**으로 중복 통계 쿼리의 DB 부하 최소화 및 응답 속도 개선
-- **전자문서 및 QR 발급:** Zxing을 이용한 접수증 **QR 코드 생성** 및 html2pdf 기반의 **승인 확인서 PDF** 발급 기능
-- **데이터 추출:** Apache POI를 활용한 대출 신청 내역 **Excel 다운로드** 기능 구현
-- **견고한 예외 처리:** @ControllerAdvice 기반의 Global Exception Handler 구축으로 시스템 안정성 확보
-- **로깅 및 모니터링:** Spring AOP 서비스 추적, Log4jdbc를 이용한 SQL 가시화 및 Logback 기록 관리
+## 🚀 주요 구현 기능
+
+### 1. 고도화된 여신 비즈니스 로직
+* **대출 실행 및 상환 관리:** 대출 승인 후 실제 **가상계좌(Virtual Account)** 발급 및 송금 로직 모사, 회차별 **상환 스케줄 DB 영구 적재** 구현.
+* **금융 컴플라이언스 준수:** 법적 권리인 **금리인하요구권** 심사 프로세스 및 **중도상환수수료**의 정밀한 계산(소수점 오차 방지) 로직 구현.
+* **특수 채권 관리:** 개인회생/파산 접수 시 **이자 부과 자동 정지** 및 채권 상태 변경(BANKRUPT) 처리 로직 구현.
+
+### 2. 엔터프라이즈급 보안 및 리스크 관리
+* **이상거래 탐지(FDS):** 인가되지 않은 IP 접근 차단(**IP Whitelist**) 및 이상 상환 패턴 매칭을 통한 보안 강화.
+* **접근 제어(RBAC):** 관리자 등급별(SUPER_ADMIN, MANAGER) API 접근 권한 분리 및 **인터셉터 기반 세션 보안** 고도화.
+* **감사 로그(Audit Trail):** 민감한 원장 데이터 변경 시 '변경 전/후' 값을 기록하여 데이터 추적성 확보.
+* **데이터 비식별화:** PrivacyMasking 기능을 통해 로그 및 UI상에서 **주민번호/연락처 마스킹** 처리.
+
+### 3. 시스템 안정성 및 성능 최적화
+* **분산 환경 동시성 제어:** **Redis Distributed Lock**을 활용하여 동일 채권에 대한 중복 상환 등 동시성 이슈(Double-spending) 원천 차단.
+* **전역 예외 처리 표준화:** **`@ControllerAdvice`와 공통 응답 DTO(`ApiResponse`)**를 구축하여 API/View 요청별 맞춤형 에러 응답 체계 단일화.
+* **대규모 트래픽 대응:** **JMeter**를 활용한 성능 부하 테스트 환경 구축 및 **Circuit Breaker** 로직을 통한 외부 API 장애 전이 방지.
+* **비동기 알림 체계:** 메일 발송 및 알림톡 기능을 비동기/큐잉 방식으로 설계하여 메인 비즈니스 로직의 응답 속도 유지.
+
+### 4. 데이터 거버넌스 및 운영 도구
+* **배치 모니터링:** `@Scheduled` 기반 이자 결산/자동이체 배치의 성공/실패 여부를 **Batch Log** 테이블에 기록 및 추적.
+* **데이터 파기 정책:** 개인정보 보호법 준수를 위한 보유 기간 만료 데이터 자동 삭제/분리 보관 배치 구현.
+* **다양한 데이터 추출:** 관리자용 원장 내역 **Excel/CSV 다운로드** 및 국세청 제출용 연간 이자 상환 증빙 데이터 집계 기능.
+
+---
+
+## 📈 설계 및 아키텍처 포인트
+
+* **정합성 우선:** 금융 시스템 특성에 맞춰 모든 원장 변경은 `@Transactional` 하에 원자성을 보장하도록 설계.
+* **확장성 고려:** 인터페이스 기반의 서비스 설계와 공통 응답 규격 적용으로 향후 모바일 앱이나 제휴사 연동이 용이한 구조 확보.
 
 ---
 
 ### 📅 개발 진행 내역
 
 * **2026-04-04**
+  - [Feat] PushMessageService 구현으로 FCM 기반 푸시 알림 발송 모의 로직 및 발송 이력 관리 기능 추가
+  - [DB] 푸시 발송 이력 추적을 위한 PUSH_HISTORY 테이블 스키마 DDL 작성
+  - [Test] 사용자별 푸시 메시지 생성 및 DB 적재 로직 JUnit 단위 테스트 수행
   - [Refactor] ApiResponse DTO 및 GlobalExceptionHandler 구축으로 시스템 전역 공통 응답 규격 및 예외 처리 체계 표준화
   - [Feat] DocumentManagementService 구현으로 대출 ID별 증빙 서류 메타데이터 DB 매핑 및 통합 관리 로직 적용
   - [Security] MaintenanceInterceptor 도입을 통한 은행 공동망 점검 시간대 API 접근 자동 차단 기능 구현
