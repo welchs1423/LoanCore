@@ -95,6 +95,11 @@
 		</mvc:interceptor>
 
 		<mvc:interceptor>
+			<mvc:mapping path="/customer/mypage" />
+			<bean class="com.finance.interceptor.CustomerAuthInterceptor" />
+		</mvc:interceptor>
+
+		<mvc:interceptor>
 			<mvc:mapping path="/**" />
 			<mvc:exclude-mapping path="/login" />
 			<mvc:exclude-mapping path="/doLogin" />

@@ -39,6 +39,11 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-04**
+  - [Feat] JSTL 및 Bootstrap을 활용한 고객용 마이페이지(mypage.jsp, login.jsp) UI 구현
+  - [Feat] CustomerAuthController 및 CustomerAuthInterceptor를 통한 고객 세션 인증 라우팅 구축
+  - [Feat] PenaltyScheduler를 통한 연체 건(OVERDUE) 대상 일일 가산 이자(Penalty) 부과 배치 스케줄러 구현
+  - [Feat] WebhookController를 통한 외부 가상계좌망 입금 콜백(Callback) 수신 REST API 통신 모듈 구축
+  - [Test] 신규 기능(고객 인증, 이자 부과 스케줄러, 웹훅 API) 단위 테스트 케이스 추가
   - [Test] 신규 기능(수납 처리, 계좌 인증, 약관 동의, B2C 컨트롤러) 단위 테스트 케이스 추가
   - [Feat] PaymentService 구현을 통한 대출금 수납 잔액 차감 및 연체(OVERDUE) 상태 일괄 전환 처리
   - [Feat] AccountVerificationService 구현으로 1원 송금 방식 본인 계좌 난수 인증 로직 구축
