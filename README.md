@@ -39,6 +39,10 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-03**
+  - [Feat] Spring Data Redis 연동 및 @Cacheable을 활용한 대출 목록 조회 캐싱 적용
+  - [Feat] Spring Task(@Scheduled)를 활용한 대기 상태 대출건 자정 만료 처리 자동화 스케줄러 구현
+  - [Feat] Springfox Swagger2 연동 및 WebMvcConfigurer 기반 API 명세서 자동화 UI 구축
+  - [Fix] 파일 다운로드 컨트롤러 경로 매핑 및 JSP URL 404 에러 수정
   - [Feat] Spring AOP(@Aspect, @AfterReturning)를 활용한 대출 신청 자동 감사 로그(Audit Log) 적재 기능 구현
   - [Fix] Mapper XML과 인터페이스 간 쿼리 중복 등록 충돌(IllegalArgumentException) 및 JSTL EL 변수 매핑 오류 해결
   - [Feat] @ControllerAdvice를 활용한 GlobalExceptionHandler 구축 및 커스텀 에러 화면(error.jsp) 연동

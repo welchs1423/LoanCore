@@ -1,6 +1,7 @@
 package com.finance.service;
 
-import com.finance.util.CryptoUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,9 +11,13 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class AdminController {
 
-    private final String ADMIN_ID = "admin";
-    // "admin123"을 SHA-256으로 해싱한 값 (하드코딩 매칭용)
-    private final String ADMIN_PW_HASH = CryptoUtil.encryptSHA256("admin123");
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+    // 테스트를 위해 "admin123"을 실시간으로 BCrypt 암호화 (실무에서는 DB에 저장된 해시값을 가져옴)
+    private String getAdminPwHash() {
+        return passwordEncoder.encode("admin123");
+    }
 
     @GetMapping("/login")
     public String loginForm() {
@@ -24,17 +29,19 @@ public class AdminController {
                           @RequestParam("adminPw") String adminPw,
                           HttpSession session) {
         
-        // 입력받은 패스워드를 해싱하여 저장된 해시값과 비교
-        if (ADMIN_ID.equals(adminId) && ADMIN_PW_HASH.equals(CryptoUtil.encryptSHA256(adminPw))) {
+        // 1. 아이디 확인 & 2. 사용자가 입력한 평문 비밀번호와 해시값을 안전하게 비교 (matches)
+        if ("admin".equals(adminId) && passwordEncoder.matches(adminPw, getAdminPwHash())) {
             session.setAttribute("adminId", adminId);
-            return "redirect:/"; // 성공 시 메인 대시보드로
+            session.setAttribute("adminLogined", true); // 인터셉터 통과용
+            return "redirect:/";
         }
-        return "redirect:/login?error=true"; // 실패 시 다시 로그인 창으로
+        
+        return "redirect:/login?error=true";
     }
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
-        session.invalidate(); // 세션 파기
+        session.invalidate();
         return "redirect:/login";
     }
 }
