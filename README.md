@@ -39,6 +39,7 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-04**
+  - [Test] 신규 기능(수납 처리, 계좌 인증, 약관 동의, B2C 컨트롤러) 단위 테스트 케이스 추가
   - [Feat] PaymentService 구현을 통한 대출금 수납 잔액 차감 및 연체(OVERDUE) 상태 일괄 전환 처리
   - [Feat] AccountVerificationService 구현으로 1원 송금 방식 본인 계좌 난수 인증 로직 구축
   - [Feat] ConsentService를 활용한 신용정보 조회 약관 동의 이력(IP, Timestamp) DB 적재 로직 구현
