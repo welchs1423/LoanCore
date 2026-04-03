@@ -5,29 +5,22 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.security.Key;
 import java.util.Date;
 
 @Component
 public class JwtProvider {
 
-    private Key key;
-    private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 24;
+    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private final long validityInMilliseconds = 3600000;
 
-    @PostConstruct
-    public void init() {
-        this.key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-    }
-
-    public String createToken(String subject) {
+    public String createToken(String payload) {
         Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + EXPIRATION_TIME);
-
+        Date validity = new Date(now.getTime() + validityInMilliseconds);
         return Jwts.builder()
-                .setSubject(subject)
+                .setSubject(payload)
                 .setIssuedAt(now)
-                .setExpiration(expiryDate)
+                .setExpiration(validity)
                 .signWith(key)
                 .compact();
     }
@@ -39,5 +32,9 @@ public class JwtProvider {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public String getPayload(String token) {
+        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
     }
 }

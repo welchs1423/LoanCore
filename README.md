@@ -39,6 +39,9 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-03**
+  - [Feat] GitHub Actions 기반 CI/CD 파이프라인 구축
+  - [Feat] JUnit5 및 Mockito 기반 비즈니스 로직 단위 테스트 구현
+  - [Feat] Spring Security 및 JWT 기반 REST API 인증/인가 적용
   - [Feat] Dockerizing 및 docker-compose를 활용한 운영 환경 인프라(Tomcat 9, Redis) 통합 세팅
   - [Refactor] OS 환경(Windows/Linux)에 따른 파일 업로드 경로 및 외부 데이터 볼륨 동적 마운트 처리
   - [Feat] Spring WebSocket 기반 실시간 신규 대출 접수 알림(Toast) 기능 구현

@@ -1,39 +1,54 @@
 package com.finance.service;
 
 import com.finance.domain.LoanApplication;
+import com.finance.mapper.LoanMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.transaction.annotation.Transactional;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
-import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(locations = {"classpath:root-context.xml"})
-@Transactional
 public class LoanReviewServiceTest {
 
-    @Autowired
-    private LoanReviewService reviewService;
+    @InjectMocks
+    private LoanReviewService loanReviewService;
+
+    @Mock
+    private LoanMapper loanMapper;
+
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
 
     @Test
-    public void testReviewLoan_Approve() {
-        LoanApplication app = new LoanApplication("TEST-001", "CUST-TEST", new BigDecimal("50000000"));
+    public void testReviewLoan() {
+        LoanApplication app = new LoanApplication();
+        app.setApplicationId("L12345");
+        app.setStatusCode("PENDING");
 
-        reviewService.reviewLoan(app);
+        String result = loanReviewService.reviewLoan(app);
 
+        assertEquals("APPROVE", result);
         assertEquals("APPROVE", app.getStatusCode());
     }
 
     @Test
-    public void testReviewLoan_Reject() {
-        LoanApplication app = new LoanApplication("TEST-002", "CUST-TEST", new BigDecimal("150000000"));
+    public void testApproveLoan() {
+        LoanApplication mockApp = new LoanApplication();
+        mockApp.setApplicationId("L12345");
+        mockApp.setStatusCode("PENDING");
 
-        reviewService.reviewLoan(app);
+        when(loanMapper.selectApplicationById("L12345")).thenReturn(mockApp);
 
-        assertEquals("REJECT", app.getStatusCode());
+        loanReviewService.approveLoan("L12345");
+
+        verify(loanMapper).updateApplication(any(LoanApplication.class));
+        assertEquals("APPROVED", mockApp.getStatusCode());
     }
 }
