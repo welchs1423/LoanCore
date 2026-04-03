@@ -25,7 +25,8 @@ public class GlobalExceptionHandlerTest {
         MockHttpServletRequest request = new MockHttpServletRequest();
         Model model = new ExtendedModelMap();
 
-        String viewName = exceptionHandler.handleAllExceptions(ex, request, model);
+        // 리턴 타입을 String으로 캐스팅
+        String viewName = (String) exceptionHandler.handleAllExceptions(ex, request, model);
 
         assertEquals("error/500", viewName);
         assertTrue(model.containsAttribute("errorMessage"));
@@ -37,7 +38,8 @@ public class GlobalExceptionHandlerTest {
         MockHttpServletRequest request = new MockHttpServletRequest();
         Model model = new ExtendedModelMap();
 
-        String viewName = exceptionHandler.handleBindException(ex, request, model);
+        // 리턴 타입을 String으로 캐스팅
+        String viewName = (String) exceptionHandler.handleBindException(ex, request, model);
 
         assertEquals("apply", viewName);
         assertTrue(model.containsAttribute("errors"));
