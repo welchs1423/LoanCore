@@ -39,6 +39,11 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-04**
+  - [Feat] RolloverService 구현을 통한 대출 만기 연장 심사 및 상태 갱신 로직 적용
+  - [Feat] JdbcTemplate 기반 CollateralService 담보물 정보 DB 매핑 로직 추가
+  - [Feat] RestTemplate을 활용한 ExternalCreditApiClient 외부 신용평가망 비동기 HTTP 통신 모듈 구축
+  - [Feat] LoanCancellationService 청약 철회(Cancellation) 시 원장 금액 정산 로직 구현
+  - [Test] 만기 연장, 담보 등록, API 클라이언트, 청약 철회 로직 JUnit 테스트 케이스 추가
   - [Feat] InterestRateService 구현을 통한 신용점수 구간별 변동 금리 및 максимально도 동적 산출 로직 적용
   - [Feat] PreInquiryService 구축으로 대출 가조회(Soft Inquiry) 실행 이력 DB 적재 처리
   - [Feat] EarlyRepaymentService를 활용한 조기 상환 수수료 일수 비례 계산식 구현
