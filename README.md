@@ -39,6 +39,7 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-04**
+  - [Feat] 신용평가, 상환 스케줄, 이메일 통보 서비스를 대출 심사 핵심 프로세스(LoanReviewService)에 통합 연결
   - [Feat] 신용평가 모의 연동 API (CreditEvaluationService) 구현
   - [Feat] 원리금균등상환 방식 대출 상환 스케줄링 계산 로직 (RepaymentService) 구현
   - [Feat] JavaMailSender 활용 대출 승인 이메일 및 PDF 전자문서 첨부 발송 로직 구현
