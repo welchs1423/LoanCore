@@ -39,6 +39,11 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-04**
+  - [Feat] AuditService 구현으로 주요 여신 원장 데이터 변경 이력 추적(Audit Trail) 시스템 구축
+  - [Security] MfaService 추가를 통한 TOTP 기반 2차 인증 체계 모의 로직 적용
+  - [Util] PrivacyMaskingUtils 구축으로 주민번호 및 연락처 개인정보 비식별화 처리 로직 구현
+  - [Refactor] CircuitBreakerService 도입으로 외부 API 장애 발생 시 Fallback 대응 체계 마련
+  - [Test] 감사 로그 기록, 개인정보 마스킹, MFA 검증 로직 단위 테스트 코드 작성
   - [DB] 스케줄, 담보, 가조회, QnA, 전자서명 등 신규 도메인 테이블 통합 생성 DDL 스크립트 작성
   - [Config] Springfox 기반 Swagger 3.0 연동 및 REST API 규격 문서화 자동화 환경 구축
   - [AOP] LoggingAspect를 통한 컨트롤러/서비스 계층 메서드 실행 시간 및 호출 이력 전역 로깅 체계 구현
