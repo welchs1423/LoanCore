@@ -14,7 +14,8 @@ public class EarlyRepaymentService {
             return BigDecimal.ZERO;
         }
 
-        BigDecimal daysRatio = new BigDecimal(remainingDays).divide(new BigDecimal(totalLoanDays), 4, RoundingMode.HALF_UP);
-        return repaymentAmount.multiply(feeRate).multiply(daysRatio).setScale(0, RoundingMode.DOWN);
+        // 정밀도 손실(소수점 잘림)을 방지하기 위해 곱셈을 먼저 하고 나눗셈을 가장 마지막에 수행합니다.
+        BigDecimal numerator = repaymentAmount.multiply(feeRate).multiply(new BigDecimal(remainingDays));
+        return numerator.divide(new BigDecimal(totalLoanDays), 0, RoundingMode.DOWN);
     }
 }
