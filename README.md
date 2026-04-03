@@ -39,6 +39,11 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-04**
+  - [Feat] LoanDisbursementService 추가로 최종 대출금 타행 이체 송금 연동 및 ACTIVE 상태 전환 로직 구현
+  - [Feat] RepaymentSchedulePersistenceService를 활용한 월별 상환 스케줄 DB 영구 적재 처리
+  - [Feat] NotificationService 구축을 통한 고객 휴대전화 알림톡 발송 모의 API 연동
+  - [Feat] DailyInterestScheduler 배치 스케줄러를 통한 정상 실행 채권 일일 정규 이자 결산 로직 추가
+  - [Test] 대출금 송금, 스케줄 DB 저장, 알림톡 발송, 이자 결산 배치 단위 테스트 코드 작성
   - [Feat] LoanProductService 구현으로 상품별 금리/한도 가이드라인(신용, 주택담보, 햇살론) CMS 구축
   - [Feat] ContractPdfService 구축을 통한 고객 데이터 기반 대출 약정서 PDF 실시간 생성 로직 구현
   - [Feat] SmsOtpService 연동으로 휴대폰 번호 기반 2차 인증번호 발송 및 검증 보안 프로세스 추가
