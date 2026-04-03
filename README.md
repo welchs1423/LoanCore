@@ -38,6 +38,12 @@
 
 ### 📅 개발 진행 내역
 
+* **2026-04-04**
+  - [Feat] 신용평가 모의 연동 API (CreditEvaluationService) 구현
+  - [Feat] 원리금균등상환 방식 대출 상환 스케줄링 계산 로직 (RepaymentService) 구현
+  - [Feat] JavaMailSender 활용 대출 승인 이메일 및 PDF 전자문서 첨부 발송 로직 구현
+  - [Refactor] 대용량 데이터 처리 대비 Spring Batch 프레임워크 설정 및 Job 구성 추가
+
 * **2026-04-03**
   - [Feat] @ControllerAdvice를 활용한 GlobalExceptionHandler 구축 및 커스텀 에러 화면(error/500.jsp) 연동
   - [Feat] MockHttpServletRequest를 활용한 예외 처리 핸들러 단위 테스트 구현

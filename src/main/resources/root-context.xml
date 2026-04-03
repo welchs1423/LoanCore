@@ -19,44 +19,59 @@
                            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
                            http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-	<context:component-scan base-package="com.finance" />
+	<context:component-scan
+		base-package="com.finance" />
 	<cache:annotation-driven />
 
-	<context:property-placeholder location="classpath:*.properties" />
+	<context:property-placeholder
+		location="classpath:*.properties" />
 
-	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource"
+		destroy-method="close">
 		<property name="driverClassName" value="${db.driver}" />
 		<property name="jdbcUrl" value="${db.url}" />
 		<property name="username" value="${db.username}" />
 		<property name="password" value="${db.password}" />
 	</bean>
 
-	<jdbc:initialize-database data-source="dataSource">
+	<jdbc:initialize-database
+		data-source="dataSource">
 		<jdbc:script location="classpath:schema.sql" />
 	</jdbc:initialize-database>
 
-	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+	<bean id="sqlSessionFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
-		<property name="mapperLocations" value="classpath:/mapper/*.xml" />
+		<property name="mapperLocations"
+			value="classpath:/mapper/*.xml" />
 		<property name="configuration">
 			<bean class="org.apache.ibatis.session.Configuration">
 				<property name="mapUnderscoreToCamelCase" value="true" />
 			</bean>
 		</property>
 	</bean>
-	<mybatis-spring:scan base-package="com.finance.mapper" />
+	<mybatis-spring:scan
+		base-package="com.finance.mapper" />
 
 	<aop:aspectj-autoproxy />
 	<mvc:annotation-driven />
 	<mvc:default-servlet-handler />
 
-	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<property name="maxUploadSize" value="10485760" />
 		<property name="maxInMemorySize" value="1048576" />
 		<property name="defaultEncoding" value="UTF-8" />
 	</bean>
 
-	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+	<bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
 		<property name="basenames">
 			<list>
 				<value>classpath:/messages/memo</value>
@@ -65,14 +80,16 @@
 		<property name="defaultEncoding" value="UTF-8" />
 	</bean>
 
-	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+	<bean id="localeResolver"
+		class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
 		<property name="defaultLocale" value="ko" />
 	</bean>
 
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/**" />
-			<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+			<bean
+				class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
 				<property name="paramName" value="lang" />
 			</bean>
 		</mvc:interceptor>
@@ -85,35 +102,45 @@
 			<mvc:exclude-mapping path="/submit-loan" />
 			<mvc:exclude-mapping path="/api/**" />
 			<mvc:exclude-mapping path="/resources/**" />
-			
+
 			<mvc:exclude-mapping path="/swagger-ui.html" />
 			<mvc:exclude-mapping path="/webjars/**" />
 			<mvc:exclude-mapping path="/v2/api-docs" />
 			<mvc:exclude-mapping path="/swagger-resources/**" />
-			
+
 			<bean class="com.finance.interceptor.AdminInterceptor" />
 		</mvc:interceptor>
 	</mvc:interceptors>
-	
-	<bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
-	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+
+	<bean id="passwordEncoder"
+		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
-	<tx:annotation-driven transaction-manager="transactionManager" />
+	<tx:annotation-driven
+		transaction-manager="transactionManager" />
 	<task:annotation-driven />
 
-	<bean id="redisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
-		<property name="hostName" value="#{systemEnvironment['REDIS_HOST'] != null ? systemEnvironment['REDIS_HOST'] : '127.0.0.1'}" />
+	<bean id="redisConnectionFactory"
+		class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+		<property name="hostName"
+			value="#{systemEnvironment['REDIS_HOST'] != null ? systemEnvironment['REDIS_HOST'] : '127.0.0.1'}" />
 		<property name="port" value="6379" />
 	</bean>
 
-	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
-		<property name="connectionFactory" ref="redisConnectionFactory" />
+	<bean id="redisTemplate"
+		class="org.springframework.data.redis.core.RedisTemplate">
+		<property name="connectionFactory"
+			ref="redisConnectionFactory" />
 	</bean>
 
-	<cache:annotation-driven cache-manager="cacheManager" />
+	<cache:annotation-driven
+		cache-manager="cacheManager" />
 
-	<bean id="cacheManager" class="org.springframework.data.redis.cache.RedisCacheManager" factory-method="create">
+	<bean id="cacheManager"
+		class="org.springframework.data.redis.cache.RedisCacheManager"
+		factory-method="create">
 		<constructor-arg ref="redisConnectionFactory" />
 	</bean>
 
