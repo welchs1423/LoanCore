@@ -39,6 +39,10 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-04**
+  - [DB] 스케줄, 담보, 가조회, QnA, 전자서명 등 신규 도메인 테이블 통합 생성 DDL 스크립트 작성
+  - [Config] Springfox 기반 Swagger 3.0 연동 및 REST API 규격 문서화 자동화 환경 구축
+  - [AOP] LoggingAspect를 통한 컨트롤러/서비스 계층 메서드 실행 시간 및 호출 이력 전역 로깅 체계 구현
+  - [Config] Docker Compose Redis 컨테이너 연동을 위한 Lettuce 기반 RedisTemplate 스프링 설정 추가
   - [Feat] LoanDisbursementService 추가로 최종 대출금 타행 이체 송금 연동 및 ACTIVE 상태 전환 로직 구현
   - [Feat] RepaymentSchedulePersistenceService를 활용한 월별 상환 스케줄 DB 영구 적재 처리
   - [Feat] NotificationService 구축을 통한 고객 휴대전화 알림톡 발송 모의 API 연동
