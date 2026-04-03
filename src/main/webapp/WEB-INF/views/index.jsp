@@ -8,6 +8,7 @@
     <title>LoanCore - 관리자 대시보드</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body class="bg-light">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
@@ -85,7 +86,20 @@
         </div>
     </div>
 
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header bg-primary text-white">
+                <strong class="me-auto">실시간 알림</strong>
+                <small>방금 전</small>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body fw-bold" id="toastMessage">
+                </div>
+        </div>
+    </div>
+
     <script>
+        // 1. Chart.js 통계 데이터 렌더링
         document.addEventListener("DOMContentLoaded", function() {
             fetch('/LoanCore/api/statistics')
                 .then(response => response.json())
@@ -118,6 +132,24 @@
                     });
                 });
         });
+
+        // 2. WebSocket 실시간 알림 연결
+        let socket = new WebSocket("ws://" + location.host + "/LoanCore/ws/notifications");
+
+        socket.onmessage = function(event) {
+            // 메시지를 받으면 Toast 메시지 영역에 내용을 넣고 띄움
+            document.getElementById('toastMessage').innerText = event.data;
+            const toastElement = document.getElementById('liveToast');
+            const toast = new bootstrap.Toast(toastElement);
+            toast.show();
+            
+            // 데이터 최신화를 위해 2초 뒤 페이지 새로고침 (선택 사항)
+            setTimeout(() => { location.reload(); }, 2000);
+        };
+
+        socket.onclose = function() {
+            console.log("WebSocket 연결이 종료되었습니다.");
+        };
     </script>
 </body>
 </html>

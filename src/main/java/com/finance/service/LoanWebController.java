@@ -1,6 +1,7 @@
 package com.finance.service;
 
 import com.finance.domain.LoanApplication;
+import com.finance.handler.NotificationHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +18,9 @@ public class LoanWebController {
 
     @Autowired
     private LoanReviewService reviewService;
+
+    @Autowired
+    private NotificationHandler notificationHandler; // 웹소켓 알림 핸들러 주입
 
     @GetMapping("/")
     public String index(Model model) {
@@ -70,6 +74,10 @@ public class LoanWebController {
             }
         }
         reviewService.applyLoan(app);
+
+        // ⭐ 대출 신청 성공 직후, 연결된 모든 관리자 화면에 실시간 알림 전송
+        notificationHandler.broadcast("🔔 신규 대출 신청 접수: " + customerId + "님 (" + amount + "원)");
+
         return "redirect:/";
     }
 
