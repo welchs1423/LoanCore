@@ -1,4 +1,4 @@
-package com.finance.aop;
+package com.finance.config;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
