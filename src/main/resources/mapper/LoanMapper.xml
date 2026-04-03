@@ -109,4 +109,11 @@
         ORDER BY APPLICATION_ID DESC
     </select>
 
+    <select id="getLoanStatistics" resultType="map">
+        SELECT STATUS_CODE AS "statusCode", COUNT(*) AS "count"
+        FROM LOAN_APPLICATION
+        WHERE DEL_YN = 'N'
+        GROUP BY STATUS_CODE
+    </select>
+
 </mapper>

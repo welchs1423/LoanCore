@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class LoanReviewService {
@@ -33,7 +34,6 @@ public class LoanReviewService {
         loanMapper.insertApplication(app);
     }
 
-    // MainTest.java 오류 해결: void -> String 반환으로 변경
     public String reviewLoan(LoanApplication app) {
         app.setStatusCode("APPROVE");
         return app.getStatusCode();
@@ -65,7 +65,6 @@ public class LoanReviewService {
         return loanMemoMapper.selectMemosByApplicationId(appId);
     }
 
-    // 타입 불일치 오류 해결: List<Map> -> List<AuditLog> 로 변경
     public List<AuditLog> getRecentAuditLogs() {
         return auditLogMapper.getRecentLogs();
     }
@@ -77,5 +76,9 @@ public class LoanReviewService {
     @Transactional(rollbackFor = Exception.class)
     public void addMemo(LoanMemo memo) {
         loanMemoMapper.insertMemo(memo);
+    }
+
+    public List<Map<String, Object>> getLoanStatistics() {
+        return loanMapper.getLoanStatistics();
     }
 }

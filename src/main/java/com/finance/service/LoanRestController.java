@@ -117,7 +117,6 @@ public class LoanRestController {
     @GetMapping("/check-limit")
     public Map<String, Object> checkLoanLimit(@RequestParam("amount") BigDecimal amount) {
         Map<String, Object> response = new HashMap<>();
-        // 예시: 최대 대출 한도를 1억 원으로 설정
         BigDecimal maxLimit = new BigDecimal("100000000");
 
         if (amount.compareTo(maxLimit) > 0) {
@@ -128,5 +127,10 @@ public class LoanRestController {
             response.put("message", "대출 신청 가능한 금액입니다.");
         }
         return response;
+    }
+
+    @GetMapping("/statistics")
+    public List<Map<String, Object>> getStatistics() {
+        return reviewService.getLoanStatistics();
     }
 }
