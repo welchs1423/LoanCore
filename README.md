@@ -39,6 +39,11 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-04**
+  - [Refactor] ApiResponse DTO 및 GlobalExceptionHandler 구축으로 시스템 전역 공통 응답 규격 및 예외 처리 체계 표준화
+  - [Feat] DocumentManagementService 구현으로 대출 ID별 증빙 서류 메타데이터 DB 매핑 및 통합 관리 로직 적용
+  - [Security] MaintenanceInterceptor 도입을 통한 은행 공동망 점검 시간대 API 접근 자동 차단 기능 구현
+  - [DB] 대출 관련 증빙 서류 메타데이터 보관을 위한 LOAN_DOCUMENTS 테이블 스키마 DDL 추가
+  - [Test] 전역 예외 처리기 및 파일 메타 등록 로직 JUnit 단위 테스트 케이스 작성
   - [Feat] CsvExportService 구현으로 백오피스 관리자용 대출 원장 데이터 CSV 추출 로직 적용
   - [Feat] EmailSenderService 추가를 통한 JavaMailSender 기반 전자 약정서 및 안내문 비동기 발송 연동
   - [Feat] DistributedLockService 구축으로 Redis 기반 동시성 제어(Double-spending 방지) 분산 락 기능 적용

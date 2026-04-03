@@ -1,47 +1,37 @@
 package com.finance.config;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.ui.ExtendedModelMap;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindException;
+import com.finance.dto.ApiResponse;
 
 public class GlobalExceptionHandlerTest {
 
-    private GlobalExceptionHandler exceptionHandler;
+    @Test
+    public void testHandleApiError() {
+        GlobalExceptionHandler handler = new GlobalExceptionHandler();
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.setRequestURI("/api/loan/test");
 
-    @BeforeEach
-    public void setUp() {
-        exceptionHandler = new GlobalExceptionHandler();
+        ResponseEntity<ApiResponse<Void>> response = (ResponseEntity<ApiResponse<Void>>) handler.handleNullPointerException(
+                new NullPointerException(), request, new ExtendedModelMap());
+
+        assertEquals(400, response.getBody().getStatus());
+        assertEquals("E002", response.getBody().getCode());
     }
 
     @Test
-    public void testHandleAllExceptions() {
-        Exception ex = new Exception("테스트 에러");
+    public void testHandleViewError() {
+        GlobalExceptionHandler handler = new GlobalExceptionHandler();
         MockHttpServletRequest request = new MockHttpServletRequest();
-        Model model = new ExtendedModelMap();
+        request.setRequestURI("/loan/apply");
+        ExtendedModelMap model = new ExtendedModelMap();
 
-        // 리턴 타입을 String으로 캐스팅
-        String viewName = (String) exceptionHandler.handleAllExceptions(ex, request, model);
+        String viewName = (String) handler.handleAllExceptions(new Exception(), request, model);
 
         assertEquals("error/500", viewName);
-        assertTrue(model.containsAttribute("errorMessage"));
-    }
-
-    @Test
-    public void testHandleBindException() {
-        BindException ex = new BindException(new Object(), "testObject");
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        Model model = new ExtendedModelMap();
-
-        // 리턴 타입을 String으로 캐스팅
-        String viewName = (String) exceptionHandler.handleBindException(ex, request, model);
-
-        assertEquals("apply", viewName);
-        assertTrue(model.containsAttribute("errors"));
+        assertEquals("E001", model.get("errorCode"));
     }
 }
