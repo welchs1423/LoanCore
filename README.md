@@ -39,6 +39,11 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-04**
+  - [Feat] AutoDebitBatchService 구축을 통한 정기 결제일 CMS 자동이체 출금 청구 배치 스케줄러 연동
+  - [Security] PasswordSecurityService를 활용한 단방향 해시 암호화 및 5회 실패 시 계정 잠금 처리
+  - [Security] RateLimiterService 도입으로 외부 API 트래픽 과부하 방지용 호출량 제한 로직 추가
+  - [Infra] CloudStorageService를 통한 AWS S3 객체 스토리지 증빙 서류 업로드 모의 연동
+  - [Test] 자동이체 배치, 암호화/계정잠금, API Rate Limit, S3 업로드 단위 테스트 케이스 작성
   - [UI/UX] Bootstrap 기반 관리자 대출 원장 상세 조회 화면(AdminLoanController, loanDetail.jsp) 구축
   - [Infra] 대규모 트래픽 대비 JMeter 성능 부하 테스트 환경(LoanCore_TestPlan.jmx) 및 실행 배치 파일 세팅
   - [Feat] VirtualAccountService 구현으로 상환용 고객 고유 가상계좌 발급 및 매핑 로직 추가
