@@ -39,6 +39,8 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-04**
+  - [UI/UX] Bootstrap 기반 관리자 대출 원장 상세 조회 화면(AdminLoanController, loanDetail.jsp) 구축
+  - [Infra] 대규모 트래픽 대비 JMeter 성능 부하 테스트 환경(LoanCore_TestPlan.jmx) 및 실행 배치 파일 세팅
   - [Feat] VirtualAccountService 구현으로 상환용 고객 고유 가상계좌 발급 및 매핑 로직 추가
   - [Feat] RehabilitationService 연동을 통한 개인회생/파산(BANKRUPT) 접수 및 이자 정지 처리
   - [Feat] CollectionActivityService를 활용한 연체 채권 추심 활동(전화, 방문 등) 이력 DB 누적 기능 구축
