@@ -1,18 +1,20 @@
 package com.finance.service;
 
-import com.finance.domain.LoanApplication;
-import com.finance.domain.LoanMemo;
-import com.finance.domain.AuditLog;
-import com.finance.mapper.LoanMapper;
-import com.finance.mapper.LoanMemoMapper;
-import com.finance.mapper.AuditLogMapper;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Map;
+import com.finance.domain.AuditLog;
+import com.finance.domain.LoanApplication;
+import com.finance.domain.LoanMemo;
+import com.finance.mapper.AuditLogMapper;
+import com.finance.mapper.LoanMapper;
+import com.finance.mapper.LoanMemoMapper;
 
 @Service
 public class LoanReviewService {
@@ -27,6 +29,7 @@ public class LoanReviewService {
     private AuditLogMapper auditLogMapper;
 
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = "loanCache", allEntries = true) 
     public void applyLoan(LoanApplication app) {
         if (app.getApplicationId() == null || app.getApplicationId().isEmpty()) {
             app.setApplicationId("L" + System.currentTimeMillis());

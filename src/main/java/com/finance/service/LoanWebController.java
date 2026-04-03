@@ -20,7 +20,7 @@ public class LoanWebController {
     private LoanReviewService reviewService;
 
     @Autowired
-    private NotificationHandler notificationHandler; // 웹소켓 알림 핸들러 주입
+    private NotificationHandler notificationHandler;
 
     @GetMapping("/")
     public String index(Model model) {
@@ -59,7 +59,9 @@ public class LoanWebController {
         app.setAddress(address);
 
         if (uploadFile != null && !uploadFile.isEmpty()) {
-            String uploadDir = "C:/upload/loan_docs/"; 
+            String uploadDir = System.getProperty("os.name").toLowerCase().contains("win") 
+                    ? "C:/upload/loan_docs/" 
+                    : "/usr/local/tomcat/upload/loan_docs/";
             File dir = new File(uploadDir);
             if (!dir.exists()) {
                 dir.mkdirs();
@@ -74,8 +76,6 @@ public class LoanWebController {
             }
         }
         reviewService.applyLoan(app);
-
-        // ⭐ 대출 신청 성공 직후, 연결된 모든 관리자 화면에 실시간 알림 전송
         notificationHandler.broadcast("🔔 신규 대출 신청 접수: " + customerId + "님 (" + amount + "원)");
 
         return "redirect:/";

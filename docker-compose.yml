@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  redis:
+    image: redis:7.0
+    container_name: loancore-redis
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+
+  app:
+    build: .
+    container_name: loancore-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - redis
+    environment:
+      - REDIS_HOST=redis
+    volumes:
+      - ./upload_data:/usr/local/tomcat/upload/loan_docs

@@ -1,52 +1,42 @@
 package com.finance.service;
 
-import java.io.File;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.io.File;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 @Controller
 public class FileDownloadController {
-	
-	@Value("${upload.basePath}")
-    private String uploadPath;
 
-    private static final Logger logger = LoggerFactory.getLogger(FileDownloadController.class);
+    private static final String UPLOAD_DIR = System.getProperty("os.name").toLowerCase().contains("win") 
+            ? "C:/upload/loan_docs/" 
+            : "/usr/local/tomcat/upload/loan_docs/";
 
-    @GetMapping("/download")
+    @GetMapping({"/download", "/admin/file/download"})
     public ResponseEntity<Resource> downloadFile(@RequestParam("fileName") String fileName) {
-        String traceId = MDC.get("traceId");
-        logger.info("[{}] 파일 다운로드 요청 시작: {}", traceId, fileName);
+        try {
+            File file = new File(UPLOAD_DIR + fileName);
+            if (!file.exists()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
 
-        File file = new File(uploadPath + File.separator + fileName);
-
-        if (!file.exists()) {
-            logger.warn("[{}] 파일을 찾을 수 없음: {}", traceId, file.getAbsolutePath());
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            Resource resource = new FileSystemResource(file);
+            String encodedFileName = URLEncoder.encode(file.getName(), StandardCharsets.UTF_8.toString()).replaceAll("\\+", "%20");
+            
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + encodedFileName + "\"");
+            
+            return new ResponseEntity<>(resource, headers, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        Resource resource = new FileSystemResource(file);
-        
-        // 한글 파일명 깨짐 방지 처리
-        String encodedFileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8).replaceAll("\\+", "%20");
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-        headers.setContentDispositionFormData("attachment", encodedFileName);
-
-        return new ResponseEntity<>(resource, headers, HttpStatus.OK);
     }
 }

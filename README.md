@@ -39,9 +39,9 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-03**
+  - [Feat] Dockerizing 및 docker-compose를 활용한 운영 환경 인프라(Tomcat 9, Redis) 통합 세팅
+  - [Refactor] OS 환경(Windows/Linux)에 따른 파일 업로드 경로 및 외부 데이터 볼륨 동적 마운트 처리
   - [Feat] Spring WebSocket 기반 실시간 신규 대출 접수 알림(Toast) 기능 구현
-  - [Feat] Chart.js 연동 및 관리자 대시보드 상태별 대출 통계 시각화 구현
-  - [Fix] Spring Data Redis의 RedisCacheManager 생성자 버전 충돌 오류 및 팩토리 메서드 방식 전환으로 해결
   - [Feat] Chart.js 연동 및 관리자 대시보드 상태별 대출 통계 시각화 구현
   - [Fix] Spring Data Redis의 RedisCacheManager 생성자 버전 충돌 오류 및 팩토리 메서드 방식 전환으로 해결
   - [Feat] Spring Data Redis 연동 및 @Cacheable을 활용한 대출 목록 조회 캐싱 적용
