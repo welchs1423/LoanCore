@@ -39,6 +39,11 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-04**
+  - [Feat] NplService 구현을 통한 장기 연체 채권 대손상각(Write-off) 및 외부 매각(Sale) 원장 처리
+  - [Feat] AmlService 구축으로 자금세탁방지(AML) 및 금융사기 블랙리스트 검증 로직 적용
+  - [Feat] DocumentVerificationService 추가를 통한 비대면 제출 서류(PDF/Img) 메타데이터 위변조 모의 탐지
+  - [Feat] ChatbotService 구현으로 키워드 매칭 기반 24시간 자동 응답 고객 상담 API 연동
+  - [Test] NPL 원장 처리, AML 검증, 서류 위변조 탐지, 챗봇 응답 로직 단위 테스트 케이스 추가
   - [Feat] OcrService를 통한 신분증 이미지 텍스트 추출 및 진위확인 모의 로직 적용
   - [Feat] ElectronicSignatureService 구축으로 약정서 전자서명 SHA-256 해시값 생성 및 보관 구현
   - [Feat] RefinancingService를 활용한 타행 대환대출 원장 이관 로직 구현
