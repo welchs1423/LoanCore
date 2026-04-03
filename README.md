@@ -39,6 +39,11 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-04**
+  - [Feat] LoanProductService 구현으로 상품별 금리/한도 가이드라인(신용, 주택담보, 햇살론) CMS 구축
+  - [Feat] ContractPdfService 구축을 통한 고객 데이터 기반 대출 약정서 PDF 실시간 생성 로직 구현
+  - [Feat] SmsOtpService 연동으로 휴대폰 번호 기반 2차 인증번호 발송 및 검증 보안 프로세스 추가
+  - [Refactor] AdminDashboardController 내 차트 통계 데이터와 실제 DB 집계 쿼리 연동 준비
+  - [Test] 상품 목록 조회, PDF 생성, OTP 인증 로직 JUnit 단위 테스트 케이스 추가
   - [Feat] Chart.js를 활용한 관리자 전용 대출 통계 대시보드(AdminDashboardController, dashboard.jsp) 구현
   - [Infra] Tomcat 9 및 JDK 21 기반 운영 환경 배포를 위한 Dockerfile 및 docker-compose.yml 구성
   - [Infra] GitHub Actions를 활용한 메이븐(Maven) 자동 빌드 및 CI(지속적 통합) 파이프라인 구축
