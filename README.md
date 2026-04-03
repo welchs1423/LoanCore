@@ -39,6 +39,11 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-04**
+  - [Feat] BatchMonitoringService 구현으로 주요 스케줄러(이자, 자동이체 등) 실행 결과 및 에러 DB 로깅 추가
+  - [Security] RoleBasedAuthInterceptor 세분화를 통해 관리자 등급(SUPER_ADMIN, MANAGER) 기반 API 접근 제어(RBAC) 적용
+  - [Security] IpWhitelistInterceptor 도입으로 외부 웹훅(Webhook) 호출 시 인가된 IP만 허용하는 네트워크 보안 로직 추가
+  - [Feat] TaxInvoiceService 구축을 통한 기업 대출 수납용 전자세금계산서 발급 번호 모의 생성 로직 구현
+  - [Test] 배치 로깅, 권한 제어, IP 화이트리스트, 세금계산서 발급 단위 테스트 케이스 추가
   - [Feat] RateReductionService 구현으로 신용점수 개선 시 금리인하요구권 심사 및 승인 로직 적용
   - [Feat] EarlyRepaymentService를 활용한 대출 잔여 일수 비례 중도상환수수료(페널티) 산출 기능 구축
   - [Feat] CertificateService 도입으로 금융기관 제출용 대출잔액증명서 고유 발급번호 생성 처리
