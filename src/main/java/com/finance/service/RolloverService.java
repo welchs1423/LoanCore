@@ -24,9 +24,8 @@ public class RolloverService {
         if (app != null && "APPROVED".equals(app.getStatusCode())) {
             double newRate = interestRateService.calculateApplicableRate(currentCreditScore);
             
-            // 만기 연장 상태로 변경 및 이력 갱신 로직
             app.setStatusCode("ROLLOVER");
-            // 실제 환경에서는 만기일(dueDate)을 +1년 등으로 연장하는 로직이 추가됩니다.
+            System.out.println("연장 심사 완료. 갱신 금리: " + newRate + "%");
             
             loanMapper.updateApplication(app);
         }
