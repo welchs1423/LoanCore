@@ -39,6 +39,11 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-04**
+  - [Feat] CsvExportService 구현으로 백오피스 관리자용 대출 원장 데이터 CSV 추출 로직 적용
+  - [Feat] EmailSenderService 추가를 통한 JavaMailSender 기반 전자 약정서 및 안내문 비동기 발송 연동
+  - [Feat] DistributedLockService 구축으로 Redis 기반 동시성 제어(Double-spending 방지) 분산 락 기능 적용
+  - [Feat] TcpSocketClient 도입을 통한 대외기관 레거시 시스템 통신용 TCP/IP 소켓 모듈 구현
+  - [Test] CSV 추출, 이메일 발송, 분산 락, 소켓 클라이언트 통신 단위 테스트 케이스 추가
   - [Feat] BatchMonitoringService 구현으로 주요 스케줄러(이자, 자동이체 등) 실행 결과 및 에러 DB 로깅 추가
   - [Security] RoleBasedAuthInterceptor 세분화를 통해 관리자 등급(SUPER_ADMIN, MANAGER) 기반 API 접근 제어(RBAC) 적용
   - [Security] IpWhitelistInterceptor 도입으로 외부 웹훅(Webhook) 호출 시 인가된 IP만 허용하는 네트워크 보안 로직 추가
