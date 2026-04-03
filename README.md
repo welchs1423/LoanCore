@@ -39,6 +39,9 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-04**
+  - [Feat] Chart.js를 활용한 관리자 전용 대출 통계 대시보드(AdminDashboardController, dashboard.jsp) 구현
+  - [Infra] Tomcat 9 및 JDK 21 기반 운영 환경 배포를 위한 Dockerfile 및 docker-compose.yml 구성
+  - [Infra] GitHub Actions를 활용한 메이븐(Maven) 자동 빌드 및 CI(지속적 통합) 파이프라인 구축
   - [Feat] NplService 구현을 통한 장기 연체 채권 대손상각(Write-off) 및 외부 매각(Sale) 원장 처리
   - [Feat] AmlService 구축으로 자금세탁방지(AML) 및 금융사기 블랙리스트 검증 로직 적용
   - [Feat] DocumentVerificationService 추가를 통한 비대면 제출 서류(PDF/Img) 메타데이터 위변조 모의 탐지
