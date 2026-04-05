@@ -51,6 +51,9 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-05**
+  - [Feat] PartialRepaymentService 구현으로 부분 상환 시 경과 일수에 따른 일할 이자 우선 차감 로직 적용
+  - [Feat] DashboardCacheService 추가 및 Spring Cache 연동을 통한 관리자 대시보드 통계 조회 성능 최적화
+  - [Test] 일할 이자 계산 및 원금 차감 수학 로직 검증을 위한 단위 테스트 케이스 작성
   - [Config] SwaggerConfig 적용으로 프론트엔드 연동을 위한 API 명세 자동화 및 UI 웹 테스트 환경 구축
   - [Config] CorsConfig 글로벌 설정 추가로 타 도메인(프론트엔드 서버) 간 Cross-Origin Resource Sharing 정책 문제 해결
   - [Config] WebMvcConfig 설정을 통한 TraceIdInterceptor, RateLimitInterceptor 전역 등록
