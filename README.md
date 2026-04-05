@@ -51,6 +51,8 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-05**
+  - [Refactor] 하드코딩된 모의 리턴 로직을 실제 MyBatis Mapper 연동 및 조건부 동적 쿼리(Dynamic SQL) 조회로 전면 교체
+  - [DB] MOCK_CB_DATA 테이블 생성 및 모의 데이터 적재를 통해 CreditBureauClient의 실질적인 데이터베이스 조회 환경 구성
   - [Feat] PartialRepaymentService 구현으로 부분 상환 시 경과 일수에 따른 일할 이자 우선 차감 로직 적용
   - [Feat] DashboardCacheService 추가 및 Spring Cache 연동을 통한 관리자 대시보드 통계 조회 성능 최적화
   - [Test] 일할 이자 계산 및 원금 차감 수학 로직 검증을 위한 단위 테스트 케이스 작성

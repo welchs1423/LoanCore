@@ -1,22 +1,25 @@
 package com.finance.mapper;
 
-import com.finance.domain.LoanApplication;
+import java.math.BigDecimal;
+import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import java.util.List;
-import java.util.Map;
+import com.finance.domain.LoanApplication;
 
 @Mapper
 public interface LoanMapper {
-    void insertApplication(LoanApplication app);
-    List<LoanApplication> selectAllApplications();
-    LoanApplication selectApplicationById(String id);
-    List<LoanApplication> searchApplicationsDynamic(@Param("keyword") String keyword, @Param("status") String status, @Param("startDate") String startDate, @Param("endDate") String endDate);
-    void updateApplication(LoanApplication app);
-    void deleteApplication(String id);
-    List<LoanApplication> selectApplicationsWithPaging(@Param("limit") int limit, @Param("offset") int offset);
-    int countAllApplications();
-    void updateApplicationStatusBulk(@Param("status") String status, @Param("ids") List<String> ids);
-    List<Map<String, Object>> selectAllLoans();
-    List<Map<String, Object>> getLoanStatistics();
+    LoanApplication selectApplicationById(String applicationId);
+    void updateApplication(LoanApplication application);
+    List<LoanApplication> searchApplicationsDynamic(
+        @Param("customerId") String customerId, 
+        @Param("statusCode") String statusCode, 
+        @Param("startDate") String startDate, 
+        @Param("endDate") String endDate
+    );
+    
+    // 대시보드 통계용 일별 대출 총액 조회
+    BigDecimal getTotalLoanAmountByDate(@Param("targetDate") String targetDate);
+    
+    // 모의 신용평가사 데이터 조회
+    Integer getMockCreditScore(@Param("residentNumber") String residentNumber);
 }

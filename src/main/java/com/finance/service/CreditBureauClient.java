@@ -1,15 +1,23 @@
 package com.finance.service;
 
 import org.springframework.stereotype.Service;
+import com.finance.mapper.LoanMapper;
 
 @Service
 public class CreditBureauClient {
-    
-    // 외부 CB사 신용점수 조회 모의 로직
+
+    private final LoanMapper loanMapper;
+
+    public CreditBureauClient(LoanMapper loanMapper) {
+        this.loanMapper = loanMapper;
+    }
+
     public int fetchCreditScore(String residentNumber) {
         if (residentNumber == null || residentNumber.trim().isEmpty()) {
             return 0;
         }
-        return 850;
+        
+        Integer score = loanMapper.getMockCreditScore(residentNumber);
+        return score != null ? score : 0;
     }
 }
