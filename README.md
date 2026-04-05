@@ -51,6 +51,8 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-05**
+  - [Config] SwaggerConfig 적용으로 프론트엔드 연동을 위한 API 명세 자동화 및 UI 웹 테스트 환경 구축
+  - [Config] CorsConfig 글로벌 설정 추가로 타 도메인(프론트엔드 서버) 간 Cross-Origin Resource Sharing 정책 문제 해결
   - [Config] WebMvcConfig 설정을 통한 TraceIdInterceptor, RateLimitInterceptor 전역 등록
   - [Security] RateLimitInterceptor 구현으로 IP 기반 API 호출 빈도 제한 및 DDoS 방어벽 구축
   - [AOP] ApiLoggingAspect 적용으로 전체 API 컨트롤러 요청/응답 소요 시간(ms) 통합 로깅

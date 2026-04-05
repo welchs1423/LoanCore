@@ -2,33 +2,33 @@ package com.finance.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
-@EnableWebMvc
+@EnableSwagger2
 public class SwaggerConfig {
 
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
+                .useDefaultResponseMessages(false)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.finance.controller"))
-                .paths(PathSelectors.any())
+                .paths(PathSelectors.ant("/api/**"))
                 .build()
                 .apiInfo(apiInfo());
     }
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("LoanCore API Documentation")
-                .description("LoanCore REST API")
+                .title("LoanCore API Document")
+                .description("여신 관리 시스템 API 명세서")
                 .version("1.0.0")
                 .build();
     }
