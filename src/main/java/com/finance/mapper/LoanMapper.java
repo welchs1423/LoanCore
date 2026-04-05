@@ -22,4 +22,7 @@ public interface LoanMapper {
     
     // 모의 신용평가사 데이터 조회
     Integer getMockCreditScore(@Param("residentNumber") String residentNumber);
+    
+    java.math.BigDecimal getTotalLoanAmountByDate(org.apache.ibatis.annotations.Param("targetDate") String targetDate);
+    Integer getMockCreditScore(org.apache.ibatis.annotations.Param("residentNumber") String residentNumber);
 }
