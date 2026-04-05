@@ -1,5 +1,12 @@
 # 🏦 LoanCore: 엔터프라이즈 여신(대출) 관리 시스템
 
+![Status](https://img.shields.io/badge/Status-Completed-success?style=flat-square)
+![Version](https://img.shields.io/badge/Version-v1.0.0-blue?style=flat-square)
+![Build](https://img.shields.io/badge/Build-Passing-brightgreen?style=flat-square)
+
+> **프로젝트 상태:** 모든 핵심 비즈니스 로직 및 인프라 구성이 완료되었습니다. (추가 기능 구현 계획 없음)
+> **개발 기간:** 2026.03 ~ 2026.04
+
 금융권의 핵심 업무인 여신 프로세스를 모사하여, 신청부터 심사, 실행(송금), 사후 관리 및 리스크 탐지까지 전 과정을 처리하는 **Spring 기반 백엔드 시스템**입니다.
 
 ---
