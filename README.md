@@ -7,44 +7,33 @@
 ## 🛠️ Tech Stack
 
 * **Backend:** Java 11, Spring MVC 5.x, MyBatis 3.5, AspectJ (AOP), Spring Cache
-* **Infrastructure:** **Redis (Distributed Lock & Cache)**, Docker Compose, JMeter (Performance Test)
-* **Frontend:** JSP (JSTL), Bootstrap 5, JavaScript (Fetch API), Chart.js 4.x
+* **Infrastructure:** **Docker**, **GitHub Actions (CI/CD)**, Redis (Distributed Lock & Cache), JMeter
 * **Database:** H2 Database, Spring JDBC, HikariCP
-* **Security:** **BCrypt & SHA-256**, Session Interceptor, **RBAC (Role-Based Access Control)**, **IP Whitelisting**
-* **Libraries:** Apache POI, Zxing 3.5, **JavaMailSender**, Hibernate Validator, Log4jdbc
+* **Security:** BCrypt & SHA-256, Session Interceptor, **JWT**, RBAC, IP Whitelisting
+* **Libraries & Tools:** Swagger(OpenAPI), Apache POI, Zxing 3.5, JavaMailSender, Log4jdbc
 
 ---
 
-## 🚀 주요 구현 기능
+## 🚀 주요 비즈니스 및 아키텍처 특징
 
-### 1. 고도화된 여신 비즈니스 로직
-* **대출 실행 및 상환 관리:** 대출 승인 후 실제 **가상계좌(Virtual Account)** 발급 및 송금 로직 모사, 회차별 **상환 스케줄 DB 영구 적재** 구현.
-* **금융 컴플라이언스 준수:** 법적 권리인 **금리인하요구권** 심사 프로세스 및 **중도상환수수료**의 정밀한 계산(소수점 오차 방지) 로직 구현.
-* **특수 채권 관리:** 개인회생/파산 접수 시 **이자 부과 자동 정지** 및 채권 상태 변경(BANKRUPT) 처리 로직 구현.
+### 1. 고도화된 금융 비즈니스 로직
+* **정밀한 이자 및 상환 계산:** 원리금균등상환 회차별 스케줄 자동 산출 및 부분 상환 시 경과 일수에 따른 **일할 이자 우선 차감** 로직 적용.
+* **여신 컴플라이언스 및 특수 채권:** 금리인하요구권 심사, 중도상환수수료 계산, 개인회생/파산 접수 시 이자 부과 정지 및 **부실채권(NPL) 외부 매각 처리**.
+* **대출 만기 관리:** 만기 도래 채권에 대한 연장(Maturity Extension) 심사 및 기간 갱신 기능 구현.
 
-### 2. 엔터프라이즈급 보안 및 리스크 관리
-* **이상거래 탐지(FDS):** 인가되지 않은 IP 접근 차단(**IP Whitelist**) 및 이상 상환 패턴 매칭을 통한 보안 강화.
-* **접근 제어(RBAC):** 관리자 등급별(SUPER_ADMIN, MANAGER) API 접근 권한 분리 및 **인터셉터 기반 세션 보안** 고도화.
-* **감사 로그(Audit Trail):** 민감한 원장 데이터 변경 시 '변경 전/후' 값을 기록하여 데이터 추적성 확보.
-* **데이터 비식별화:** PrivacyMasking 기능을 통해 로그 및 UI상에서 **주민번호/연락처 마스킹** 처리.
+### 2. 대외 기관 연동 및 모의 아키텍처
+* **외부 통신 모의(Mocking):** 외부 CB사(신용평가사) 신용점수 실시간 조회 및 오픈뱅킹 타행 계좌 잔액 조회 클라이언트 모의 연동.
+* **비대면 인증:** KYC(고객확인제도) 신분증 OCR 텍스트 추출 및 진위 여부 검증 모듈 적용.
 
-### 3. 시스템 안정성 및 성능 최적화
-* **분산 환경 동시성 제어:** **Redis Distributed Lock**을 활용하여 동일 채권에 대한 중복 상환 등 동시성 이슈(Double-spending) 원천 차단.
-* **전역 예외 처리 표준화:** **`@ControllerAdvice`와 공통 응답 DTO(`ApiResponse`)**를 구축하여 API/View 요청별 맞춤형 에러 응답 체계 단일화.
-* **대규모 트래픽 대응:** **JMeter**를 활용한 성능 부하 테스트 환경 구축 및 **Circuit Breaker** 로직을 통한 외부 API 장애 전이 방지.
-* **비동기 알림 체계:** 메일 발송 및 알림톡 기능을 비동기/큐잉 방식으로 설계하여 메인 비즈니스 로직의 응답 속도 유지.
+### 3. 대규모 트래픽 및 시스템 안정성
+* **분산 환경 동시성 제어:** Redis Distributed Lock을 활용하여 동일 채권에 대한 중복 상환(Double-spending) 원천 차단.
+* **전역 예외 처리 및 통합 로깅:** `@ControllerAdvice`와 공통 응답 DTO(`ApiResponse`) 구축, MDC 추적 ID 및 AOP 기반 API 소요 시간(ms) 통합 로깅.
+* **조회 성능 최적화:** Spring Cache와 MyBatis 동적 쿼리(Dynamic SQL)를 결합하여 대시보드 통계 및 목록 페이징 성능 개선.
 
-### 4. 데이터 거버넌스 및 운영 도구
-* **배치 모니터링:** `@Scheduled` 기반 이자 결산/자동이체 배치의 성공/실패 여부를 **Batch Log** 테이블에 기록 및 추적.
-* **데이터 파기 정책:** 개인정보 보호법 준수를 위한 보유 기간 만료 데이터 자동 삭제/분리 보관 배치 구현.
-* **다양한 데이터 추출:** 관리자용 원장 내역 **Excel/CSV 다운로드** 및 국세청 제출용 연간 이자 상환 증빙 데이터 집계 기능.
-
----
-
-## 📈 설계 및 아키텍처 포인트
-
-* **정합성 우선:** 금융 시스템 특성에 맞춰 모든 원장 변경은 `@Transactional` 하에 원자성을 보장하도록 설계.
-* **확장성 고려:** 인터페이스 기반의 서비스 설계와 공통 응답 규격 적용으로 향후 모바일 앱이나 제휴사 연동이 용이한 구조 확보.
+### 4. 보안 및 DevOps 인프라
+* **API 보안 방어벽:** RateLimitInterceptor를 통한 IP 기반 API 호출 빈도 제한(DDoS 방어) 및 JWT 토큰 무상태 인증 체계 마련.
+* **자동화 및 CI/CD:** Docker 컨테이너 빌드 환경 구성 및 GitHub Actions 워크플로우를 통한 자동화된 빌드/테스트 파이프라인 구축.
+* **API 문서화:** Swagger 연동으로 프론트엔드 개발 환경(CORS 지원)을 위한 API 명세서 자동 생성.
 
 ---
 
