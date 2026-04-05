@@ -10,6 +10,7 @@ import com.finance.dto.ApiResponse;
 public class GlobalExceptionHandlerTest {
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testHandleApiError() {
         GlobalExceptionHandler handler = new GlobalExceptionHandler();
         MockHttpServletRequest request = new MockHttpServletRequest();

@@ -50,6 +50,13 @@
 
 ### 📅 개발 진행 내역
 
+* **2026-04-05**
+  - [Feat] NplSaleService 구현을 통한 장기 연체/회생 채권 외부 매각(NPL) 및 원장 상태 전환 로직 추가
+  - [Feat] KycOcrService 추가로 비대면 신분증 텍스트 추출 및 진위 여부 검증 모의 로직 적용
+  - [Feat] LoanExtensionService를 활용한 대출 만기 연장(Maturity Extension) 심사 및 기간 갱신 기능 구축
+  - [Security] JwtTokenProvider 도입으로 모바일/외부 채널 연동을 위한 무상태(Stateless) JWT 토큰 발급 체계 마련
+  - [Test] NPL 매각, OCR 검증, 만기 연장, JWT 생성 단위 테스트 케이스 추가
+
 * **2026-04-04**
   - [Feat] PushMessageService 구현으로 FCM 기반 푸시 알림 발송 모의 로직 및 발송 이력 관리 기능 추가
   - [DB] 푸시 발송 이력 추적을 위한 PUSH_HISTORY 테이블 스키마 DDL 작성
