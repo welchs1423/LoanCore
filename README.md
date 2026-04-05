@@ -51,6 +51,10 @@
 ### 📅 개발 진행 내역
 
 * **2026-04-05**
+  - [Config] WebMvcConfig 설정을 통한 TraceIdInterceptor, RateLimitInterceptor 전역 등록
+  - [Security] RateLimitInterceptor 구현으로 IP 기반 API 호출 빈도 제한 및 DDoS 방어벽 구축
+  - [AOP] ApiLoggingAspect 적용으로 전체 API 컨트롤러 요청/응답 소요 시간(ms) 통합 로깅
+  - [Log] TraceIdInterceptor 도입으로 요청 스레드별 MDC(Mapped Diagnostic Context) 고유 식별자 부여 로직 적용
   - [Feat] AmortizationScheduleService 구현으로 대출 원리금균등상환 회차별 스케줄 산출 로직 적용
   - [Feat] CreditBureauClient 구축을 통해 외부 CB사(신용평가사) 실시간 신용점수 조회 연동 모의 로직 추가
   - [Feat] AmlMonitoringBatchService 추가로 자금세탁방지(AML) 의심거래(STR) 스캔 배치 기능 구현

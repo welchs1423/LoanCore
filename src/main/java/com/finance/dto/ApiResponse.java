@@ -36,7 +36,8 @@ public class ApiResponse<T> {
         return new ApiResponse<T>(200, "성공", "S000", data);
     }
 
-    public static ApiResponse<Void> error(int status, String message, String code) {
-        return new ApiResponse<Void>(status, message, code, null);
+    // 수정된 부분: <Void> 대신 <T>를 사용하여 어떤 컨트롤러 응답 타입이든 맞춰줄 수 있게 변경
+    public static <T> ApiResponse<T> error(int status, String message, String code) {
+        return new ApiResponse<T>(status, message, code, null);
     }
 }
